@@ -1,0 +1,140 @@
+/*! 
+ * mobilebone.css
+ * by zhangxinxu(.com) 2014-09-26
+ * some necessary CSS for mobilebone.js
+ * good luck for U, ^_^
+**/
+
+a, img {
+    -webkit-touch-callout: none;
+}
+
+html, body {
+	height: 100%;
+    -webkit-user-select: none;
+    user-select: none;
+	overflow: hidden;
+}
+
+body { margin: 0; }
+
+.page, .mask {
+	height: 100%; width: 100%;
+	overflow: hidden;
+	position: absolute;
+}
+.page {
+	-webkit-animation: .35s ease-in-out;
+	animation: .35s ease-in-out;
+}
+.page.out {
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+}
+.slide.in {
+	-webkit-animation-name: slideinfromright;
+	animation-name: slideinfromright;
+}
+.slide.out {
+	-webkit-animation-name: slideouttoleft;
+	animation-name: slideouttoleft;
+}
+.slide.back.out {
+	-webkit-animation-name: slideouttoright;
+	animation-name: slideouttoright;
+}
+.slide.back.in {
+	-webkit-animation-name: slideinfromleft;
+	animation-name: slideinfromleft;
+}
+
+.loading { /* detail: http://www.zhangxinxu.com/wordpress/?p=3357 */
+    width: 3px; height:3px;
+    border-radius: 100%;                      /* 圆角 */
+    box-shadow: 0 -10px 0 1px #333,           /* 上, 1px 扩展 */
+                10px 0px #333,                /* 右 */    
+                0 10px #333,                  /* 下 */
+                -10px 0 #333,                 /* 左 */
+                              
+                -7px -7px 0 .5px #333,        /* 左上, 0.5px扩展 */
+                7px -7px 0 1.5px #333,        /* 右上, 1.5px扩展 */                    
+                7px 7px #333,                 /* 右下 */
+                -7px 7px #333;                /* 左下 */
+	-webkit-animation: loading 1s step-start infinite;
+	animation: loading 1s step-start infinite; 
+}
+
+.mask {
+	background-color: rgba(255,255,255,.35);
+}
+.mask > .loading {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	margin: auto;
+}
+
+/* animation */
+@-webkit-keyframes slideinfromright {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(0); }
+}
+@keyframes slideinfromright {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+@-webkit-keyframes slideinfromleft {
+    from { -webkit-transform: translateX(-100%); }
+    to { -webkit-transform: translateX(0); }
+}
+@keyframes slideinfromleft {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+@-webkit-keyframes slideouttoleft {
+    from { -webkit-transform: translateX(0); }
+    to { -webkit-transform: translateX(-100%); }
+}
+@keyframes slideouttoleft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+@-webkit-keyframes slideouttoright {
+    from { -webkit-transform: translateX(0); }
+    to { -webkit-transform: translateX(100%); }
+}
+@keyframes slideouttoright {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+      to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes loading {
+     0% { -webkit-transform: rotate(0deg); }
+	 12% { -webkit-transform: rotate(45deg); }
+	25% { -webkit-transform: rotate(90deg); }
+	37% { -webkit-transform: rotate(135deg); }
+	50% { -webkit-transform: rotate(180deg); }
+	63% { -webkit-transform: rotate(225deg); }
+	75% { -webkit-transform: rotate(270deg); }
+	87% { -webkit-transform: rotate(315deg); }
+   90% { -webkit-transform: rotate(360deg); }
+}
+@keyframes loading {
+      0% { transform: rotate(0deg); }
+	 12% { transform: rotate(45deg); }
+	25% { transform: rotate(90deg); }
+	37% { transform: rotate(135deg); }
+	50% { transform: rotate(180deg); }
+	63% { transform: rotate(225deg); }
+	75% { transform: rotate(270deg); }
+	87% { transform: rotate(315deg); }
+   90% { transform: rotate(360deg); }
+}

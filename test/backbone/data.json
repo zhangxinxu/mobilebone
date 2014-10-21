@@ -1,0 +1,34 @@
+{
+  "key": "find",
+  "title": "发现",
+  "data": [
+    [{
+      "id": 1,
+      "name": "朋友圈",
+      "href": "javascript:"
+    }],
+    [{
+      "id": 2,
+      "name": "扫一扫",
+      "href": "javascript:"
+    }, {
+      "id": 3,
+      "name": "摇一摇",
+      "href": "javascript:"
+    }],
+    [{
+      "id": 4,
+      "name": "附近的人",
+      "href": "javascript:"
+    }, {
+      "id": 5,
+      "name": "漂流瓶",
+      "href": "javascript:"
+    }],
+    [{
+      "id": 6,
+      "name": "点击我回首页",
+      "href": "#homePage"
+    }]
+  ]
+}

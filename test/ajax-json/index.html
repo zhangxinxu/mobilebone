@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>ajax请求JSON</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+</head>
+
+<body>
+<div id="pageHome" class="page out" data-title="ajax请求JSON">
+    <ul>
+        <li><a href="json-success.txt" data-dataType="json">点击加载JSON数据</a></li>
+    </ul>
+    <ul>
+        <li><a href="json-error.html" data-datatype="json" data-error="requestError">加载JSON失败，404, 可回调</a></li>
+        <li><a href="json-error.txt" data-datatype="json" data-error="requestError">加载JSON失败，解析错误</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.jsonHandle = function(json) {
+	var page = document.createElement("div");
+	page.className = "page out";
+	page.setAttribute("data-title", json.title);
+	page.innerHTML = json.html;
+	return page;
+};
+
+var requestError = function(xhr, status) {
+	var obj = {
+		404: "请求的是火星地址",
+		500: "服务器嗝屁"	
+	}
+	
+	if (this.message) alert(this.message);
+	
+	obj[status] && alert("状态码是" + status + ", 表示：" + obj[status]);	
+
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<% _.each(findData.data, function(data) { %>
+	<ul>
+	    <% _.each(data, function(obj) { %>
+			<li><a href="<%= obj.href %>"<% if (/^#/.test(obj.href)) { %> data-rel="back"<% } %>><%= obj.name %></a></li>
+		<% }); %>
+	</ul>
+<% }); %>

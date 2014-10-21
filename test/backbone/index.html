@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>backbone模板框架结合示例</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+<style>
+
+</style>
+</head>
+
+<body>
+<div id="homePage" class="page out" data-title="backbone模板框架结合示例">
+    <ul>
+        <li><a href="data.json" data-datatype="json">大列表展示</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script src="zepto.min.js"></script>
+<script src="underscore-min.js"></script>
+<script src="backbone-min.js"></script>
+<script>
+Mobilebone.jsonHandle = function(json) {
+	var key = json.key;
+	if (!key) return '<p>数据不符合要求</p>';;
+	// 先创建个页面
+	return '<div id="'+ key +'Page" class="page out" data-title="'+ json.title +'" data-onpagefirstinto="render"><p>正在加载中...</p></div>';
+};
+
+var render = function(page_in, page_out, json) {
+	if(typeof json != "object") return;
+	var key = json.key, pageid = json.key + "Page";
+	var FindModel = Backbone.Model.extend({
+		defaults: {
+			"data": json		
+		}
+	});
+	
+	var findModel = new FindModel(), findView = {};
+	
+	// 获得模板内容
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", key + ".template");
+	xhr.onload = function() {	
+		var FindView = Backbone.View.extend({
+			initialize: function() {
+				this.render();
+			},
+			template: _.template(xhr.response),
+			render: function() {
+				// 根据模板量体裁衣
+				var template = this.template;
+				findData = this.model.get("data");
+				// 加载
+				this.el.innerHTML = template(findData);
+				
+				return this;
+			},
+			events: {
+				"touchend a": "doAction"
+			},
+			doAction: function(event) {
+				var target = event.target || event.touchs[0];
+				if (!target) return;
+				var html = target.innerHTML;
+				if (/\d/.test(html)) {
+					target.innerHTML = html.replace(/\d/, function(matchs) {
+						return matchs * 1 + 1;
+					});
+				} else {
+					target.innerHTML = html + " -目前点击1次";
+				}
+			}
+		});
+		// 根据数据、渲染视图
+		findView = new FindView({
+			el: document.getElementById(pageid),
+			model: findModel					   
+		});
+	};
+	xhr.send(null);	
+};
+</script>
+</body>
+</html>

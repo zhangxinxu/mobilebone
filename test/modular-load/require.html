@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>require.js模块化加载</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+</head>
+
+<body>
+<div id="pageHome" class="page out">
+    <ul>
+        <li><a href="#page1">页面1</a></li>
+        <li><a href="#page2">页面2</a></li>
+        <li><a href="#page3">页面3</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+</div>
+<div id="page1" class="page out"></div>
+<div id="page2" class="page out"></div>
+<div id="page3" class="page out"></div>
+
+<script src="require.js"></script>
+<script>
+// requirejs 的简单配置
+requirejs.config({
+  baseUrl: "../../",
+  paths: {
+    "mobilebone": "src/mobilebone"
+  }
+})
+
+// 加载入口模块
+requirejs(["test/modular-load/main"]);
+</script>
+</body>
+</html>

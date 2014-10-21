@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>固定的头部和底部</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+<style>
+body { background-color: #f0f0f0; }
+p > a { color: green; }
+</style>
+</head>
+
+<body>
+<div class="header">
+    <a href="javascript:" data-rel="back">返回</a>
+    <h1>首页</h1>
+</div>
+<div id="pageHome" class="page out">
+    <div class="content">
+        <p>首页内容...本页可垂直滚动...</p>
+        <p><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></p>
+        <div style="height: 800px;"></div>
+    </div>
+</div>
+<div id="page1" class="page out" data-title="页面1"><div class="content">页面1内容...</div></div>
+<div id="page2" class="page out" data-title="页面2"><div class="content">页面2内容...</div></div>
+<div id="page3" class="page out" data-title="页面3"><div class="content">页面3内容...</div></div>
+<div class="footer">
+    <h4><a href="#pageHome" data-rel="auto">首页</a></h4>
+    <h4><a href="#page1" data-rel="auto">页面1</a></h4>
+    <h4><a href="#page2" data-rel="auto">页面2</a></h4>
+    <h4><a href="#page3" data-rel="auto">页面3</a></h4>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.callback = function(page_in, page_out) {
+	var id_in = page_in.id, id_out = "";
+	var ele_link_in = null, ele_link_out = null;
+	if (ele_link_in = document.querySelector(".footer a[href$="+ id_in +"]")) {
+		ele_link_in.classList.add("active");
+	}
+	if (page_out) {
+		id_out = page_out.id;
+		ele_link_out = id_out && document.querySelector(".footer a[href$="+ id_out +"]");
+		ele_link_out && ele_link_out.classList.remove("active");
+	}
+}
+</script>
+</body>
+</html>

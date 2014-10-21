@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>回调测试</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+<style>
+p { font-size: 14px; color: #666; }
+.text-shadow { text-shadow: 1px 1px #eee; }
+</style>
+</head>
+
+<body>
+<div id="pageHome" class="page out" data-onpagefirstinto="home" data-animationstart="start" data-animationend="end">
+    <h2>主页</h2>
+    <ul>
+        <li><a href="#page1">页面1</a></li>
+        <li><a href="#page2">页面2</a></li>
+        <li><a href="#page3">页面3</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+    <p></p>
+</div>
+<div id="page1" class="page out" data-params="animationstart=start&amp;animationend=end">
+    <a href="#pageHome" data-rel="back">&laquo;返回1</a>
+    <p></p>
+</div>
+<div id="page2" class="page out" data-params="root=window&amp;onpagefirstinto=callback_page">
+    <a href="#pageHome" data-rel="back">&laquo;返回2</a>
+    <p>该页面首次载入，按钮会被居中</p>
+</div>
+<div id="page3" class="page out" data-animationend="random_bgcolor">
+    <a href="#pageHome" data-rel="back">&laquo;返回3</a>
+    <p class="text-shadow">预期效果为每次动画载入随机灰度背景色</p> 
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+FUN = {
+	time: function() {
+		var date = new Date();
+		return [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
+	},
+	status: {
+		into: "进入",
+		out: "离开"
+	},
+	home: function(pageInto, pageOut, response) {
+		pageInto.querySelector("p").innerHTML += "首次载入时间是：" + this.time() + "<br>";
+	},
+	start: function(page, into_or_out) {
+		page.querySelector("p").innerHTML += "页面即将进行"+ this.status[into_or_out] +"动画，时间是：" + this.time() + "<br>";
+	},
+	end: function(page, into_or_out) {
+		page.querySelector("p").innerHTML += "页面"+ this.status[into_or_out] +"动画完成，时间是：" + this.time() + "<br>";
+	},
+	random_bgcolor: function(page, into_or_out) {
+		if (into_or_out == "into") {
+			page.style.backgroundColor = "rgba(0,0,0,."+ Math.round(Math.random() * 10) +")";
+		}
+	}
+};
+
+window.callback_page = function(page) {
+	// 按钮居中
+	page.style.textAlign = "center";
+};
+
+Mobilebone.rootTransition = FUN;
+</script>
+</body>
+</html>

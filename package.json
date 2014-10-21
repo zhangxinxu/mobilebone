@@ -1,0 +1,24 @@
+{
+  "name": "mobilebone",
+  "version": "0.0.0",
+  "description": "Bone for mobile web APP with a sigle page mode.",
+  "main": "src/mobilebone.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zhangxinxu/mobilebone.git"
+  },
+  "keywords": [
+    "Mobilebone.js"
+  ],
+  "author": "zhangxinxu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhangxinxu/mobilebone/issues"
+  }
+}
