@@ -111,7 +111,7 @@
 			var params_in = params(pageInto);
 			
 			// for title change
-			var title = params_in.title, header = document.querySelector("h1");			
+			var title = params_in.title, header = document.querySelector("h1");		
 			// do title change	
 			if (title) {
 				document.title = title;
@@ -165,6 +165,7 @@
 				url_push = "#" + url_push;
 			}
 			if (supportHistory && this.pushStateEnabled && options.history !== false && url_push) {
+				// if only pageIn, use 'replaceState'
 				history[pageOut? "pushState": "replaceState"](null, document.title, url_push);
 			}
 
@@ -180,6 +181,12 @@
 		}
 	};
 	
+	// get whole ajax url
+	// Mobilebone.getCleanUrl(elementOfA);
+	// Mobilebone.getCleanUrl(elementOfA, '', "a=1&b=2");
+	// Mobilebone.getCleanUrl(null, "xxx.html");
+	// Mobilebone.getCleanUrl(null, "xxx.html?a=1&b=2");
+	// Mobilebone.getCleanUrl(null, "xxx.html", "a=1&b=2");
 	Mobilebone.getCleanUrl = function(trigger, url, params) {
 		var href = "", formdata = "", clean_url = "";
 		if (trigger) {
