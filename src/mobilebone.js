@@ -2,7 +2,7 @@
  * mobilebone.js
  * by zhangxinxu(.com) 2014-09-26
  * https://github.com/zhangxinxu/mobilebone
- * bone of slide for mobile web app 
+ * bone of switch for mobile web app 
 **/
 
 (function(root, factory) {
@@ -138,9 +138,12 @@
 			
 			// do callback when come in first time
 			var onpagefirstinto = params_in.onpagefirstinto;
-			if (typeof onpagefirstinto == "string") onpagefirstinto = params_in.root[onpagefirstinto];
-			if (!store[pageid] && typeof onpagefirstinto == "function") {
-				onpagefirstinto(pageInto, pageOut, options.response);
+			if (!store[pageid]) {
+				if (typeof onpagefirstinto == "string" && params_in.root[onpagefirstinto]) {
+					params_in.root[onpagefirstinto](pageInto, pageOut, options.response);
+				} else if (typeof onpagefirstinto == "function") {
+					onpagefirstinto(pageInto, pageOut, options.response);
+				}
 			}
 			
 			// do callback when animation start/end
@@ -150,13 +153,17 @@
 					return matchs.toUpperCase();
 				});
 				
-				if (typeof animition == "string") animition = params_in.root[animition];
-				
-				if (!store[pageid] && typeof animition == "function") {
-					pageInto.addEventListener(isWebkit? webkitkey: animationkey, function() {
-						animition(this, this.classList.contains("in")? "into": "out");	
-					});
-				}	
+				if (!store[pageid]) {
+					if (typeof animition == "string" && params_in.root[animition]) {
+						pageInto.addEventListener(isWebkit? webkitkey: animationkey, function() {
+							params_in.root[animition](this, this.classList.contains("in")? "into": "out");
+						});
+					} else if (typeof animition == "function") {
+						pageInto.addEventListener(isWebkit? webkitkey: animationkey, function() {
+							animition(this, this.classList.contains("in")? "into": "out");	
+						});
+					}	
+				} 
 			});
 			
 			// history
@@ -388,7 +395,7 @@
 						params.response = response;
 						Mobilebone.createPage(Mobilebone.jsonHandle(response), trigger_or_options, params);
 					} catch (e) {
-						params.message = "JSON解析出现错误：" + e.message;
+						params.message = "JSON parse error：" + e.message;
 						params.error.call(params, xhr, xhr.status);
 					}
 				} else if (params.dataType == "unknown") {
@@ -409,11 +416,19 @@
 				}
 				params.success.call(params, response, xhr.status);
 			} else {
+				params.message = "The status code exception!";
 				params.error.call(params, xhr, xhr.status);
 			}
 			
 			params.complete.call(params, xhr, xhr.status);
 			
+			// hide loading
+			ele_mask.style.display = "none";
+		}
+		
+		xhr.onerror = function(e) {
+			params.message = "Illegal request!";
+			params.error.call(params, xhr, xhr.status);
 			// hide loading
 			ele_mask.style.display = "none";
 		}
@@ -468,6 +483,7 @@
 	Mobilebone.handleTapEvent = function(event) {
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
+		
 		if (!href && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
@@ -531,7 +547,9 @@
 				Mobilebone.ajax(target);
 			}
 			event.preventDefault();	
-		}	
+		} else {
+			// console.log('pass thought');
+		}
 	};
 	
 	
