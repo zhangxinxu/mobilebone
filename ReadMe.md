@@ -28,7 +28,7 @@ The interface will switch to page whitch's value of <code>id</code> is <code>tar
 
 Of course, you can control the direction of switching, or use a ajax get, ...
 
-For more detail, you can [visit here](http://www.zhangxinxu.com/wordpress/?p=3835). 
+For more detail, you can [visit here](http://www.zhangxinxu.com/wordpress/?p=4381). 
 
 Advantage?
 --------------
@@ -58,7 +58,7 @@ mobilebone.js
 <pre>&lt;link rel="stylesheet" href="mobilebone.css"></pre>
 <pre>&lt;script src="mobilebone.js">&lt;/script></pre>
 
-HTML结果需要有一定的要求：
+HTML结构需要有一定的要求：
 <pre>body
   page
   page
@@ -71,7 +71,7 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 
 当tap此元素时候，页面会自动无刷新切换到<code>id</code>为<code>targetPage</code>的页面。你可以控制切换的方向，或者使用Ajax获取HTML或JSON, 可以被seajs, requiejs模块化加载，可以和Backbone组合使用等。
 
-更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=3835). 
+更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=4381). 
 
 优势？
 ------------------
