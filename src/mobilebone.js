@@ -35,28 +35,79 @@
 		if (attr == null || attr == "false" || attr == "0") return false;
 		return true;
 	};
-
-	// Current version of the library. Keep in sync with `package.json`.
+	
+	/**
+	 * Current version of the library. Keep in sync with `package.json`.
+	 *
+	 * @type string
+	**/
 	Mobilebone.VERSION = '0.0.0';
 	
-	// if bind events when dom ready
-	// if the value is false, u should use 'Mobilebone.init();' to initialize.
+	/**
+	 * Whether bind events when dom ready
+	 * If the value is false, u should use 'Mobilebone.init();' to initialize.
+	 *
+	 * @type boolean
+	**/
 	Mobilebone.autoInit = true;
 	
-	// if catch attribute of href from tag 'a'
-	// if the value set to false, jump links in a refresh form(not slide)
+	/**
+	 * Whether catch attribute of href from element with tag 'a'
+	 * If the value set to false, jump links in a refresh form(not slide)
+	 * In most cases, you do not need to care about this parameter. 
+	   Except some special pages that should refresh all links, as test/index.html show.
+	   However, if your only want several links refesh, you can use data-ajax="false" or data-role="external"
+	 *
+	 * @type boolean
+	**/
 	Mobilebone.captureLink = true;
 	
-	// the root of callback function name
+	/**
+	 * The root of transition-callback
+	 * Default value is 'root', you can consider as window-object. 
+	   However, there are may many callbacks, it's impossible that all functions are global function.
+	   We may custom a global object to store our callbacks, such as:
+	   Callback = {
+		 fun1: function() {}, 
+		 fun2: function() {}, 
+		 fun3: function() {},  
+	   }
+	   In this case, the value of 'obilebone.rootTransition' should set Callback;
+	 *
+	 * @type object
+	**/
 	Mobilebone.rootTransition = root;
 	
-	// name of page class
+	/**
+	 * className for mark page element
+	 *
+	 * @type string
+	**/
 	Mobilebone.classPage = "page";
 	
-	// if url that changed follow history
+	/**
+	 * Whether url changes when history changes
+	 * If this value is false, the url will be no change.
+	 *
+	 * @type boolean
+	**/
 	Mobilebone.pushStateEnabled = true;
 	
-	// main function for transition
+	/**
+	 * Function for transition
+	 * In most cases, you are unnecessary to use this function , unlike Mobilebone.createPage
+	 
+	 * @params  pageInto: dom-object. Element which will transform into. - Necessary
+	            pageOut:  dom-object. Elementwhich will transform out.   - Optional
+			    back:     boolean.    Direction of tranisition.          - Optional
+			    options:  object.     Cover or add parameters.           - Optional
+	 * @returns undefined
+	 * @example Mobilebone.transition(element);
+	            Mobilebone.transition(element1, element2);
+				Mobilebone.transition(element1, element2, true);
+				Mobilebone.transition(element1, element2, { id: "only" });
+				Mobilebone.transition(element1, element2, true, { id: "only" });
+	**/
 	Mobilebone.transition = function(pageInto, pageOut, back, options) {
 		if (arguments.length == 0) return;
 		if (arguments.length == 3 && isNaN(back * 1) == true) {
@@ -188,12 +239,21 @@
 		}
 	};
 	
-	// get whole ajax url
-	// Mobilebone.getCleanUrl(elementOfA);
-	// Mobilebone.getCleanUrl(elementOfA, '', "a=1&b=2");
-	// Mobilebone.getCleanUrl(null, "xxx.html");
-	// Mobilebone.getCleanUrl(null, "xxx.html?a=1&b=2");
-	// Mobilebone.getCleanUrl(null, "xxx.html", "a=1&b=2");
+	
+	/**
+	 * For getting whole ajax url
+	 * In most cases, you are unnecessary to use this function
+	 
+	 * @params  trigger: dom-object. element with tag-"a".  - Optional(at least one)
+	            url:     string. ajax url.                  - Optional(at least one)
+			    params:  string|opject. ajax params.        - Optional
+	 * @returns string
+	 * @example Mobilebone.getCleanUrl(elementOfA);
+	            Mobilebone.getCleanUrl(elementOfA, '', "a=1&b=2");
+				Mobilebone.getCleanUrl(null, "xxx.html");
+				Mobilebone.getCleanUrl(null, "xxx.html?a=1&b=2");
+				Mobilebone.getCleanUrl(null, "xxx.html", "a=1&b=2");
+	**/
 	Mobilebone.getCleanUrl = function(trigger, url, params) {
 		var href = "", formdata = "", clean_url = "";
 		if (trigger) {
@@ -243,6 +303,14 @@
 		return clean_url;
 	};
 	
+	/**
+	 * Get page element that contains given element
+	 
+	 * @params  children: dom-object. - Necessary
+	 * @returns page element|null
+	 * @example Mobilebone.getCleanUrl(childElement);
+	 *
+	**/
 	Mobilebone.getPage = function(children) {
 		var _page = null;
 		slice.call(document.querySelectorAll("." + this.classPage)).forEach(function(page) {
@@ -253,6 +321,22 @@
 		return _page;
 	};
 	
+	/**
+	 * Create page according to given Dom-element or HTML string. And, notice!!!!! will do transition auto.
+	 
+	 * @params  dom_or_html:        dom-object|string. Create this to dom element as a role of into-page.               - Necessary
+	            element_or_options: dom-object|object. '.page element', or 'a element', or 'options' for get out-page   - Optional
+				options:            object.            basically, options = ajax options, of course, u can custom it!   - Optional
+	 * @returns undefined
+	 * @example Mobilebone.createPage(pageDom);
+	            Mobilebone.createPage(generalDom);
+				Mobilebone.createPage('<div class="page out">xxx</div>');
+				Mobilebone.createPage('<p>xxx</p>');
+				Mobilebone.createPage(pageDom, triggerLink);
+				Mobilebone.createPage(pageDom, { reponse: '<div...>' });
+				Mobilebone.createPage(pageDom, triggerLink, { reponse: '<div...>' });
+	 *
+	**/
 	Mobilebone.createPage = function(dom_or_html, element_or_options, options) {
 		var response = null;
 		// 'element_or_options' can '.page element', or 'a element', or 'options'
@@ -303,6 +387,17 @@
 		});
 	};
 	
+	/**
+	 * For ajax callback. 
+	 * For example, data-success="a.b.c". We can't use 'a.b.c' as a function, because it's a string. We should do some work to get it!
+	 
+	 * @params  keys:        string. - Necessary
+	 * @returns function
+	            undefined keys is not string
+				window    keys unfinded
+	 * @example Mobilebone.createPage("a.b.c");
+	 *
+	**/
 	Mobilebone.getFunction = function(keys) {
 		if (typeof keys != "string") return;
 		// eg. 'globalObject.functionName'
@@ -314,7 +409,21 @@
 		}
 		return fun;
 	};
-	
+		
+	/**
+	 * For ajax request to get HTML or JSON. 
+	 
+	 * @params  trigger_or_options        - Necessary  
+	            1. dom-object. or~
+				2. object.  
+	 * @returns undefined
+	 * @example Mobilebone.ajax(document.querySelector("a"));
+	            Mobilebone.ajax({
+				  url: 'xxx.html',
+				  success: function() {}
+		    	});
+	 *
+	**/
 	Mobilebone.ajax = function(trigger_or_options) {
 		if (!trigger_or_options) return;
 		
@@ -389,7 +498,7 @@
 			var response = null;
 			
 			if (xhr.status == 200) {
-				if (params.dataType == "json") {
+				if (params.dataType == "json" || params.dataType == "JSON") {
 					try {
 						response = JSON.parse(xhr.response);
 						params.response = response;
@@ -435,6 +544,17 @@
 		xhr.send(null);
 	};
 	
+	
+	/**
+	 * Sometime we don't know direction of transition. Such as browser history change, or data-role="auto".
+	   In this case, we ensure the direction(back or prev) by the sorts of two pages(into or out)
+	 
+	 * @params  page_in  dom-object      - Necessary  
+	            page_out  dom-object      - Optional 
+				
+	 * @returns boolean
+	 *
+	**/
 	Mobilebone.isBack = function(page_in, page_out) {
 		// back or forword, according to the order of two pages
 		var index_in = -1, index_out = -1;
@@ -454,10 +574,33 @@
 		return index_in < index_out;
 	};
 	
+	/**
+	 * If dataType of ajax is 'json', we can't convert json-data to page-element. 
+	   So, we export a function names 'jsonHandle' to handle json-data.
+	 * Attention, it's a global interface. If your project has many json call, you should use JSON itself to make a distinction.
+	   For example, every JSON include the only json-id:
+	   {
+		  "id": "homePage" ,
+		  "data": []  
+	   }
+	   different with
+	   {
+		  "id": "listPage" ,
+		  "data": []  
+	   }
+	 *
+	 * @params  json    - Necessary 		
+	 * @returns dom-object|string
+	 *
+	**/
 	Mobilebone.jsonHandle = function(json) {
 		return '<p style="text-align:center;">主人，如果你看到我了，说明JSON解析函数未定义！</p>';
 	},
 	
+	/**
+	 * Initialization. Load page according to location.hash. And bind link-catch events.
+	 *
+	**/
 	Mobilebone.init = function() {
 		var hash = location.hash, ele_in = hash && document.querySelector(hash);
 		if (hash == "") {
@@ -476,10 +619,17 @@
 			this.transition(ele_in);	
 		}	
 		
-		this.captureLink == true && document.addEventListener("tap", this.handleTapEvent);	
+		var eventName = "click";
+		if (root.$ && root.$.fn && root.$.fn.tap) eventName = "tap"; 
+		if (this.captureLink == true) {
+			document.addEventListener(eventName, this.handleTapEvent);	
+		}
 	};
 	
-	// if 'a' element has href, slide auto when tapping~
+	/**
+	 * If 'a' element has href, slide auto when tapping~
+	 *
+	**/
 	Mobilebone.handleTapEvent = function(event) {
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
@@ -547,13 +697,13 @@
 				Mobilebone.ajax(target);
 			}
 			event.preventDefault();	
-		} else {
-			// console.log('pass thought');
 		}
 	};
 	
 	
-	// some prototype extend methods
+	/**
+	 * prototype extend method: get parent element by tagName
+	**/
 	Element.prototype.getParentElementByTag = function(tag) {
 		if (!tag) return null;
 		var element = null, parent = this;
@@ -570,7 +720,10 @@
 		};
 		popup();
 		return element;
-	};	
+	};
+	/**
+	 * prototype extend method: convert query string to key-value object
+	**/
 	String.prototype.queryToObject = function() {
 		var obj = {};
 		this.split("&").forEach(function(part) {
@@ -582,13 +735,18 @@
 		return obj;
 	};
 	
-	
+	/**
+	 * auto init
+	**/
 	window.addEventListener("DOMContentLoaded", function() {
 		if (Mobilebone.autoInit == true) {
 			Mobilebone.init();
 		}
 	});
 	
+	/**
+	 * page change when history change
+	**/
 	if (supportHistory) {
 		window.addEventListener("popstate", function() {
 			var hash = location.hash.replace("#", "");
@@ -607,130 +765,6 @@
 			}
 		});
 	}
-	
-	// tap events
-	// https://github.com/pukhalski/tap
-	var Tap = {};
-
-	var utils = {};
-
-	utils.attachEvent = function( element, eventName, callback ) {
-		return element.addEventListener( eventName, callback, false );
-	};
-
-	utils.fireFakeEvent = function( e, eventName ) {
-		return e.target.dispatchEvent( utils.createEvent( eventName ) );
-	};
-
-	utils.createEvent = function( name ) {
-		var evnt = window.document.createEvent( 'HTMLEvents' );
-		evnt.initEvent( name, true, true );
-		evnt.eventName = name;
-
-		return evnt;
-	};
-
-	utils.getRealEvent = function( e ) {
-		return e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length ? e.originalEvent.touches[ 0 ] : e;
-	};
-
-	var eventMatrix = [{
-		// Touchable devices
-		test: ( 'propertyIsEnumerable' in window || 'hasOwnProperty' in document ) && ( window.propertyIsEnumerable( 'ontouchstart' ) || "ontouchstart" in document ),
-		events: {
-			start: 'touchstart',
-			move: 'touchmove',
-			end: 'touchend'
-		}
-	}, {
-		// IE10
-		test: window.navigator.msPointerEnabled,
-		events: {
-			start: 'MSPointerDown',
-			move: 'MSPointerMove',
-			end: 'MSPointerUp'
-		}
-	}, {
-		// Modern device agnostic web
-		test: window.navigator.pointerEnabled,
-		events: {
-			start: 'pointerdown',
-			move: 'pointermove',
-			end: 'pointerup'
-		}
-	}];
-
-	Tap.options = {
-		eventName: 'tap',
-		fingerMaxOffset: 11
-	};
-
-	var attachDeviceEvent, init, handlers, deviceEvents,
-		coords = {};
-
-	attachDeviceEvent = function( eventName ) {
-		return utils.attachEvent( document.body, deviceEvents[ eventName ], handlers[ eventName ] );
-	};
-
-	handlers = {
-		start: function( e ) {
-			e = utils.getRealEvent( e );
-			coords.start = [ e.layerX, e.pageY ];
-			coords.offset = [ 0, 0 ];
-		},
-
-		move: function( e ) {
-			if (!coords['start'] && !coords['move']) return false;
-			
-			e = utils.getRealEvent( e );
-
-			coords.move = [ e.pageX, e.pageY ];
-			coords.offset = [
-				Math.abs( coords.move[ 0 ] - coords.start[ 0 ] ),
-				Math.abs( coords.move[ 1 ] - coords.start[ 1 ] )
-			];
-		},
-
-		end: function( e ) {
-			e = utils.getRealEvent( e );
-
-			if ( coords.offset[ 0 ] < Tap.options.fingerMaxOffset && coords.offset[ 1 ] < Tap.options.fingerMaxOffset && !utils.fireFakeEvent( e, Tap.options.eventName ) ) {
-				e.preventDefault();
-			}
-
-			coords = {};
-		},
-
-		click: function( e ) {
-			if ( !utils.fireFakeEvent( e, Tap.options.eventName ) ) {
-				return e.preventDefault();
-			}
-		}
-	};
-
-	init = function() {
-		var i = eventMatrix.length;
-
-		while ( i-- ) {
-			if ( eventMatrix[ i ].test ) {
-				deviceEvents = eventMatrix[ i ].events;
-
-				attachDeviceEvent( 'start' );
-				attachDeviceEvent( 'move' );
-				attachDeviceEvent( 'end' );
-
-				return false;
-			}
-		}
-		
-
-		return utils.attachEvent( document.body, 'click', handlers[ 'click' ] );
-	};
-
-	utils.attachEvent( root, 'load', init );
-
-	root.Tap = Tap;
-	
 	
 	return Mobilebone;
 });

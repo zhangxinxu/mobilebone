@@ -13,6 +13,7 @@ html, body {
 	height: 100%;
     -webkit-user-select: none;
     user-select: none;
+	-ms-touch-action: none;
 	overflow: hidden;
 }
 

@@ -84,6 +84,9 @@ var render = function(page_in, page_out, json) {
 			model: findModel					   
 		});
 	};
+	xhr.onerror = function() {
+		page_in.innerHTML = "<p>请求异常！</p>"
+	}
 	xhr.send(null);	
 };
 </script>
