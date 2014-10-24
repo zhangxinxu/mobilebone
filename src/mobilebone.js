@@ -200,19 +200,19 @@
 			}
 			
 			// do callback when animation start/end
-			var isWebkit = typeof document.webkitHidden != "undefined";
+			var isWebkit = 'WebkitAppearance' in document.documentElement.style || typeof document.webkitHidden != "undefined";
 			["animationstart", "animationend"].forEach(function(animationkey, index) {
 				var animition = params_in[animationkey], webkitkey = "webkit" + animationkey.replace(/^a|s|e/g, function(matchs) {
 					return matchs.toUpperCase();
 				});
-				
 				if (!store[pageid]) {
+					var animateEventName = isWebkit? webkitkey: animationkey;
 					if (typeof animition == "string" && params_in.root[animition]) {
-						pageInto.addEventListener(isWebkit? webkitkey: animationkey, function() {
+						pageInto.addEventListener(animateEventName, function() {
 							params_in.root[animition](this, this.classList.contains("in")? "into": "out");
 						});
 					} else if (typeof animition == "function") {
-						pageInto.addEventListener(isWebkit? webkitkey: animationkey, function() {
+						pageInto.addEventListener(animateEventName, function() {
 							animition(this, this.classList.contains("in")? "into": "out");	
 						});
 					}	
