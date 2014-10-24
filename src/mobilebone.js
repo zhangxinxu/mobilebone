@@ -133,6 +133,8 @@
 			animationend: this.animationend,
 			callback: this.callback
 		}, params = function(element) {
+			if (!element || !element.getAttribute) return {};
+			
 			var _params = {}, _dataparams = (element.getAttribute("data-params") || '').queryToObject();
 			
 			// rules as follow:
@@ -148,19 +150,19 @@
 			return _params;
 		};
 		
+		// get params of each 
+		var params_out = params(pageOut), params_in = params(pageInto);
+		
 		if (pageOut != null && pageOut.classList) {
-			var params_out = params(pageOut);
 			// do transition
 			pageOut.classList.add("out");
 			pageOut.classList.add(params_out.form);
 			pageOut.classList.remove("in");
 			// if reverse direction
-			pageOut.classList[back? "add": "remove"]("back");
+			pageOut.classList[back? "add": "remove"]("reverse");
 			
 		}
-		if (pageInto != null && pageInto.classList) {
-			var params_in = params(pageInto);
-			
+		if (pageInto != null && pageInto.classList) {			
 			// for title change
 			var title = params_in.title, header = document.querySelector("h1");		
 			// do title change	
@@ -185,7 +187,7 @@
 			pageInto.classList.add("in");
 			pageOut && pageInto.classList.add(params_in.form);
 			// if reverse direction
-			pageInto.classList[back? "add": "remove"]("back");
+			pageInto.classList[back? "add": "remove"]("reverse");
 			
 			// do callback when come in first time
 			var onpagefirstinto = params_in.onpagefirstinto;

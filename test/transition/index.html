@@ -7,15 +7,22 @@
 <link rel="stylesheet" href="../../src/mobilebone.css">
 <link rel="stylesheet" href="../test.css">
 <link rel="stylesheet" href="animate.css">
+<style>
+.custome.in {
+	-webkit-animation: fadein .35s .25s both;
+	animation: fadein .35s .25s both;
+}
+</style>
 </head>
 
-<body>
-<div id="pageHome" class="page out" data-form="slideup">
+<body class="turn-flip">
+<div id="pageHome" class="page out" data-form="custome">
     <ul>
         <li><a href="#page1">页面1 - fade</a></li>
         <li><a href="#page2">页面2 - flip</a></li>
         <li><a href="#page3">页面3 - turn</a></li>
         <li><a href="#page4">页面4 - flow</a></li>
+        <li><a href="#page5">页面5 - slideup</a></li>
     </ul>
     <ul>
         <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
@@ -34,8 +41,12 @@
     <p>翻页效果</p>
 </div>
 <div id="page4" class="page out" data-form="flow">
-    <a href="#pageHome" data-rel="back">&laquo;返回3</a>
+    <a href="#pageHome" data-rel="back">&laquo;返回4</a>
     <p>流入流出效果</p>
+</div>
+<div id="page5" class="page out" data-form="slideup">
+    <a href="#pageHome" data-rel="back">&laquo;返回5</a>
+    <p>上移淡出效果</p>
 </div>
 
 <script src="../../src/mobilebone.js"></script>

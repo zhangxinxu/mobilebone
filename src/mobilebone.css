@@ -8,23 +8,20 @@
 a, img {
     -webkit-touch-callout: none;
 }
-
-html, body {
-	height: 100%;
-    -webkit-user-select: none;
+body {
+	margin: 0;
+	-webkit-user-select: none;
     user-select: none;
 	-ms-touch-action: none;
-	overflow: hidden;
 }
 
-body { margin: 0; }
-
-.page, .mask {
+/* construction */
+html, body, .page {
 	height: 100%; width: 100%;
 	overflow: hidden;
-	position: absolute;
 }
 .page {
+	position: absolute;
 	-webkit-animation: .35s ease-in-out;
 	animation: .35s ease-in-out;
 }
@@ -32,6 +29,42 @@ body { margin: 0; }
 	-webkit-transform: translateX(-100%);
 	transform: translateX(-100%);
 }
+.page.in {
+	-webkit-transform: translateX(0);
+	transform: translateX(0);
+}
+
+
+/* mask layer when ajax sending... */
+.mask {
+	height: 100%; width: 100%;
+	background-color: rgba(255,255,255,.35);
+	overflow: hidden;
+	position: absolute;
+}
+.loading { /* more info: http://www.zhangxinxu.com/wordpress/?p=3357 */
+    width: 3px; height:3px;
+    border-radius: 100%;                      
+    box-shadow: 0 -10px 0 1px #333,           /* top, 1px expand */
+                10px 0px #333,                /* right */    
+                0 10px #333,                  /* bottom */
+                -10px 0 #333,                 /* left */
+                              
+                -7px -7px 0 .5px #333,        /* left-top, 0.5px expand */
+                7px -7px 0 1.5px #333,        /* right-top, 1.5px expand */                    
+                7px 7px #333,                 /* right-bottom */
+                -7px 7px #333;                /* left-bottom */
+	-webkit-animation: loading 1s step-start infinite;
+	animation: loading 1s step-start infinite; 
+}
+.mask > .loading {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	margin: auto;
+}
+
+
+/* Default animation - slide, you can visit '/test/transition/aniamte.css' to get more styles of animation */
 .slide.in {
 	-webkit-animation-name: slideinfromright;
 	animation-name: slideinfromright;
@@ -40,41 +73,15 @@ body { margin: 0; }
 	-webkit-animation-name: slideouttoleft;
 	animation-name: slideouttoleft;
 }
-.slide.back.out {
+.slide.reverse.out {
 	-webkit-animation-name: slideouttoright;
 	animation-name: slideouttoright;
 }
-.slide.back.in {
+.slide.reverse.in {
 	-webkit-animation-name: slideinfromleft;
 	animation-name: slideinfromleft;
 }
 
-.loading { /* detail: http://www.zhangxinxu.com/wordpress/?p=3357 */
-    width: 3px; height:3px;
-    border-radius: 100%;                      /* 圆角 */
-    box-shadow: 0 -10px 0 1px #333,           /* 上, 1px 扩展 */
-                10px 0px #333,                /* 右 */    
-                0 10px #333,                  /* 下 */
-                -10px 0 #333,                 /* 左 */
-                              
-                -7px -7px 0 .5px #333,        /* 左上, 0.5px扩展 */
-                7px -7px 0 1.5px #333,        /* 右上, 1.5px扩展 */                    
-                7px 7px #333,                 /* 右下 */
-                -7px 7px #333;                /* 左下 */
-	-webkit-animation: loading 1s step-start infinite;
-	animation: loading 1s step-start infinite; 
-}
-
-.mask {
-	background-color: rgba(255,255,255,.35);
-}
-.mask > .loading {
-	position: absolute;
-	top: 0; right: 0; bottom: 0; left: 0;
-	margin: auto;
-}
-
-/* animation */
 @-webkit-keyframes slideinfromright {
     from { -webkit-transform: translateX(100%); }
     to { -webkit-transform: translateX(0); }
@@ -108,15 +115,7 @@ body { margin: 0; }
     to { transform: translateX(100%); }
 }
 
-@-webkit-keyframes spin {
-    from { -webkit-transform: rotate(0deg); }
-      to { -webkit-transform: rotate(360deg); }
-}
-@keyframes spin {
-    from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-}
-
+/* chrysanthemum loading effect */
 @-webkit-keyframes loading {
      0% { -webkit-transform: rotate(0deg); }
 	 12% { -webkit-transform: rotate(45deg); }
