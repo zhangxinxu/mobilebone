@@ -455,9 +455,7 @@
 /* flow transition */
 .flow {
 	-webkit-transform-origin: 50% 30%;
-	-webkit-box-shadow: 0 0 20px rgba(0,0,0,.4);
 	transform-origin: 50% 30%;	
-	box-shadow: 0 0 20px rgba(0,0,0,.4);
 }
 .flow.out {
 	-webkit-transform: translateX(-100%) scale(.7);
