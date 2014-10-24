@@ -4,9 +4,9 @@ Single Page Switching bone for mobile web APP, Hybird APP, Phonegap, ...
 
 Why need this?
 -----------------
-Better user experience for scene switching as native APP. 
-1. Phonegap that to native APP is a single index.html, We need the same switch effects as native.
-2. Hybird app, as you know, mixed web-app and native-app. So, it' better that they have some switching experience.
+Better user experience for scene switching as native APP. <br>
+1. Phonegap that to native APP is a single index.html, We need the same switch effects as native.<br>
+2. Hybird app, as you know, mixed web-app and native-app. So, it' better that they have some switching experience.<br>
 3. Even no refresh interaction is not something bad for mobile APP.
 
 How to use?
@@ -46,9 +46,9 @@ mobilebone.js
 
 为何需要？
 -------------
-类原生APP的过场体验，适用于这些场景：
-1. Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。
-2. Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。
+类原生APP的过场体验，适用于这些场景：<br>
+1. Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。<br>
+2. Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。<br>
 3. 就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选项策略。
 
 

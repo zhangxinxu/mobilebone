@@ -14,7 +14,7 @@
 <body>
 <div id="homePage" class="page out" data-title="backbone模板框架结合示例">
     <ul>
-        <li><a href="data.json" data-datatype="json">大列表展示</a></li>
+        <li><a href="data.html" data-datatype="json">大列表展示</a></li>
     </ul>
     <ul>
         <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
@@ -46,7 +46,7 @@ var render = function(page_in, page_out, json) {
 	
 	// 获得模板内容
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", key + ".template");
+	xhr.open("GET", key + ".html");
 	xhr.onload = function() {	
 		var FindView = Backbone.View.extend({
 			initialize: function() {

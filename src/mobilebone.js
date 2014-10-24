@@ -224,7 +224,7 @@
 			}
 			if (supportHistory && this.pushStateEnabled && options.history !== false && url_push) {
 				// if only pageIn, use 'replaceState'
-				history[pageOut? "pushState": "replaceState"](null, document.title, url_push);
+				history[pageOut? "pushState": "replaceState"](null, document.title, url_push.replace(/^#/, "#&"));
 			}
 
 			// store page-id, just once
@@ -599,13 +599,14 @@
 	
 	/**
 	 * Initialization. Load page according to location.hash. And bind link-catch events.
-	 *
 	**/
 	Mobilebone.init = function() {
-		var hash = location.hash, ele_in = hash && document.querySelector(hash);
-		if (hash == "") {
+		var hash = location.hash.replace("#&", "#"), ele_in = null;
+		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
-		} else if (ele_in == null || ele_in.classList.contains(this.classPage) == false/* not page */) {
+		} else if ((ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
+			this.transition(ele_in);	
+		} else {
 			// as a ajax
 			this.ajax({
 				url: hash.replace("#", ""),
@@ -615,12 +616,11 @@
 					Mobilebone.transition(ele_in);
 				}
 			});	
-		} else {
-			this.transition(ele_in);	
-		}	
+		}
 		
-		var eventName = "click";
-		if (root.$ && root.$.fn && root.$.fn.tap) eventName = "tap"; 
+		// Initialization link-catch events.
+		var eventName = "click", $ = root.$ || root.jQuery || root.Zepto;
+		if ($ && $.fn && $.fn.tap) eventName = "tap"; 
 		if (this.captureLink == true) {
 			document.addEventListener(eventName, this.handleTapEvent);	
 		}
@@ -628,7 +628,6 @@
 	
 	/**
 	 * If 'a' element has href, slide auto when tapping~
-	 *
 	**/
 	Mobilebone.handleTapEvent = function(event) {
 		// get target and href
@@ -749,7 +748,7 @@
 	**/
 	if (supportHistory) {
 		window.addEventListener("popstate", function() {
-			var hash = location.hash.replace("#", "");
+			var hash = location.hash.replace("#&", "").replace("#", "");
 			if (hash == "") return;
 			
 			var page_in = store[hash] || document.querySelector(location.hash), page_out = document.querySelector(".in." + Mobilebone.classPage);
