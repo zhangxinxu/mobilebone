@@ -56,13 +56,11 @@ html, body, .page {
                 -7px 7px #333;                /* left-bottom */
 	-webkit-animation: loading 1s step-start infinite;
 	animation: loading 1s step-start infinite; 
-}
-.mask > .loading {
+	/*center*/
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;
 	margin: auto;
 }
-
 
 /* Default animation - slide, you can visit '/test/transition/aniamte.css' to get more styles of animation */
 .slide.in {

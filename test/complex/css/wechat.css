@@ -54,6 +54,7 @@ ul,ol{ margin: 0; list-style-type: none; }
 .wechat-h-time > time { font-size: 12px; color: #b9b9b9; float: right; }
 .wechat-h-time .business { color: #54688D; }
 .wechat-h-time + p { margin: 0 20px 0 0; font-size: 14px; color: #a8a8a8; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.wechat-detail { position: relative; z-index: 1; }
 
 .contact-group { padding-left: 10px; padding-right: 10px; background-color: #fff; }
 .contact-list { height: 36px; padding-top: 7.5px; padding-bottom: 8px; border-bottom: 1px solid #D8D8D8; }

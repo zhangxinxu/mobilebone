@@ -36,8 +36,8 @@ Mobilebone.callback = function(pageinto, pageout) {
 			ele_link_out && ele_link_out.classList.remove("active");
 			
 			if (ele_header_out != null) {
-				header.className = "header slide back in";	
-				footer.className = "footer slide back in";		
+				header.className = "header slide reverse in";	
+				footer.className = "footer slide reverse in";		
 			}
 		} else if (pageout && ele_header_out == null) {
 			// include header, slide-out fixed header
