@@ -39,7 +39,6 @@ html, body, .page {
 .mask {
 	height: 100%; width: 100%;
 	background-color: rgba(255,255,255,.35);
-	overflow: hidden;
 	position: absolute;
 }
 .loading { /* more info: http://www.zhangxinxu.com/wordpress/?p=3357 */
