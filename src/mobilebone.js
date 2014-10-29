@@ -28,6 +28,8 @@
 		// When running inside a FF iframe, calling replaceState causes an error
 		!( window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window ) &&
 		( window.navigator.userAgent.search(/CriOS/) === -1 );
+		
+	Mobilebone.support = supportHistory;
 	
 	if (supportHistory == false) return Mobilebone;
 	
