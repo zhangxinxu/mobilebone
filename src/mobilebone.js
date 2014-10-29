@@ -29,6 +29,8 @@
 		!( window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window ) &&
 		( window.navigator.userAgent.search(/CriOS/) === -1 );
 	
+	if (supportHistory == false) return Mobilebone;
+	
 	// similar to $().prop() method, but with a diff rule
 	var prop = function(element, attribute) {
 		var attr = element.getAttribute(attribute);
@@ -84,7 +86,12 @@
 	 * @type string
 	**/
 	Mobilebone.classPage = "page";
-	
+	/**
+	 * className for mark mask element
+	 *
+	 * @type string
+	**/
+	Mobilebone.classMask = "mask";
 	/**
 	 * Whether url changes when history changes
 	 * If this value is false, the url will be no change.
@@ -443,10 +450,10 @@
 			complete: function() {}	
 		};
 		
-		var params = {};
+		var params = {}, ele_mask = null;
 		
 		// if 'trigger_or_options' is a element, we should turn it to options-object
-		var params_from_trigger = {};
+		var params_from_trigger = {}, attr_mask;
 		if (trigger_or_options.nodeType == 1) {
 			params_from_trigger = (trigger_or_options.getAttribute("data-params") || "").queryToObject();
 			// get params
@@ -460,11 +467,16 @@
 						params[key] = defaults[key];
 					}
 				}
-				params.target = trigger_or_options;
 			}
 			
 			// the ajax url is special, we need special treatment
-			params.url = this.getCleanUrl(trigger_or_options, params.url);			
+			params.url = this.getCleanUrl(trigger_or_options, params.url);	
+			
+			// get mask element
+			attr_mask = trigger_or_options.getAttribute("data-mask");
+			if (attr_mask == "true" || attr_mask == "") {
+				ele_mask = trigger_or_options.querySelector("." + this.classMask);
+			}
 		}
 		// if 'trigger_or_options' is a object
 		else if (trigger_or_options.url) {
@@ -479,16 +491,20 @@
 		}
 		
 		// do ajax
-		// show loading
-		var ele_mask = document.querySelector("#ajaxMask");
-		if (ele_mask) {
-			ele_mask.style.display = "block";	
-		} else {
-			document.body.insertAdjacentHTML('beforeend', '\
-				<div id="ajaxMask" class="mask"><i class="loading"></i></div>\
-			');	
-			ele_mask = document.querySelector("#ajaxMask");
+		// get mask and loading element
+		ele_mask = ele_mask || document.querySelector("body > ." + this.classMask);
+		if (ele_mask == null) {
+			ele_mask = document.createElement("div");
+			ele_mask.className = this.classMask;
+			ele_mask.innerHTML = '<i class="loading"></i>';
+			if (typeof attr_mask == "string") {
+				trigger_or_options.appendChild(ele_mask);
+			} else {
+				document.body.appendChild(ele_mask);
+			}
 		}
+		// show loading
+		ele_mask.style.visibility = "visible";
 		
 		// ajax request
 		var xhr = new XMLHttpRequest();		
@@ -534,15 +550,23 @@
 			params.complete.call(params, xhr, xhr.status);
 			
 			// hide loading
-			ele_mask.style.display = "none";
+			ele_mask.style.visibility = "hidden";
 		}
 		
 		xhr.onerror = function(e) {
-			params.message = "Illegal request!";
+			params.message = "Illegal request address or an unexpected network error!";
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
-			ele_mask.style.display = "none";
+			ele_mask.style.visibility = "hidden";
 		}
+		
+		xhr.ontimeout = function() {
+			params.message = "The request timeout!";
+			params.error.call(params, xhr, xhr.status);
+			// hide loading
+			ele_mask.style.visibility = "hidden";
+		};
+		
 		xhr.send(null);
 	};
 	
@@ -596,17 +620,17 @@
 	 *
 	**/
 	Mobilebone.jsonHandle = function(json) {
-		return '<p style="text-align:center;">主人，如果你看到我了，说明JSON解析函数未定义！</p>';
+		return '<p style="text-align:center;">Dear master, if you see me, show that JSON parsing function is undefined!</p>';
 	},
 	
 	/**
 	 * Initialization. Load page according to location.hash. And bind link-catch events.
 	**/
-	Mobilebone.init = function() {
+	Mobilebone.init = function() {		
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
-		} else if ((ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
+		} else if (/&/.test(hash) == false && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
 			this.transition(ele_in);	
 		} else {
 			// as a ajax
@@ -634,7 +658,7 @@
 	Mobilebone.handleTapEvent = function(event) {
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
-		
+
 		if (!href && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
@@ -642,6 +666,10 @@
 		var self_page = document.querySelector(".in." + Mobilebone.classPage);
 		
 		if (self_page == null || !target) return;
+		
+		// if mask element exist and displaying, prevent double trigger
+		var ele_mask = target.getElementsByClassName(Mobilebone.classMask)[0];
+		if (ele_mask && ele_mask.style.visibility != "hidden") { return; }
 		
 		// if captureLink
 		var capture = (Mobilebone.captureLink == true);
