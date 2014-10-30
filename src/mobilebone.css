@@ -21,7 +21,7 @@ html, body, .page {
 	overflow: hidden;
 }
 .page {
-	position: absolute;
+	position: absolute; left: 0; top: 0;
 	-webkit-animation: .35s ease-in-out;
 	animation: .35s ease-in-out;
 }
