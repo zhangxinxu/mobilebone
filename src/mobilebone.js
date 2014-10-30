@@ -487,7 +487,9 @@
 		
 		// do ajax
 		// get mask and loading element
-		ele_mask = ele_mask || document.querySelector("body > ." + this.classMask);
+		if (typeof attr_mask != "string") {
+			ele_mask = document.querySelector("body > ." + this.classMask);
+		}
 		if (ele_mask == null) {
 			ele_mask = document.createElement("div");
 			ele_mask.className = this.classMask;
