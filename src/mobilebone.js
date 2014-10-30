@@ -60,7 +60,7 @@
 	 * If the value set to false, jump links in a refresh form(not slide)
 	 * In most cases, you do not need to care about this parameter. 
 	   Except some special pages that should refresh all links, as test/index.html show.
-	   However, if your only want several links refesh, you can use data-ajax="false" or data-role="external"
+	   However, if your only want several links refesh, you can use data-ajax="false" or data-rel="external"
 	 *
 	 * @type boolean
 	**/
@@ -574,7 +574,7 @@
 	
 	
 	/**
-	 * Sometime we don't know direction of transition. Such as browser history change, or data-role="auto".
+	 * Sometime we don't know direction of transition. Such as browser history change, or data-rel="auto".
 	   In this case, we ensure the direction(back or prev) by the sorts of two pages(into or out)
 	 
 	 * @params  page_in  dom-object      - Necessary  
@@ -671,7 +671,10 @@
 		
 		// if mask element exist and displaying, prevent double trigger
 		var ele_mask = target.getElementsByClassName(Mobilebone.classMask)[0];
-		if (ele_mask && ele_mask.style.visibility != "hidden") { return; }
+		if (ele_mask && ele_mask.style.visibility != "hidden") {
+			event.preventDefault();
+			return false;
+		}
 		
 		// if captureLink
 		var capture = (Mobilebone.captureLink == true);
