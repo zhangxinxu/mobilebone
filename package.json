@@ -1,7 +1,12 @@
 {
   "name": "mobilebone",
+<<<<<<< HEAD
   "version": "1.1.0",
   "description": "Bone main for mobile web APP with a sigle page mode.",
+=======
+  "version": "1.0.0",
+  "description": "Bone for mobile web APP with a sigle page mode.",
+>>>>>>> origin/develop
   "main": "src/mobilebone.js",
   "directories": {
     "test": "test"
