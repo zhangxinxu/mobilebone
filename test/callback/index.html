@@ -33,7 +33,7 @@ p { font-size: 14px; color: #666; }
     <a href="#pageHome" data-rel="back">&laquo;返回2</a>
     <p>该页面首次载入，按钮会被居中</p>
 </div>
-<div id="page3" class="page out" data-animationend="random_bgcolor">
+<div id="page3" class="page out" data-root="callback_page.test_obj" data-animationend="random_bgcolor">
     <a href="#pageHome" data-rel="back">&laquo;返回3</a>
     <p class="text-shadow">预期效果为每次动画载入随机灰度背景色</p> 
 </div>
@@ -57,17 +57,20 @@ FUN = {
 	},
 	end: function(page, into_or_out) {
 		page.querySelector("p").innerHTML += "页面"+ this.status[into_or_out] +"动画完成，时间是：" + this.time() + "<br>";
-	},
-	random_bgcolor: function(page, into_or_out) {
-		if (into_or_out == "into") {
-			page.style.backgroundColor = "rgba(0,0,0,."+ Math.round(Math.random() * 10) +")";
-		}
 	}
 };
 
 window.callback_page = function(page) {
 	// 按钮居中
 	page.style.textAlign = "center";
+};
+
+callback_page.test_obj = {
+	random_bgcolor: function(page, into_or_out) {
+		if (into_or_out == "into") {
+			page.style.backgroundColor = "rgba(0,0,0,."+ Math.round(Math.random() * 10) +")";
+		}
+	}
 };
 
 Mobilebone.rootTransition = FUN;

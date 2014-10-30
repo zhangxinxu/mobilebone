@@ -33,19 +33,12 @@
 	
 	if (supportHistory == false) return Mobilebone;
 	
-	// similar to $().prop() method, but with a diff rule
-	var prop = function(element, attribute) {
-		var attr = element.getAttribute(attribute);
-		if (attr == null || attr == "false" || attr == "0") return false;
-		return true;
-	};
-	
 	/**
 	 * Current version of the library. Keep in sync with `package.json`.
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.0.0';
+	Mobilebone.VERSION = '1.1.0';
 	
 	/**
 	 * Whether bind events when dom ready
@@ -113,9 +106,9 @@
 	 * @returns undefined
 	 * @example Mobilebone.transition(element);
 	            Mobilebone.transition(element1, element2);
-				Mobilebone.transition(element1, element2, true);
-				Mobilebone.transition(element1, element2, { id: "only" });
-				Mobilebone.transition(element1, element2, true, { id: "only" });
+		        Mobilebone.transition(element1, element2, true);
+		        Mobilebone.transition(element1, element2, { id: "only" });
+		        Mobilebone.transition(element1, element2, true, { id: "only" });
 	**/
 	Mobilebone.transition = function(pageInto, pageOut, back, options) {
 		if (arguments.length == 0) return;
@@ -153,7 +146,7 @@
 			});
 			
 			if (typeof _params.root == "string") {
-				_params.root = root[_params.root];
+				_params.root = Mobilebone.getFunction(_params.root);
 			}
 			
 			return _params;
@@ -261,9 +254,9 @@
 	 * @returns string
 	 * @example Mobilebone.getCleanUrl(elementOfA);
 	            Mobilebone.getCleanUrl(elementOfA, '', "a=1&b=2");
-				Mobilebone.getCleanUrl(null, "xxx.html");
-				Mobilebone.getCleanUrl(null, "xxx.html?a=1&b=2");
-				Mobilebone.getCleanUrl(null, "xxx.html", "a=1&b=2");
+		        Mobilebone.getCleanUrl(null, "xxx.html");
+		        Mobilebone.getCleanUrl(null, "xxx.html?a=1&b=2");
+		        Mobilebone.getCleanUrl(null, "xxx.html", "a=1&b=2");
 	**/
 	Mobilebone.getCleanUrl = function(trigger, url, params) {
 		var href = "", formdata = "", clean_url = "";
@@ -341,11 +334,11 @@
 	 * @returns undefined
 	 * @example Mobilebone.createPage(pageDom);
 	            Mobilebone.createPage(generalDom);
-				Mobilebone.createPage('<div class="page out">xxx</div>');
-				Mobilebone.createPage('<p>xxx</p>');
-				Mobilebone.createPage(pageDom, triggerLink);
-				Mobilebone.createPage(pageDom, { reponse: '<div...>' });
-				Mobilebone.createPage(pageDom, triggerLink, { reponse: '<div...>' });
+		        Mobilebone.createPage('<div class="page out">xxx</div>');
+		        Mobilebone.createPage('<p>xxx</p>');
+		        Mobilebone.createPage(pageDom, triggerLink);
+		        Mobilebone.createPage(pageDom, { reponse: '<div...>' });
+		        Mobilebone.createPage(pageDom, triggerLink, { reponse: '<div...>' });
 	 *
 	**/
 	Mobilebone.createPage = function(dom_or_html, element_or_options, options) {
@@ -406,7 +399,7 @@
 	 * @returns function
 	            undefined keys is not string
 				window    keys unfinded
-	 * @example Mobilebone.createPage("a.b.c");
+	 * @example Mobilebone.getFunction("a.b.c");
 	 *
 	**/
 	Mobilebone.getFunction = function(keys) {
@@ -510,7 +503,7 @@
 		
 		// ajax request
 		var xhr = new XMLHttpRequest();		
-		xhr.open("GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now());
+		xhr.open("GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
 		xhr.timeout = params.timeout;
 		
 		xhr.onload = function() {
