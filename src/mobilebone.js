@@ -185,6 +185,8 @@
 			}
 	
 			// do transition
+			pageInto.style.display = "block";
+			pageInto.clientWidth;
 			pageInto.classList.remove("out");
 			pageInto.classList.add("in");
 			pageOut && pageInto.classList.add(params_in.form);
@@ -209,6 +211,12 @@
 				});
 				if (!store[pageid]) {
 					var animateEventName = isWebkit? webkitkey: animationkey;
+					index && pageInto.addEventListener(animateEventName, function() {
+						if (this.classList.contains("in") == false) {
+							this.style.display = "none";
+						}						
+					});
+					
 					if (typeof animition == "string" && params_in.root[animition]) {
 						pageInto.addEventListener(animateEventName, function() {
 							params_in.root[animition](this, this.classList.contains("in")? "into": "out");
