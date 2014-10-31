@@ -166,7 +166,9 @@
 		}
 		if (pageInto != null && pageInto.classList) {		
 			// for title change
-			var title = params_in.title, header = document.querySelector("h1");		
+			var title = params_in.title, 
+			    header = document.querySelector("h1"), 
+			    first_page = document.querySelector("." + this.classPage);		
 			// do title change	
 			if (title) {
 				document.title = title;
@@ -174,6 +176,9 @@
 					header.innerHTML = title;
 					header.title = title;
 				}
+			} else if (first_page == pageInto && !pageOut && document.title) {
+				// set data-title for first visibie page
+				pageInto.setAttribute("data-title", document.title);
 			}
 			
 			// delete page with same id
