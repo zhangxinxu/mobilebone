@@ -166,7 +166,9 @@
 		}
 		if (pageInto != null && pageInto.classList) {		
 			// for title change
-			var title = params_in.title, header = document.querySelector("h1");		
+			var title = params_in.title, 
+			    header = document.querySelector("h1"), 
+			    first_page = document.querySelector("." + this.classPage);		
 			// do title change	
 			if (title) {
 				document.title = title;
@@ -174,6 +176,9 @@
 					header.innerHTML = title;
 					header.title = title;
 				}
+			} else if (first_page == pageInto && !pageOut && document.title) {
+				// set data-title for first visibie page
+				pageInto.setAttribute("data-title", document.title);
 			}
 			
 			// delete page with same id
@@ -357,7 +362,8 @@
 		options = options || {};
 		// get current page(will be out) according to 'page_or_child'
 		var current_page = document.querySelector(".in." + this.classPage);
-
+		// get page-title from element_or_options or options
+		var page_title;
 		if (element_or_options) {
 			if (element_or_options.nodeType == 1) {
 				// legal elements
@@ -365,10 +371,12 @@
 					current_page = element_or_options;
 				} else if (element_or_options.href) {
 					current_page = this.getPage(element_or_options);
+					page_title = element_or_options.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
 			} else {
 				response = element_or_options.response || options.response;	
+				page_title = element_or_options.title || options.title;
 			}
 		}
 		
@@ -381,11 +389,19 @@
 		} else {
 			create.appendChild(dom_or_html);
 		}
+		var create_title = create.getElementsByTagName("title")[0];
 		// get the page element
 		if (!(create_page = create.querySelector("." + this.classPage))) {
 			create.className = "page out";
+			if (typeof page_title == "string") create.setAttribute("data-title", page_title);
 			create_page = create;
-		} 
+		} else {
+			if (create_title) {
+				create_page.setAttribute("data-title", create_title.innerText);
+			} else if (typeof page_title == "string") {
+				create_page.setAttribute("data-title", page_title);
+			}
+		}
 		// insert create page as a last-child
 		document.body.appendChild(create_page);
 		
@@ -489,6 +505,8 @@
 			}
 			// get url
 			params.url = this.getCleanUrl(null, params.url, params.data);
+			// here params.title will become page title;
+			params.title = trigger_or_options.title;
 		} else {
 			return;	
 		}
