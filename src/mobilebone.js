@@ -371,6 +371,7 @@
 					current_page = element_or_options;
 				} else if (element_or_options.href) {
 					current_page = this.getPage(element_or_options);
+					page_title = element_or_options.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
 			} else {
@@ -504,6 +505,8 @@
 			}
 			// get url
 			params.url = this.getCleanUrl(null, params.url, params.data);
+			// here params.title will become page title;
+			params.title = trigger_or_options.title;
 		} else {
 			return;	
 		}
