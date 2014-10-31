@@ -9,7 +9,7 @@ ul,ol{ margin: 0; list-style-type: none; }
 .header.out, .footer.out { -webkit-transform: translateX(-100%); transform: translateX(-100%); }
 
 .header { height: 48px; padding: 0 5px; background-color: #21292B; color: #fff; top: 0; z-index: 1; }
-.header > h1 { line-height: 48px; margin: 0 0 0 10px; font-size: 20px; float: left; }
+.header > h1 { line-height: 48px; margin: 0 0 0 10px; font-size: 18px; float: left; }
 .header > a { display: inline-block; width: 48px; height: 48px; background-size: 48px 144px; text-indent: -9em; overflow: hidden; }
 .header > .icon-search, .header > .icon-add { float: right; }
 .header > .icon-back { float: left; position: relative; margin-left: -5px; }
