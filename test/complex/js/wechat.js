@@ -11,9 +11,13 @@ Mobilebone.onpagefirstinto = function(pageinto) {
 	
 	
 	// bind custom scroll events for content
-	new IScroll(pageinto.querySelector(".content"), {
-		preventDefault: false	
+	var weChatScroll = new IScroll(pageinto.querySelector(".content"), {
+		preventDefaultException: {
+			tagName: /^(A|INPUT|TEXTAREA|BUTTON|SELECT)$/
+		}
 	});
+	
+	console.dir(weChatScroll.options);
 };
 
 Mobilebone.callback = function(pageinto, pageout) {
