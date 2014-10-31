@@ -11,7 +11,9 @@ Mobilebone.onpagefirstinto = function(pageinto) {
 	
 	
 	// bind custom scroll events for content
-	new IScroll(pageinto.querySelector(".content"));
+	new IScroll(pageinto.querySelector(".content"), {
+		preventDefault: false	
+	});
 };
 
 Mobilebone.callback = function(pageinto, pageout) {
