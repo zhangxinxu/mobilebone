@@ -111,7 +111,7 @@
 		        Mobilebone.transition(element1, element2, true, { id: "only" });
 	**/
 	Mobilebone.transition = function(pageInto, pageOut, back, options) {
-		if (arguments.length == 0) return;
+		if (arguments.length == 0 || pageInto == pageOut) return;
 		if (arguments.length == 3 && isNaN(back * 1) == true) {
 			options = back;
 			back = false;
@@ -164,7 +164,7 @@
 			pageOut.classList[back? "add": "remove"]("reverse");
 			
 		}
-		if (pageInto != null && pageInto.classList) {			
+		if (pageInto != null && pageInto.classList) {		
 			// for title change
 			var title = params_in.title, header = document.querySelector("h1");		
 			// do title change	
