@@ -16,11 +16,12 @@ body {
 }
 
 /* construction */
-html, body, .page {
-	height: 100%; width: 100%;
+html, body {
+	height: 100%;
 	overflow: hidden;
 }
 .page {
+	height: 100%; width: 100%;
 	position: absolute; left: 0; top: 0;
 	-webkit-animation: .35s ease-in-out;
 	animation: .35s ease-in-out;
