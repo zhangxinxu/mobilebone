@@ -459,8 +459,6 @@
 		var params_from_trigger = {}, attr_mask;
 		if (trigger_or_options.nodeType == 1) {
 			params_from_trigger = (trigger_or_options.getAttribute("data-params") || "").queryToObject();
-			// give title a change
-			defaults.title = false;
 			// get params
 			for (key in defaults) {
 				// data-* > data-params > defaults
@@ -491,8 +489,6 @@
 			}
 			// get url
 			params.url = this.getCleanUrl(null, params.url, params.data);
-			// here params.title will become page title;
-			params.title = trigger_or_options.title;
 		} else {
 			return;	
 		}
