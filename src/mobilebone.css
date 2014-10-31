@@ -11,7 +11,7 @@ a, img {
 body {
 	margin: 0;
 	-webkit-user-select: none;
-    user-select: none;
+	user-select: none;
 	-ms-touch-action: none;
 }
 
@@ -26,6 +26,7 @@ html, body, .page {
 	animation: .35s ease-in-out;
 }
 .page.out {
+	display: none;
 	-webkit-transform: translateX(-100%);
 	transform: translateX(-100%);
 }
@@ -33,7 +34,6 @@ html, body, .page {
 	-webkit-transform: translateX(0);
 	transform: translateX(0);
 }
-
 
 /* mask layer when ajax sending... */
 .mask {
