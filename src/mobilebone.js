@@ -137,7 +137,7 @@
 		}, params = function(element) {
 			if (!element || !element.getAttribute) return {};
 			
-			var _params = {}, _dataparams = (element.getAttribute("data-params") || '').queryToObject();
+			var _params = {}, _dataparams = _queryToObject(element.getAttribute("data-params") || '');
 			
 			// rules as follow:
 			// data-* > data-params > options > defaults	
@@ -474,7 +474,7 @@
 		// if 'trigger_or_options' is a element, we should turn it to options-object
 		var params_from_trigger = {}, attr_mask;
 		if (trigger_or_options.nodeType == 1) {
-			params_from_trigger = (trigger_or_options.getAttribute("data-params") || "").queryToObject();
+			params_from_trigger = _queryToObject(trigger_or_options.getAttribute("data-params") || "");
 			// get params
 			for (key in defaults) {
 				// data-* > data-params > defaults
@@ -777,16 +777,18 @@
 		return element;
 	};
 	/**
-	 * prototype extend method: convert query string to key-value object
+	 * privite method: convert query string to key-value object
 	**/
-	String.prototype.queryToObject = function() {
+	var _queryToObject = function(string) {
 		var obj = {};
-		this.split("&").forEach(function(part) {
-			var arr_part = part.split("=");
-			if (arr_part.length > 1) {
-				obj[arr_part[0]] = part.replace(arr_part[0] + "=", "");
-			}
-		});
+		if (typeof string == "string") {
+			string.split("&").forEach(function(part) {
+				var arr_part = part.split("=");
+				if (arr_part.length > 1) {
+					obj[arr_part[0]] = part.replace(arr_part[0] + "=", "");
+				}
+			});
+		}
 		return obj;
 	};
 	
