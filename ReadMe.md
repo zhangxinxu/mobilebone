@@ -2,9 +2,14 @@ mobilebone.js
 =============
 Single Page Switching bone for mobile web APP, Hybird APP, Phonegap, ...
 
+<pre>git clone git://github.com/zhangxinxu/mobilebone.git</pre>
+
+use <code>npm</code>:
+<pre>npm install mobilebone</pre>
+
 Why need this?
 -----------------
-Better user experience for scene switching as native APP. <br>
+Interaction experience is good enough to compare with the native APP. <br>
 1. Phonegap that to native APP is a single index.html, We need the same switch effects as native.<br>
 2. Hybird app, as you know, mixed web-app and native-app. So, it' better that they have some switching experience.<br>
 3. Even no refresh interaction is not something bad for mobile APP.
