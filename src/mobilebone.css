@@ -45,15 +45,15 @@ html, body, .page {
 .loading { /* more info: http://www.zhangxinxu.com/wordpress/?p=3357 */
     width: 3px; height:3px;
     border-radius: 100%;                      
-    box-shadow: 0 -10px 0 1px #333,           /* top, 1px expand */
-                10px 0px #333,                /* right */    
-                0 10px #333,                  /* bottom */
-                -10px 0 #333,                 /* left */
+    box-shadow: 0 -10px 0 1px currentColor,           /* top, 1px expand */
+                10px 0px currentColor,                /* right */    
+                0 10px currentColor,                  /* bottom */
+                -10px 0 currentColor,                 /* left */
                               
-                -7px -7px 0 .5px #333,        /* left-top, 0.5px expand */
-                7px -7px 0 1.5px #333,        /* right-top, 1.5px expand */                    
-                7px 7px #333,                 /* right-bottom */
-                -7px 7px #333;                /* left-bottom */
+                -7px -7px 0 .5px currentColor,        /* left-top, 0.5px expand */
+                7px -7px 0 1.5px currentColor,        /* right-top, 1.5px expand */                    
+                7px 7px currentColor,                 /* right-bottom */
+                -7px 7px currentColor;                /* left-bottom */
 	-webkit-animation: loading 1s step-start infinite;
 	animation: loading 1s step-start infinite; 
 	/*center*/
