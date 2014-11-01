@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.1';
+	Mobilebone.VERSION = '1.1.3';
 	
 	/**
 	 * Whether bind events when dom ready
