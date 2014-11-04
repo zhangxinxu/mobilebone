@@ -8,13 +8,12 @@ Mobilebone.onpagefirstinto = function(pageinto) {
 		ele_screen_shot.width = window.innerWidth;
 		ele_screen_shot.height = Math.round(ele_screen_shot.width * 2405 / 720);
 	}
-	
-	
+
 	// bind custom scroll events for content
 	var weChatScroll = new IScroll(pageinto.querySelector(".content"), {
 		tap: true
 	});
-	pageinto.addEventListener('tap', Mobilebone.handleTapEvent, false);
+	/Android/i.test(navigator.userAgent) && pageinto.addEventListener('tap', Mobilebone.handleTapEvent, false);
 };
 
 Mobilebone.callback = function(pageinto, pageout) {
