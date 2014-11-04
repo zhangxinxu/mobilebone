@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.3';
+	Mobilebone.VERSION = '1.1.4';
 	
 	/**
 	 * Whether bind events when dom ready
@@ -76,7 +76,14 @@
 	Mobilebone.rootTransition = root;
 	
 	/**
-	 * className for mark page element
+	 * Whether merge(vs cover) global callback and local callback
+	 *
+	 * @type boolean
+	**/
+	Mobilebone.mergeCallback = true;
+	
+	/**
+	 *  for mark page element
 	 *
 	 * @type string
 	**/
@@ -133,6 +140,7 @@
 			onpagefirstinto: this.onpagefirstinto,
 			animationstart: this.animationstart,
 			animationend: this.animationend,
+			fallback: this.fallback,
 			callback: this.callback
 		}, params = function(element) {
 			if (!element || !element.getAttribute) return {};
@@ -141,13 +149,38 @@
 			
 			// rules as follow:
 			// data-* > data-params > options > defaults	
-			["title", "root", "form", "onpagefirstinto", "callback", "animationstart", "animationend"].forEach(function(key) {
+			["title", "root", "form"].forEach(function(key) {
+				
 				_params[key] = element.getAttribute("data-" + key) || _dataparams[key] || options[key] || defaults[key];
 			});
 			
 			if (typeof _params.root == "string") {
 				_params.root = Mobilebone.getFunction(_params.root);
 			}
+			
+			["onpagefirstinto", "callback", "fallback", "animationstart", "animationend"].forEach(function(key) {
+				if (Mobilebone.mergeCallback == true && typeof defaults[key] == "function") {
+					// merge global callback
+					var local_function_key = element.getAttribute("data-" + key) || _dataparams[key];
+					if (typeof _params.root[local_function_key] == "function") {		
+						_params[key] = function() {
+							defaults[key].apply(null, arguments);
+							_params.root[local_function_key].apply(null, arguments);
+						}
+					} else if (typeof options[key] == "function") {
+						_params[key] = function() {
+							defaults[key].apply(null, arguments);
+							options[key].apply(null, arguments);
+						}
+					} else {
+						_params[key] = defaults[key];
+					}
+				} else {
+					// replace global callback
+					_params[key] = element.getAttribute("data-" + key) || _dataparams[key] || options[key] || defaults[key];
+				}
+			});
+			
 			
 			return _params;
 		};
@@ -162,7 +195,10 @@
 			pageOut.classList.remove("in");
 			// if reverse direction
 			pageOut.classList[back? "add": "remove"]("reverse");
-			
+			// do fallback every time
+			var fallback = params_out.fallback;
+			if (typeof fallback == "string") fallback = params_out.root[fallback];
+			if (typeof fallback == "function") fallback(pageInto, pageOut, options.response);
 		}
 		if (pageInto != null && pageInto.classList) {		
 			// for title change
