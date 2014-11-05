@@ -23,6 +23,9 @@
 	var array = [];
 	var slice = array.slice;
 	
+	// Is it a simple selector, from jQuery
+	var isSimple = /^.[^:#\[\.,]*$/
+	
 	var supportHistory = "pushState" in history &&
 		"replaceState" in history &&
 		// When running inside a FF iframe, calling replaceState causes an error
@@ -38,7 +41,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.4';
+	Mobilebone.VERSION = '1.1.5';
 	
 	/**
 	 * Whether bind events when dom ready
@@ -689,7 +692,7 @@
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
-		} else if (/&/.test(hash) == false && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
+		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
 			this.transition(ele_in);	
 		} else {
 			// as a ajax
@@ -845,14 +848,14 @@
 			var hash = location.hash.replace("#&", "").replace("#", "");
 			if (hash == "") return;
 			
-			var page_in = store[hash] || document.querySelector(location.hash), page_out = document.querySelector(".in." + Mobilebone.classPage);
+			var page_in = store[hash] || null, page_out = document.querySelector(".in." + Mobilebone.classPage);
 			
+			if (page_in == null && isSimple.test("#" + hash)) page_in = document.querySelector("#" + hash);
 			if (page_in && page_in == page_out) return;
-			
 
 			// hash ↔ id													
 			if (store[hash] && Mobilebone.pushStateEnabled) {
-				Mobilebone.transition(store[hash], document.querySelector(".in." + Mobilebone.classPage), Mobilebone.isBack(page_in, page_out), {
+				Mobilebone.transition(page_in, document.querySelector(".in." + Mobilebone.classPage), Mobilebone.isBack(page_in, page_out), {
 					history: false	
 				});
 			}
