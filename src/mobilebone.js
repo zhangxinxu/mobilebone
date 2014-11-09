@@ -26,6 +26,7 @@
 	// Is it a simple selector, from jQuery
 	var isSimple = /^.[^:#\[\.,]*$/
 	
+	// Is it suppory history API
 	var supportHistory = "pushState" in history &&
 		"replaceState" in history &&
 		// When running inside a FF iframe, calling replaceState causes an error
@@ -36,20 +37,14 @@
 	
 	if (supportHistory == false) return Mobilebone;
 	
+	var hasInited = false;
+	
 	/**
 	 * Current version of the library. Keep in sync with `package.json`.
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.5';
-	
-	/**
-	 * Whether bind events when dom ready
-	 * If the value is false, u should use 'Mobilebone.init();' to initialize.
-	 *
-	 * @type boolean
-	**/
-	Mobilebone.autoInit = true;
+	Mobilebone.VERSION = '1.1.6';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -137,7 +132,7 @@
 			root: this.rootTransition,
 			// the form of transition, the value (eg. 'slide') will be a className to add or remove. 
 			// of course, u can set to other valeu, for example, 'fade' or 'flip'. However, u shou add corresponding CSS3 code.
-			form: 'slide',
+			form: this.form || 'slide',
 			// 'animationstart/animationend/...' are callbacks params
 			// Note: those all global callbacks!
 			onpagefirstinto: this.onpagefirstinto,
@@ -360,24 +355,6 @@
 	};
 	
 	/**
-	 * Get page element that contains given element
-	 
-	 * @params  children: dom-object. - Necessary
-	 * @returns page element|null
-	 * @example Mobilebone.getCleanUrl(childElement);
-	 *
-	**/
-	Mobilebone.getPage = function(children) {
-		var _page = null;
-		slice.call(document.querySelectorAll("." + this.classPage)).forEach(function(page) {
-			if (_page == null && page.contains(children)) {
-				_page = page;
-			}
-		});	
-		return _page;
-	};
-	
-	/**
 	 * Create page according to given Dom-element or HTML string. And, notice!!!!! will do transition auto.
 	 
 	 * @params  dom_or_html:        dom-object|string. Create this to dom element as a role of into-page.               - Necessary
@@ -406,10 +383,7 @@
 		if (element_or_options) {
 			if (element_or_options.nodeType == 1) {
 				// legal elements
-				if (element_or_options.classList.contains(this.classPage)) {
-					current_page = element_or_options;
-				} else if (element_or_options.href) {
-					current_page = this.getPage(element_or_options);
+				if (element_or_options.href) {
 					page_title = element_or_options.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
@@ -688,7 +662,8 @@
 	/**
 	 * Initialization. Load page according to location.hash. And bind link-catch events.
 	**/
-	Mobilebone.init = function() {		
+	Mobilebone.init = function() {	
+		if (hasInited == true) return 'Don\'t repeat initialization!';	
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
@@ -712,6 +687,8 @@
 		if (this.captureLink == true) {
 			document.addEventListener(eventName, this.handleTapEvent);	
 		}
+		// change flag-var for avoiding repeat init
+		hasInited = true;
 	};
 	
 	/**
@@ -754,6 +731,10 @@
 		// 2. javascript: (except data-rel="back")
 		// 3. cros, or not capture (except data-ajax="true")
 		if (!href) return;
+		if (target.getAttribute("href").replace(/#/g, "") === "") {
+			event.preventDefault();
+			return;
+		}
 		if (/^javascript/.test(href)) {
 			if (back == false) return;	
 		} else {
@@ -835,7 +816,7 @@
 	 * auto init
 	**/
 	window.addEventListener("DOMContentLoaded", function() {
-		if (Mobilebone.autoInit == true) {
+		if (hasInited == false) {
 			Mobilebone.init();
 		}
 	});
