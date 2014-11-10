@@ -684,6 +684,7 @@
 		// Initialization link-catch events.
 		var eventName = "click", $ = root.$ || root.jQuery || root.Zepto;
 		if ($ && $.fn && $.fn.tap) eventName = "tap"; 
+	
 		if (this.captureLink == true) {
 			document.addEventListener(eventName, this.handleTapEvent);	
 		}
@@ -698,9 +699,10 @@
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
 
-		if (!href && (target = target.getParentElementByTag("a"))) {
+		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
+
 		// the page that current touched or actived
 		var self_page = document.querySelector(".in." + Mobilebone.classPage);
 		
@@ -824,24 +826,22 @@
 	/**
 	 * page change when history change
 	**/
-	if (supportHistory) {
-		window.addEventListener("popstate", function() {
-			var hash = location.hash.replace("#&", "").replace("#", "");
-			if (hash == "") return;
-			
-			var page_in = store[hash] || null, page_out = document.querySelector(".in." + Mobilebone.classPage);
-			
-			if (page_in == null && isSimple.test("#" + hash)) page_in = document.querySelector("#" + hash);
-			if (page_in && page_in == page_out) return;
+	window.addEventListener("popstate", function() {
+		var hash = location.hash.replace("#&", "").replace("#", "");
+		if (hash == "" || isSimple.test(hash) == false) return;
+		
+		var page_in = store[hash] || document.querySelector("#" + hash), page_out = document.querySelector(".in." + Mobilebone.classPage);
+		
+		if (page_in && page_in == page_out) return;
+		
 
-			// hash ↔ id													
-			if (store[hash] && Mobilebone.pushStateEnabled) {
-				Mobilebone.transition(page_in, document.querySelector(".in." + Mobilebone.classPage), Mobilebone.isBack(page_in, page_out), {
-					history: false	
-				});
-			}
-		});
-	}
+		// hash ↔ id													
+		if (store[hash] && Mobilebone.pushStateEnabled) {
+			Mobilebone.transition(store[hash], page_out, Mobilebone.isBack(page_in, page_out), {
+				history: false	
+			});
+		}
+	});
 	
 	return Mobilebone;
 });
