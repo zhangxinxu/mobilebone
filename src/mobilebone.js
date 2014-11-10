@@ -832,12 +832,12 @@
 		
 		var page_in = store[hash] || document.querySelector("#" + hash), page_out = document.querySelector(".in." + Mobilebone.classPage);
 		
-		if (page_in && page_in == page_out) return;
+		if ((page_in && page_in == page_out) || Mobilebone.pushStateEnabled == false) return;
 		
 
 		// hash ↔ id													
-		if (store[hash] && Mobilebone.pushStateEnabled) {
-			Mobilebone.transition(store[hash], page_out, Mobilebone.isBack(page_in, page_out), {
+		if (page_in) {
+			Mobilebone.transition(page_in, page_out, Mobilebone.isBack(page_in, page_out), {
 				history: false	
 			});
 		}
