@@ -686,7 +686,7 @@
 		if ($ && $.fn && $.fn.tap) eventName = "tap"; 
 	
 		if (this.captureLink == true) {
-			document.addEventListener(eventName, this.handleTapEvent, true);	
+			document.addEventListener(eventName, this.handleTapEvent);	
 			if (eventName == "tap") {
 				// zepto tap event.preventDefault can't prevent default click-events
 				document.addEventListener("click", function(event) {
