@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.transition</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.transition(pageInto[, pageOut][[, back], options])</h2>
+        <p>页面切换效果核心方法。含缓存机制、事件回调触发等。</p>
+        <h3>参数</h3>
+        <ul>
+            <li><code>pageInto</code> DOM元素。表示进入的page元素. 必须参数。</li>
+            <li><code>pageOut</code> DOM元素。表示要移出的page元素. 可选。没有移出元素使用<code>null</code>.</li>
+            <li><code>back</code> 布尔值。是否反方向过场。可缺省。</li>
+            <li><code>options</code> 对象。此参数多内部使用。一般有用的是两个参数接口：<code>id</code>和<code>response</code>. 当<code>back</code>缺省时候，可以占据<code>back</code>位置使用。</li>
+        </ul>
+        <h3>返回值</h3>
+        <p><code>undefined</code></p>
+        <h3>使用示例</h3>
+        <pre>Mobilebone.transition(element);
+Mobilebone.transition(element1, element2);
+Mobilebone.transition(element1, element2, true);
+Mobilebone.transition(element1, element2, { id: “only” });
+Mobilebone.transition(element1, element2, true, { id: “only” });</pre>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "transition";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

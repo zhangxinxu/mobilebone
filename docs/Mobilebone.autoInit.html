@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.autoInit</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2><del>Mobilebone.autoInit</del></h2>
+        <p>是否DOM加载完毕后自动初始化</p>
+        <h3>属性值类型</h3>
+        <p>布尔值</p>
+        <h3>默认值</h3>
+        <p><code>true</code>. 表示无需使用<code>Mobilebone.init()</code>初始化。一般来讲，此参数没有使用场景</p>
+        <h3>使用示例</h3>
+        <pre>Mobilebone.autoInit = false;</pre>
+        <h3>其他说明</h3>
+        <ul>
+        	<li>此API v.1.1.6+已经舍弃</li>
+        	<li>如果页面加载完毕之后的异步加载，无法触发<code>DOMContentLoaded</code>此值失效，按<code>false</code>处理，即需要执行下<code>Mobilebone.init()</code>.</li>
+        </ul>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "autoInit";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-callbackKeys</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-callbackKeys</h2>
+        <p>这里的<code>callbackKeys</code>只是一种统称，实际没有这个自定义属性的，指的是一系列回调写法，因为除了长相不一样，其他都类似，所以合在一起讲了。</p>
+        <p>其家庭成员包括：</p>
+        <ul>
+        	<li>data-onpagefirstinto</li>
+        	<li>data-callback</li>
+            <li>data-fallback</li>
+            <li>data-animationstart</li>
+            <li>data-animationend</li>
+        </ul>
+        <p>每个回调的作用于使用场景可参见博文说明：<a href="http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/" class="link">点击这里</a>。</p>
+        <h3>其他说明</h3>
+        <p><code>data-ajaxKeys</code>也是类似的调调。</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-callbackKeys";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

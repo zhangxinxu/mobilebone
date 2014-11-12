@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.jsonHandle</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.jsonHandle(json)</h2>
+        <p>此方法JSON请求必用。全局方法，因此，如果存在多个JSON需要处理的情况，请使用JSON数据中特定的标志量进行区分，例如，返回个<code>id</code>. 如：
+<pre>{
+  "id": "homePage" ,
+  "data": []  
+}</pre>
+和这个：
+<pre>{
+  "id": "listPage" ,
+  "data": []  
+}</pre></p>
+        <h3>参数</h3>
+        <ul>
+            <li><code>json</code> SON数据。必须参数。</li>
+        </ul>
+        <h3>返回值</h3>
+        <p>DOM元素或HTML字符串。</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "jsonHandle";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

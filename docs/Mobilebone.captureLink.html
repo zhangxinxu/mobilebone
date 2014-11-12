@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.captureLink</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.captureLink</h2>
+        <p>是否捕获页面上的<code>&lt;a&gt;</code>标签，执行无刷新过场效果。此为全局设置，影响整个页面。默认为<code>true</code>.</p>
+        <h3>值类型</h3>
+        <p>布尔值。设置为<code>true</code>或<code>false</code>.</p>
+        <h3>使用</h3>
+        <pre>Mobilebone.captureLink = false;</pre>
+        <h3>效果</h3>
+        <p>页面上所有的<code>&lt;a&gt;</code>标签链接都是普通的链接，会触发页面的跳转与刷新。</p>
+        <h3>其他说明</h3>
+        <ul>
+        	<li>此为全局设置，会影响整个页面<code>&lt;a&gt;</code>标签的<code>tap/click</code>行为。但是可以设置<code>data-ajax</code>的值为<code>true</code>还是<code>false</code>做局部重置。</li>
+        </ul>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "captureLink";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

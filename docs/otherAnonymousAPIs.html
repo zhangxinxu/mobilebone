@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone其他匿名API们</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone其他匿名API们</h2>
+        <p>除了上面暴露的API, 目前Mobilebone还有6个全局且比较常用的匿名API, 分别是：</p>
+        <ol>
+        	<li>Mobilebone.onpagefirstinto</li>
+        	<li>Mobilebone.callback</li>
+            <li>Mobilebone.fallback</li>
+            <li>Mobilebone.animationstart</li>
+            <li>Mobilebone.animationend</li>
+            <li>Mobilebone.form</li>
+        </ol>
+        <p>其中，前5个是全局回调（每个回调的作用于使用场景可参见博文说明：<a href="http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/" class="link">点击这里</a>），最后一个是全局的过场动画形式。例如，本文档页面，就是这么设置的：</p>
+        <pre>Mobilebone.form = "slideup";</pre>
+        <p>于是，你就看到了上下推的效果（有部分CSS自定义）。</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "support";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

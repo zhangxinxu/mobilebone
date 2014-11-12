@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-params</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-params</h2>
+        <p>表示参数集。以查询字符串的方式显示自定义属性。因为可能存在多个自定义属性，如果全部都是<code>data-xxx</code>的形式，很有可能HTML会很啰嗦，此时，就可以把一系列自定义属性声明以查询字符串的形式集结在<code>data-params</code>中。</p>
+        <p><code>page</code>元素和<code>a</code>元素都有使用。形式一致，但对应的属性不一样。</p>
+        <ol>
+        	<li><strong>page元素</strong>
+            	<p><code>page</code>元素使用<code>data-params</code>更多就是参数大集合，例如：</p>
+                <pre>&lt;div id="page" class="page out" data-root="$" data-callback="callback" data-title="回调">&lt;/div></pre>
+                <p>就等同于：</p>
+                <pre>&lt;div id="page" class="page out" data-params="root=$&amp;amp;callback=callback&amp;amp;title="回调"">&lt;/div></pre>
+            </li>
+            <li><strong>a元素</strong>
+            	<p><code>page</code>元素使用<code>data-params</code>则是Ajax请求参数的意思。Ajax请求的API都是采用jQuery <code>$.ajax()</code>的命名。所以，你可以看到：</p>
+                <pre>&lt;a href="ajax.html" data-params="datatype=json&amp;amp;timeout=30000&amp;amp;success=succ_callback" data-title="请求页面标题">点击我&lt;/a></pre>
+                <p>注意这里，<code>data-title</code>不能归到<code>data-params</code>一伙儿，因为，Ajax请求没有<code>title</code>这个参数。</p>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-params";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

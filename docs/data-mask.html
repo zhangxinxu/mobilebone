@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-mask</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-mask</h2>
+        <p>ajax请求专用。如果<code>a</code>元素，或<code>form</code>元素，可以通过<code>data-mask</code>让loading效果出现在这些元素内部，而非全局<code>body</code>下，从而实现局部loading效果（默认是整页覆盖），可参见本文档点击任意左侧Ajax链接的效果。</p>
+        <pre>&lt;a href="Mobilebone.support.html" class="nav-a" <span style="color:#cd0000;">data-mask</span> data-rel="auto">Mobilebone.support&lt;/a></pre>
+        <p>可以直接<code>data-mask</code>或者<code>data-mask="true"</code>. 如果是局部效果，需要你额外辅助一些CSS实现你需要的效果：</p>
+        <pre>.nav-a > .mask { display: inline; width: 26px; height: 26px; top: 0; right: 8px; background-color: transparent; transform: scale(.75,.75); }</pre>
+        <h3>其他说明</h3>
+        <ol>
+        	<li>中间的菊花永远居中<code>mask</code>遮罩元素显示的，所以，只要限定好<code>mask</code>的大小和位置就可以了。</li>
+            <li>菊花效果CSS3编写，使用了<a href="http://www.zhangxinxu.com/wordpress/2014/10/currentcolor-css3-powerful-css-keyword/">currentColor关键字</a>，因此，颜色跟随环境的<code>color</code>, 也就是可以使用<code>color</code>属性任意控制。</li>
+        </ol>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-mask";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

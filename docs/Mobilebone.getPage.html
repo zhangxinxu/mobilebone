@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.getPage</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2><del>Mobilebone.getPage(children)</del></h2>
+        <p>根据子元素获取当前所在的page元素。此API v1.1.6已经被弃用。</p>
+        <h3>参数</h3>
+        <ul>
+            <li><code>children</code> DOM元素。必须参数。</li>
+        </ul>
+        <h3>返回值</h3>
+        <p>如果匹配，返回page元素；如果不匹配，返回<code>null</code>。</p>
+        <h3>使用示意</h3>
+        <pre>Mobilebone.getCleanUrl(childElement);</pre>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "getPage";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>
