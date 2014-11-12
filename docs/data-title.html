@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-title</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-title</h2>
+        <p>用来切换页面的<code>title</code>值。一般出现在<code>page</code>元素上，某些场景也可以用在<code>a</code>元素和<code>form</code>元素上。</p>
+        <ol>
+        	<li><strong>page元素</strong>
+            	<p>例如，如下HTML代码的两个<code>page</code>元素：</p>
+                <pre>&lt;div id="page1" class="page out" data-title="页面1的标题">&lt;/div>
+&lt;div id="page2" class="page out" data-title="页面2的标题">&lt;/div></pre>
+				<p>当大页面从“页面1”切换到“页面2”的时候，整个页面的<code>title</code>就会变成 - “页面2的标题”。</p>
+            </li>
+            <li><strong>a元素</strong>
+            	<p>如果页面是Ajax请求，且返回的是个HTML片段<sup style="color: #aaa;">参见下其他说明</sup>，则页面切换时候是不知道<code>title</code>应该边成功后哪个值，此时可以在触发该Ajax的<code>a</code>元素上使用<code>data-title</code>.</p>
+                <p>例如：</p>
+                <pre>&lt;a href="ajax.html" data-title="请求内容的标题">&lt;/a></pre>
+                <p>此时，当请求的内容以页面形式被载入的时候，大页面的标题就会变成 - “请求内容的标题”。</p>
+            </li>
+            <li><strong>form元素</strong>
+            	<p>与<code>a</code>元素类似。</p>
+            </li>
+        </ol>
+        <h3>其他说明</h3>
+        <ol>
+        	<li>对于Ajax请求，如果返回的是完整页面（如下代码），就像本API文档，则Mobilebone会自动获取<code>&lt;title&gt;</code>元素中的文本作为载入后的页面标题。
+            	<pre>&lt;html>
+    &lt;head>
+        &lt;title>此标题会被自动获取并显示&lt;/title>
+    &lt;/head>
+    &lt;body>
+        <span style="color:#999;">&lt;!-- 主体内容 --></span>
+    &lt;/body>
+&lt;/html>
+</pre>
+            </li>
+            <li><code>form</code>请求功能v1.1.7新增，此文档编写时候还没有该版本，所以，可能有些地方会遗漏<code>form</code>，欢迎帮忙指出。</li>
+        </ol>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-title";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

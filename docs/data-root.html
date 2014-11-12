@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-root</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-root</h2>
+        <p>指定Mobilebone各个回调的根对象。默认情况下，Mobilebone的各个回调方法都是从<code>window</code>这个全局对象获取的。在实际开发时候，显然，是不建议暴露过多的全局方法的，此时，就需要修改回调的根对象，其中一个方法就是使用<code>data-root</code>, 此设置主要做局部重置。全局修改可以使用<code>Mobilebone.rootTransition</code>这个全局API。</p>
+        <p>例如，你使用jQuery, 然后，回调都是类似下面的写法：</p>
+        <pre>$.extend({
+    callback: function() {},
+    fallback: function() {}        
+});</pre>
+		<p>则对应的<code>page</code>元素可以设置<code>data-root</code>为<code>$</code>, 如下所示：</p>
+        <pre>&lt;div id="page" class="page out" data-root="$" data-callback="callback">&lt;/div></pre>
+        <p><code>data-root</code>支持级联，以防你的回调函数的位置较深，例如：</p>
+        <pre>&lt;div id="page" class="page out" data-root="objA.objB.objC" data-callback="callback">&lt;/div></pre>
+        <p>于是，下面数据中的<code>callback</code>函数就会执行：</p>
+        <pre>objA = {
+    objB: {
+        objC: {
+            callback: function() {}
+        }
+    }        
+};</pre>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-root";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

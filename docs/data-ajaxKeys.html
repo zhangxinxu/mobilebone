@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-ajaxKeys</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-ajaxKeys</h2>
+        <p>这里的<code>ajaxKeys</code>只是一种统称，实际没有这个自定义属性的，指的是一系列<code>ajax</code>自定义参数，因为除了长相不一样，其他都类似，所以合在一起讲了。</p>
+        <p>包括（不区分大小写）：</p>
+        <ul>
+        	<li>data-url</li>
+			<li>data-dataType</li>
+            <li>data-timeout</li>
+            <li>data-async</li>
+            <li>data-username</li>
+            <li>data-password</li>
+            <li>data-success</li>
+            <li>data-error</li>
+            <li>data-complete</li>
+        </ul>
+        <p>其中，最后三个是回调，支持直接级联设置。</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-ajaxKeys";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

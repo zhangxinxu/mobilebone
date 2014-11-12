@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.mergeCallback</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.mergeCallback</h2>
+        <p>全局的回调方法和每个页面上自定义的回调方法是合并还是覆盖。默认<code>true</code>表示合并。</p>
+        <h3>值类型</h3>
+        <p>布尔值。设置为<code>true</code>或<code>false</code>.</p>
+        <h3>使用</h3>
+        <pre>Mobilebone.mergeCallback = false;</pre>
+        <h3>效果</h3>
+        <p><code>page</code>元素的<code>data-callback</code>会覆盖<code>Mobilebone.callback</code>而不是合并。</p>
+        <h3>其他说明</h3>
+        <ul>
+        	<li>此参数v1.1.4新增。</li>
+        </ul>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "mergeCallback";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

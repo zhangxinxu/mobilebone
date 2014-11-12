@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.rootTransition</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.rootTransition</h2>
+        <p>各种回调方法的根对象。默认是全局<code>window</code>.</p>
+        <h3>值类型</h3>
+        <p>对象。</p>
+        <h3>使用</h3>
+        <pre>&lt;div id="pageHome" class="page out" data-onpagefirstinto="home" data-animationstart="start"&gt;</pre>
+        
+<pre>FUN = {
+    home: function(pageInto, pageOut, response) {},
+    start: function(page, into_or_out) {},
+    end: function(page, into_or_out) {}
+};
+
+Mobilebone.captureLink = FUN;</pre>
+        <h3>效果</h3>
+        <p>当回调要执行的时候，会从<code>FUN</code>对象而不是默认的<code>window</code>对象查找函数关键字对应的方法。</p>
+        <h3>其他说明</h3>
+        <ul>
+        	<li>此为全局设置，会影响整个页面回调方法来源。但是可以设置<code>data-root</code>的值做局部重置。</li>
+        </ul>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "rootTransition";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>
