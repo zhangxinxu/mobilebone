@@ -686,7 +686,26 @@
 		if ($ && $.fn && $.fn.tap) eventName = "tap"; 
 	
 		if (this.captureLink == true) {
-			document.addEventListener(eventName, this.handleTapEvent);	
+			document.addEventListener(eventName, this.handleTapEvent, true);	
+			if (eventName == "tap") {
+				// zepto tap event.preventDefault can't prevent default click-events
+				document.addEventListener("click", function(event) {
+					var target = event.target;
+					if (!target) return;
+					if (target.tagName.toLowerCase() != "a" && !(target = target.getParentElementByTag("a"))) {
+						return;
+					}
+					var ajax = target.getAttribute("data-ajax"), href = target.href;
+					// if not ajax request
+					if (target.getAttribute("data-rel") == "external" 
+						|| ajax == "false"
+						|| (href.split("/")[0] !== location.href.split("/")[0] && ajax != "true")
+						|| (Mobilebone.captureLink == false && ajax != "true")
+					) return;
+					
+					event.preventDefault();
+				});		
+			}
 		}
 		// change flag-var for avoiding repeat init
 		hasInited = true;
@@ -698,7 +717,6 @@
 	Mobilebone.handleTapEvent = function(event) {
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
-
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
