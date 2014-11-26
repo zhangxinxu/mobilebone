@@ -27,11 +27,7 @@
 	var isSimple = /^.[^:#\[\.,]*$/
 	
 	// Is it suppory history API
-	var supportHistory = "pushState" in history &&
-		"replaceState" in history &&
-		// When running inside a FF iframe, calling replaceState causes an error
-		!( window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window ) &&
-		( window.navigator.userAgent.search(/CriOS/) === -1 );
+	var supportHistory = "pushState" in history && "replaceState" in history;
 		
 	Mobilebone.support = supportHistory;
 	
@@ -44,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.6';
+	Mobilebone.VERSION = '1.1.7';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -99,6 +95,13 @@
 	 * @type boolean
 	**/
 	Mobilebone.pushStateEnabled = true;
+	
+	if (// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false' 
+		(window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window)
+	) {
+		Mobilebone.pushStateEnabled = false;
+	}
+	
 	
 	/**
 	 * Function for transition
