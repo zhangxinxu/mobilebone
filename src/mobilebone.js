@@ -97,11 +97,10 @@
 	Mobilebone.pushStateEnabled = true;
 	
 	if (// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false' 
-		!( window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window ) &&
-		( window.navigator.userAgent.search(/CriOS/) === -1 )
+		(window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window)
 	) {
-			Mobilebone.pushStateEnabled = false;
-		}
+		Mobilebone.pushStateEnabled = false;
+	}
 	
 	
 	/**
