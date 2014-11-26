@@ -105,8 +105,8 @@
 	 * In most cases, you are unnecessary to use this function , unlike Mobilebone.createPage
 	 
 	 * @params  pageInto: dom-object. Element which will transform into. - Necessary
-	            pageOut:  dom-object. Elementwhich will transform out.   - Optional
-			    back:     boolean.    Direction of tranisition.          - Optional
+	            pageOut:  dom-object. Element which will transform out.   - Optional
+			    back:     boolean.    Direction of transition.          - Optional
 			    options:  object.     Cover or add parameters.           - Optional
 	 * @returns undefined
 	 * @example Mobilebone.transition(element);
@@ -297,7 +297,7 @@
 	 
 	 * @params  trigger: dom-object. element with tag-"a".  - Optional(at least one)
 	            url:     string. ajax url.                  - Optional(at least one)
-			    params:  string|opject. ajax params.        - Optional
+			    params:  string|object. ajax params.        - Optional
 	 * @returns string
 	 * @example Mobilebone.getCleanUrl(elementOfA);
 	            Mobilebone.getCleanUrl(elementOfA, '', "a=1&b=2");
@@ -366,8 +366,8 @@
 		        Mobilebone.createPage('<div class="page out">xxx</div>');
 		        Mobilebone.createPage('<p>xxx</p>');
 		        Mobilebone.createPage(pageDom, triggerLink);
-		        Mobilebone.createPage(pageDom, { reponse: '<div...>' });
-		        Mobilebone.createPage(pageDom, triggerLink, { reponse: '<div...>' });
+		        Mobilebone.createPage(pageDom, { response: '<div...>' });
+		        Mobilebone.createPage(pageDom, triggerLink, { response: '<div...>' });
 	 *
 	**/
 	Mobilebone.createPage = function(dom_or_html, element_or_options, options) {
@@ -435,7 +435,7 @@
 	 * @params  keys:        string. - Necessary
 	 * @returns function
 	            undefined keys is not string
-				window    keys unfinded
+				window    keys undefined
 	 * @example Mobilebone.getFunction("a.b.c");
 	 *
 	**/
@@ -817,7 +817,7 @@
 		return element;
 	};
 	/**
-	 * privite method: convert query string to key-value object
+	 * private method: convert query string to key-value object
 	**/
 	var _queryToObject = function(string) {
 		var obj = {};
