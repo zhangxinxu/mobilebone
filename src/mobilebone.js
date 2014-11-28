@@ -221,7 +221,7 @@
 			// delete page with same id
 			var pageid = options.id || pageInto.id;
 
-			if (store[pageid] && store[pageid] != pageInto) {
+			if (store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
 			}
