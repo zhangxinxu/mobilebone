@@ -218,7 +218,7 @@
 				pageInto.setAttribute("data-title", document.title);
 			}
 			
-			// delete page with same id when option.remove !== false
+			// delete page with same id when options.remove !== false
 			var pageid = options.id || pageInto.id;
 
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
