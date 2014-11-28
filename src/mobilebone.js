@@ -849,9 +849,17 @@
 	**/
 	window.addEventListener("popstate", function() {
 		var hash = location.hash.replace("#&", "").replace("#", "");
-		if (hash == "" || isSimple.test(hash) == false) return;
 		
-		var page_in = store[hash] || document.querySelector("#" + hash), page_out = document.querySelector(".in." + Mobilebone.classPage);
+		var page_in = store[hash];
+		
+		if (!page_in) {
+			if(isSimple.test(hash) == false) {
+				return;
+			}
+			page_in =  document.querySelector("#" + hash)
+		}
+		
+		var page_out = document.querySelector(".in." + Mobilebone.classPage);
 		
 		if ((page_in && page_in == page_out) || Mobilebone.pushStateEnabled == false) return;
 		
