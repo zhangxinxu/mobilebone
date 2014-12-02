@@ -13,7 +13,7 @@
     <ul>
         <li><a href="ajax-page.html">点击加载(缓存，若后2项已请求，则无请求)</a></li>
         <li><a href="ajax-page.html" data-reload>点击加载(每次都请求， 返回含page结构)</a></li>
-        <li><a href="ajax-page.html?&&" data-reload>点击加载(同上, url过滤测试)</a></li>
+        <li><a href="ajax-page.html?&&" data-formdata="?a=1">点击加载(缓存, url过滤测试)</a></li>
         <li><a href="ajax-page.html?a" data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
         <li><a href="ajax-page.html?a=1&" data-reload data-formdata="&c=1" data-mask="true">点击加载(data-formdata测试)-内覆盖loading</a></li>
         <li><a href="ajax-page.html?a=1&b=" class="follow" data-reload data-formdata="c=1&d=1" data-mask="true">点击加载(data-formdata测试)-跟随loading</a></li>
