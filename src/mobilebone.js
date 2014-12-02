@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.7';
+	Mobilebone.VERSION = '1.1.8';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -786,10 +786,10 @@
 			var attr_reload = target.getAttribute("data-reload"), id = target.getAttribute("href");
 			if ((attr_reload == null || attr_reload == "false") && store[clean_url]) {
 				if (back == false && rel == "auto") {
-					back = Mobilebone.isBack(store[id], self_page);
+					back = Mobilebone.isBack(store[clean_url], self_page);
 				}
-				Mobilebone.transition(store[id], self_page, back, {
-					id: id	
+				Mobilebone.transition(store[clean_url], self_page, back, {
+					id: clean_url	
 				});
 			} else {
 				Mobilebone.ajax(target);
