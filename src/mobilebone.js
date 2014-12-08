@@ -253,12 +253,13 @@
 				});
 				if (!store[pageid]) {
 					var animateEventName = isWebkit? webkitkey: animationkey;
+					// if it's the out element, hide it when 'animationend'
 					index && pageInto.addEventListener(animateEventName, function() {
 						if (this.classList.contains("in") == false) {
 							this.style.display = "none";
 						}						
 					});
-					
+					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
 						pageInto.addEventListener(animateEventName, function() {
 							params_in.root[animition](this, this.classList.contains("in")? "into": "out");
