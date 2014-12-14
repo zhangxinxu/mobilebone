@@ -54,6 +54,17 @@
 	Mobilebone.captureLink = true;
 	
 	/**
+	 * Whether catch events of 'submit' from <form> element
+	 * If the value set to false, <form> is a normal form except data-ajax="true"
+	 * If the value set to true, <form> will submit as a ajax request, 
+	   and the return value will be used to create a new page and transition into meanwhile.
+	   However, if data-ajax="false", <form> won't submit as a ajax.
+	 *
+	 * @type boolean
+	**/
+	Mobilebone.captureForm = true;
+	
+	/**
 	 * The root of transition-callback
 	 * Default value is 'root', you can consider as window-object. 
 	   However, there are may many callbacks, it's impossible that all functions are global function.
@@ -150,8 +161,7 @@
 			
 			// rules as follow:
 			// data-* > data-params > options > defaults	
-			["title", "root", "form"].forEach(function(key) {
-				
+			["title", "root", "form"].forEach(function(key) {	
 				_params[key] = element.getAttribute("data-" + key) || _dataparams[key] || options[key] || defaults[key];
 			});
 			
@@ -181,7 +191,6 @@
 					_params[key] = element.getAttribute("data-" + key) || _dataparams[key] || options[key] || defaults[key];
 				}
 			});
-			
 			
 			return _params;
 		};
@@ -243,6 +252,10 @@
 				} else if (typeof onpagefirstinto == "function") {
 					onpagefirstinto(pageInto, pageOut, options.response);
 				}
+				// capture form submit
+				slice.call(pageInto.querySelectorAll("form")).forEach(function(form) {
+					Mobilebone.submit(form);
+				});		
 			}
 			
 			// do callback when animation start/end
@@ -313,6 +326,9 @@
 		var href = "", formdata = "", clean_url = "";
 		if (trigger) {
 			 if (trigger.nodeType == 1) {
+				 // form element
+				 if (trigger.action) return trigger.getAttribute("action");
+				// a element
 				href = trigger.getAttribute("href");
 				formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data");
 			 } else if (trigger.url) {
@@ -387,7 +403,7 @@
 		if (element_or_options) {
 			if (element_or_options.nodeType == 1) {
 				// legal elements
-				if (element_or_options.href) {
+				if (element_or_options.href || element_or_options.action) {
 					page_title = element_or_options.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
@@ -459,7 +475,7 @@
 	 * For ajax request to get HTML or JSON. 
 	 
 	 * @params  trigger_or_options        - Necessary  
-	            1. dom-object. or~
+	            1. dom-object:<a>|<form>.
 				2. object.  
 	 * @returns undefined
 	 * @example Mobilebone.ajax(document.querySelector("a"));
@@ -475,6 +491,7 @@
 		// default params
 		var defaults = {
 			url: "",
+			type: "",
 			dataType: "",
 			data: {},
 			timeout: 10000,
@@ -486,7 +503,7 @@
 			complete: function() {}	
 		};
 		
-		var params = {}, ele_mask = null;
+		var params = {}, ele_mask = null, formData = null;
 		
 		// if 'trigger_or_options' is a element, we should turn it to options-object
 		var params_from_trigger = {}, attr_mask;
@@ -504,9 +521,15 @@
 					}
 				}
 			}
-			
-			// the ajax url is special, we need special treatment
+
 			params.url = this.getCleanUrl(trigger_or_options, params.url);	
+			
+			var tagName = trigger_or_options.tagName.toLowerCase();
+			if (tagName == "form") {
+				params.type = trigger_or_options.method;
+				
+				formData = new FormData(trigger_or_options);
+			}	
 			
 			// get mask element
 			attr_mask = trigger_or_options.getAttribute("data-mask");
@@ -548,7 +571,7 @@
 		
 		// ajax request
 		var xhr = new XMLHttpRequest();		
-		xhr.open("GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
+		xhr.open(params.type || "GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
 		xhr.timeout = params.timeout;
 		
 		xhr.onload = function() {
@@ -607,7 +630,25 @@
 			ele_mask.style.visibility = "hidden";
 		};
 		
-		xhr.send(null);
+		xhr.send(formData);
+	};
+	
+	/**
+	 * capture form submit events to a ajax request.
+	 
+	 * @params  form:        formElement. - Necessary
+	 * @example Mobilebone.form(document.querySelector("form"));
+	 *
+	**/
+	Mobilebone.submit = function(form) {
+		if (!form || typeof form.action != "string") return; 
+		var ajax = form.getAttribute("data-ajax");
+		if (ajax == "false" || (this.captureForm == false && ajax != "true")) return;
+		
+		form.addEventListener("submit", function(event) {
+			Mobilebone.ajax(this);
+			event.preventDefault();
+		});
 	};
 	
 	
@@ -711,6 +752,7 @@
 				});		
 			}
 		}
+				
 		// change flag-var for avoiding repeat init
 		hasInited = true;
 	};
