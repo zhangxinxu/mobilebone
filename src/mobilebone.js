@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.8';
+	Mobilebone.VERSION = '1.2.0';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -52,6 +52,17 @@
 	 * @type boolean
 	**/
 	Mobilebone.captureLink = true;
+	
+	/**
+	 * Whether catch events of 'submit' from <form> element
+	 * If the value set to false, <form> is a normal form except data-ajax="true"
+	 * If the value set to true, <form> will submit as a ajax request, 
+	   and the return value will be used to create a new page and transition into meanwhile.
+	   However, if data-ajax="false", <form> won't submit as a ajax.
+	 *
+	 * @type boolean
+	**/
+	Mobilebone.captureForm = true;
 	
 	/**
 	 * The root of transition-callback
@@ -150,8 +161,7 @@
 			
 			// rules as follow:
 			// data-* > data-params > options > defaults	
-			["title", "root", "form"].forEach(function(key) {
-				
+			["title", "root", "form"].forEach(function(key) {	
 				_params[key] = element.getAttribute("data-" + key) || _dataparams[key] || options[key] || defaults[key];
 			});
 			
@@ -181,7 +191,6 @@
 					_params[key] = element.getAttribute("data-" + key) || _dataparams[key] || options[key] || defaults[key];
 				}
 			});
-			
 			
 			return _params;
 		};
@@ -243,6 +252,10 @@
 				} else if (typeof onpagefirstinto == "function") {
 					onpagefirstinto(pageInto, pageOut, options.response);
 				}
+				// capture form submit
+				slice.call(pageInto.querySelectorAll("form")).forEach(function(form) {
+					Mobilebone.submit(form);
+				});		
 			}
 			
 			// do callback when animation start/end
@@ -253,12 +266,13 @@
 				});
 				if (!store[pageid]) {
 					var animateEventName = isWebkit? webkitkey: animationkey;
+					// if it's the out element, hide it when 'animationend'
 					index && pageInto.addEventListener(animateEventName, function() {
 						if (this.classList.contains("in") == false) {
 							this.style.display = "none";
 						}						
 					});
-					
+					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
 						pageInto.addEventListener(animateEventName, function() {
 							params_in.root[animition](this, this.classList.contains("in")? "into": "out");
@@ -312,6 +326,9 @@
 		var href = "", formdata = "", clean_url = "";
 		if (trigger) {
 			 if (trigger.nodeType == 1) {
+				 // form element
+				 if (trigger.action) return trigger.getAttribute("action");
+				// a element
 				href = trigger.getAttribute("href");
 				formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data");
 			 } else if (trigger.url) {
@@ -386,7 +403,7 @@
 		if (element_or_options) {
 			if (element_or_options.nodeType == 1) {
 				// legal elements
-				if (element_or_options.href) {
+				if (element_or_options.href || element_or_options.action) {
 					page_title = element_or_options.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
@@ -425,10 +442,20 @@
 		create = null;
 		
 		// do transition
-		this.transition(create_page, current_page, {
+		var optionsTransition = {
 			response: response || dom_or_html,
 			id: this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now())
-		});
+		};		
+		// 'if' statement below added on v2.0.0
+		if (typeof options == "object") { 
+			if (typeof options.history != "undefined") {
+				optionsTransition.history = options.history;
+			}
+			if (typeof options.remove != "undefined") {
+				optionsTransition.remove = options.remove;
+			}
+		}
+		this.transition(create_page, current_page, optionsTransition);
 	};
 	
 	/**
@@ -458,7 +485,7 @@
 	 * For ajax request to get HTML or JSON. 
 	 
 	 * @params  trigger_or_options        - Necessary  
-	            1. dom-object. or~
+	            1. dom-object:<a>|<form>.
 				2. object.  
 	 * @returns undefined
 	 * @example Mobilebone.ajax(document.querySelector("a"));
@@ -474,6 +501,7 @@
 		// default params
 		var defaults = {
 			url: "",
+			type: "",
 			dataType: "",
 			data: {},
 			timeout: 10000,
@@ -485,7 +513,7 @@
 			complete: function() {}	
 		};
 		
-		var params = {}, ele_mask = null;
+		var params = {}, ele_mask = null, formData = null;
 		
 		// if 'trigger_or_options' is a element, we should turn it to options-object
 		var params_from_trigger = {}, attr_mask;
@@ -503,9 +531,15 @@
 					}
 				}
 			}
-			
-			// the ajax url is special, we need special treatment
+
 			params.url = this.getCleanUrl(trigger_or_options, params.url);	
+			
+			var tagName = trigger_or_options.tagName.toLowerCase();
+			if (tagName == "form") {
+				params.type = trigger_or_options.method;
+				
+				formData = new FormData(trigger_or_options);
+			}	
 			
 			// get mask element
 			attr_mask = trigger_or_options.getAttribute("data-mask");
@@ -547,7 +581,7 @@
 		
 		// ajax request
 		var xhr = new XMLHttpRequest();		
-		xhr.open("GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
+		xhr.open(params.type || "GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
 		xhr.timeout = params.timeout;
 		
 		xhr.onload = function() {
@@ -565,6 +599,11 @@
 						params.error.call(params, xhr, xhr.status);
 					}
 				} else if (params.dataType == "unknown") {
+					// ajax send by url
+					// no history hush
+					// no element remove
+					params.history = false;
+					params.remove = false;
 					try {
 						// as json
 						response = JSON.parse(xhr.response);
@@ -606,7 +645,25 @@
 			ele_mask.style.visibility = "hidden";
 		};
 		
-		xhr.send(null);
+		xhr.send(formData);
+	};
+	
+	/**
+	 * capture form submit events to a ajax request.
+	 
+	 * @params  form:        formElement. - Necessary
+	 * @example Mobilebone.form(document.querySelector("form"));
+	 *
+	**/
+	Mobilebone.submit = function(form) {
+		if (!form || typeof form.action != "string") return; 
+		var ajax = form.getAttribute("data-ajax");
+		if (ajax == "false" || (this.captureForm == false && ajax != "true")) return;
+		
+		form.addEventListener("submit", function(event) {
+			Mobilebone.ajax(this);
+			event.preventDefault();
+		});
 	};
 	
 	
@@ -710,6 +767,7 @@
 				});		
 			}
 		}
+				
 		// change flag-var for avoiding repeat init
 		hasInited = true;
 	};
@@ -819,6 +877,7 @@
 		popup();
 		return element;
 	};
+	
 	/**
 	 * private method: convert query string to key-value object
 	**/
@@ -849,11 +908,17 @@
 	**/
 	window.addEventListener("popstate", function() {
 		var hash = location.hash.replace("#&", "").replace("#", "");
+		if (hash == "") return;
 		
 		var page_in = store[hash];
 		
 		if (!page_in) {
 			if(isSimple.test(hash) == false) {
+				// as a url
+				Mobilebone.ajax({
+					url: hash,
+					dataType: "unknown"
+				});	
 				return;
 			}
 			page_in =  document.querySelector("#" + hash)
@@ -862,7 +927,6 @@
 		var page_out = document.querySelector(".in." + Mobilebone.classPage);
 		
 		if ((page_in && page_in == page_out) || Mobilebone.pushStateEnabled == false) return;
-		
 
 		// hash ↔ id													
 		if (page_in) {

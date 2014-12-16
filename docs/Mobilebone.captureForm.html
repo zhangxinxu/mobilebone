@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.captureForm</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.captureForm</h2>
+        <p>是否捕获页面上的<code>&lt;form&gt;</code>表单，执行Ajax请求并把返回结果装载成新页面无刷新载入。此为全局设置，影响整个页面。默认为<code>true</code>.</p>
+        <h3>值类型</h3>
+        <p>布尔值。设置为<code>true</code>或<code>false</code>.</p>
+        <h3>使用</h3>
+        <pre>Mobilebone.captureForm = false;</pre>
+        <h3>效果</h3>
+        <p>如果按照上面的设置，页面上所有的<code>&lt;form&gt;</code>表单提交会走原生<code>submit</code>提交，除非有<code>data-ajax="true"</code>重置。</p>
+        <h3>其他说明</h3>
+        <ul>
+        	<li>此为全局设置，会影响整个页面<code>&lt;form&gt;</code>表单<code>submit</code>行为。但是可以设置<code>data-ajax</code>的值为<code>true</code>还是<code>false</code>做局部重置。</li>
+        </ul>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureForm = false;
+window.navKey = "captureForm";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

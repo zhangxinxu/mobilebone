@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>表单提交</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+<link rel="stylesheet" href="zxx.lib.css">
+<style>
+input { font-size: 100%; }
+input[name] {
+	height: 40px; width: 100%; padding: 10px; box-sizing: border-box;font-size: 100%;
+}
+.search { height: 40px; padding: 10px; box-sizing: border-box; }
+.submit { height: 40px; font-size: 16px; padding: 0 25px; }
+</style>
+</head>
+
+<body>
+<div id="pageHome" class="page out">
+	<ul>
+        <li class="pl10">
+            <form method="get" action="search.html">
+                <input type="search" class="search mr10"><input type="submit" class="submit" value="搜索">
+            </form>
+    	</li>
+    </ul>
+    <ul>
+        <li><a href="form.html">点击动态加载一个表单</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+</body>
+</html>
