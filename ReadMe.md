@@ -7,6 +7,8 @@ Single Page Switching bone for mobile web APP, Hybird APP, Phonegap, ...
 use <code>npm</code>:
 <pre>npm install mobilebone</pre>
 
+A nice example that use Mobilebone: [http://iancj.github.io/qq/](http://iancj.github.io/qq/)
+
 Why need this?
 -----------------
 Interaction experience is good enough to compare with the native APP. <br>
@@ -48,6 +50,8 @@ The MIT License
 mobilebone.js
 =============
 单页切换骨架。适用于移动web APP, Hybird混合APP, Phonegap开发等。
+
+后面为使用Mobilebone实现的栗子一枚：[http://iancj.github.io/qq/](http://iancj.github.io/qq/)
 
 为何需要？
 -------------
