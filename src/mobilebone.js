@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.1.8';
+	Mobilebone.VERSION = '1.2.0';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -442,10 +442,20 @@
 		create = null;
 		
 		// do transition
-		this.transition(create_page, current_page, {
+		var optionsTransition = {
 			response: response || dom_or_html,
 			id: this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now())
-		});
+		};		
+		// 'if' statement below added on v2.0.0
+		if (typeof options == "object") { 
+			if (typeof options.history != "undefined") {
+				optionsTransition.history = options.history;
+			}
+			if (typeof options.remove != "undefined") {
+				optionsTransition.remove = options.remove;
+			}
+		}
+		this.transition(create_page, current_page, optionsTransition);
 	};
 	
 	/**
@@ -589,6 +599,11 @@
 						params.error.call(params, xhr, xhr.status);
 					}
 				} else if (params.dataType == "unknown") {
+					// ajax send by url
+					// no history hush
+					// no element remove
+					params.history = false;
+					params.remove = false;
 					try {
 						// as json
 						response = JSON.parse(xhr.response);
@@ -862,6 +877,7 @@
 		popup();
 		return element;
 	};
+	
 	/**
 	 * privatemethod: convert query string to key-value object
 	**/
@@ -892,11 +908,17 @@
 	**/
 	window.addEventListener("popstate", function() {
 		var hash = location.hash.replace("#&", "").replace("#", "");
+		if (hash == "") return;
 		
 		var page_in = store[hash];
 		
 		if (!page_in) {
 			if(isSimple.test(hash) == false) {
+				// as a url
+				Mobilebone.ajax({
+					url: hash,
+					dataType: "unknown"
+				});	
 				return;
 			}
 			page_in =  document.querySelector("#" + hash)
@@ -905,7 +927,6 @@
 		var page_out = document.querySelector(".in." + Mobilebone.classPage);
 		
 		if ((page_in && page_in == page_out) || Mobilebone.pushStateEnabled == false) return;
-		
 
 		// hash ↔ id													
 		if (page_in) {
