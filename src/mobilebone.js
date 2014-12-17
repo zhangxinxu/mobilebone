@@ -865,6 +865,7 @@
 		var element = null, parent = this;
 		var popup = function() {
 			parent = parent.parentElement;
+			if (!parent) return null;
 			var tagParent = parent.tagName.toLowerCase();
 			if (tagParent === tag) {
 				element = parent;

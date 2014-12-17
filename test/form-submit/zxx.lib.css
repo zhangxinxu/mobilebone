@@ -272,7 +272,7 @@
 /* 大小不定元素垂直居中 */
 .dib_vm{display:inline-block; width:0; height:100%; vertical-align:middle;}
 /* 加载中背景图片 */
-.loading{background:url(http://www.zhangxinxu.com/study/image/loading.gif) no-repeat center;}
+/*.loading{background:url(http://www.zhangxinxu.com/study/image/loading.gif) no-repeat center;}*/
 /* 无框文本框文本域 */
 .bd_none{border:0; outline:none;}
 /* 按钮禁用 */
