@@ -7,7 +7,20 @@ Single Page Switching bone for mobile web APP, Hybird APP, Phonegap, ...
 use <code>npm</code>:
 <pre>npm install mobilebone</pre>
 
-A nice example that use Mobilebone: [http://iancj.github.io/qq/](http://iancj.github.io/qq/)
+Examples and Tests and Documents
+------------------
+<ul>
+	<li>Example1: [http://iancj.github.io/qq/](http://iancj.github.io/qq/)</li>
+	<li>Example2: [http://baozoumanhua.com/mobile_makers/](http://baozoumanhua.com/mobile_makers/)</li>
+</ul>
+
+<ul>
+	<li>Test page: [test/index.html](http://rawgit.com/zhangxinxu/mobilebone/develop/test/index.html)</li>
+</ul>
+
+<ul>
+	<li>Documents: [docs/index.html](http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html)</li>
+</ul>
 
 Why need this?
 -----------------
@@ -52,6 +65,21 @@ mobilebone.js
 单页切换骨架。适用于移动web APP, Hybird混合APP, Phonegap开发等。
 
 后面为使用Mobilebone实现的栗子一枚：[http://iancj.github.io/qq/](http://iancj.github.io/qq/)
+
+实例、测试和文档
+------------------
+<ul>
+	<li>实例1-仿QQ界面：[http://iancj.github.io/qq/](http://iancj.github.io/qq/)</li>
+	<li>实例2-暴走漫画制作器：[http://baozoumanhua.com/mobile_makers/](http://baozoumanhua.com/mobile_makers/)</li>
+</ul>
+
+<ul>
+	<li>测试页面：[test/index.html](http://rawgit.com/zhangxinxu/mobilebone/develop/test/index.html)</li>
+</ul>
+
+<ul>
+	<li>中文文档：[docs/index.html](http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html)</li>
+</ul>
 
 为何需要？
 -------------
