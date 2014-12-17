@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.0.0';
+	Mobilebone.VERSION = '2.0.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
