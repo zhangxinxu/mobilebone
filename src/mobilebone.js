@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '1.2.0';
+	Mobilebone.VERSION = '2.0.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -865,6 +865,7 @@
 		var element = null, parent = this;
 		var popup = function() {
 			parent = parent.parentElement;
+			if (!parent) return null;
 			var tagParent = parent.tagName.toLowerCase();
 			if (tagParent === tag) {
 				element = parent;
