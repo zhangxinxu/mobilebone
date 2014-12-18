@@ -175,13 +175,13 @@
 					var local_function_key = element.getAttribute("data-" + key) || _dataparams[key];
 					if (typeof _params.root[local_function_key] == "function") {		
 						_params[key] = function() {
-							defaults[key].apply(null, arguments);
-							_params.root[local_function_key].apply(null, arguments);
+							defaults[key].apply(this, arguments);
+							_params.root[local_function_key].apply(this, arguments);
 						}
 					} else if (typeof options[key] == "function") {
 						_params[key] = function() {
-							defaults[key].apply(null, arguments);
-							options[key].apply(null, arguments);
+							defaults[key].apply(this, arguments);
+							options[key].apply(this, arguments);
 						}
 					} else {
 						_params[key] = defaults[key];
@@ -208,7 +208,7 @@
 			// do fallback every time
 			var fallback = params_out.fallback;
 			if (typeof fallback == "string") fallback = params_out.root[fallback];
-			if (typeof fallback == "function") fallback(pageInto, pageOut, options.response);
+			if (typeof fallback == "function") fallback.call(params_out.root, pageInto, pageOut, options.response);
 		}
 		if (pageInto != null && pageInto.classList) {		
 			// for title change
@@ -302,8 +302,9 @@
 			
 			// do callback every time
 			var callback = params_in.callback;
+			
 			if (typeof callback == "string") callback = params_in.root[callback];
-			if (typeof callback == "function") callback(pageInto, pageOut, options.response);
+			if (typeof callback == "function") callback.call(params_in.root, pageInto, pageOut, options.response);
 		}
 	};
 	
