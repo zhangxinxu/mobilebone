@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.0.1';
+	Mobilebone.VERSION = '2.0.2';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -726,7 +726,8 @@
 		if (hasInited == true) return 'Don\'t repeat initialization!';	
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		if (hash == "" || hash == "#") {
-			this.transition(document.querySelector("." + this.classPage));
+			store._initPage = document.querySelector("." + this.classPage);
+			this.transition(store._initPage);
 		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
 			this.transition(ele_in);	
 		} else {
@@ -908,10 +909,14 @@
 	 * page change when history change
 	**/
 	window.addEventListener("popstate", function() {
-		var hash = location.hash.replace("#&", "").replace("#", "");
-		if (hash == "") return;
-		
-		var page_in = store[hash];
+		var hash = location.hash.replace("#&", "").replace("#", ""), page_in = null;
+		if (hash == "") {
+			// if no hash, get init page as 'page_in'
+			page_in = store._initPage;
+			if (!page_in) return;			
+		} else {
+			page_in = store[hash];
+		}
 		
 		if (!page_in) {
 			if(isSimple.test(hash) == false) {
