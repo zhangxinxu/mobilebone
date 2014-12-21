@@ -58,10 +58,10 @@ FUN = {
 	callback: function() {
 		console.log(this.status.into = "回调执行！this对应的是Fun!");
 	},
-	home: function(pageInto, pageOut, response) {
+	home: function(pageInto, pageOut, options) {
 		pageInto.querySelector("p").innerHTML += "首次载入时间是：" + this.time() + "<br>";
 	},
-	start: function(page, into_or_out) {
+	start: function(page, into_or_out, options) {
 		page.querySelector("p").innerHTML += "页面即将进行"+ this.status[into_or_out] +"动画，时间是：" + this.time() + "<br>";
 	},
 	end: function(page, into_or_out) {

@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.0.2';
+	Mobilebone.VERSION = '2.1.0';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -248,9 +248,9 @@
 			var onpagefirstinto = params_in.onpagefirstinto;
 			if (!store[pageid]) {
 				if (typeof onpagefirstinto == "string" && params_in.root[onpagefirstinto]) {
-					params_in.root[onpagefirstinto](pageInto, pageOut, options.response);
+					params_in.root[onpagefirstinto](pageInto, pageOut, options);
 				} else if (typeof onpagefirstinto == "function") {
-					onpagefirstinto(pageInto, pageOut, options.response);
+					onpagefirstinto(pageInto, pageOut, options);
 				}
 				// capture form submit
 				slice.call(pageInto.querySelectorAll("form")).forEach(function(form) {
@@ -275,11 +275,11 @@
 					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
 						pageInto.addEventListener(animateEventName, function() {
-							params_in.root[animition](this, this.classList.contains("in")? "into": "out");
+							params_in.root[animition](this, this.classList.contains("in")? "into": "out", options);
 						});
 					} else if (typeof animition == "function") {
 						pageInto.addEventListener(animateEventName, function() {
-							animition(this, this.classList.contains("in")? "into": "out");	
+							animition(this, this.classList.contains("in")? "into": "out", options);	
 						});
 					}	
 				} 
@@ -304,7 +304,7 @@
 			var callback = params_in.callback;
 			
 			if (typeof callback == "string") callback = params_in.root[callback];
-			if (typeof callback == "function") callback.call(params_in.root, pageInto, pageOut, options.response);
+			if (typeof callback == "function") callback.call(params_in.root, pageInto, pageOut, options);
 		}
 	};
 	
@@ -455,6 +455,9 @@
 			if (typeof options.remove != "undefined") {
 				optionsTransition.remove = options.remove;
 			}
+			if (typeof options.target != "undefined") {
+				optionsTransition.target = options.target;
+			}
 		}
 		this.transition(create_page, current_page, optionsTransition);
 	};
@@ -534,6 +537,7 @@
 			}
 
 			params.url = this.getCleanUrl(trigger_or_options, params.url);	
+			params.target = trigger_or_options;
 			
 			var tagName = trigger_or_options.tagName.toLowerCase();
 			if (tagName == "form") {
@@ -727,8 +731,7 @@
 		if (hasInited == true) return 'Don\'t repeat initialization!';	
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		if (hash == "" || hash == "#") {
-			store._initPage = document.querySelector("." + this.classPage);
-			this.transition(store._initPage);
+			this.transition(document.querySelector("." + this.classPage));
 		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
 			this.transition(ele_in);	
 		} else {
@@ -832,7 +835,9 @@
 			if (back == false && rel == "auto") {
 				back = Mobilebone.isBack(eleTargetPage, self_page);
 			}
-			if (eleTargetPage) Mobilebone.transition(eleTargetPage, self_page, back);
+			if (eleTargetPage) Mobilebone.transition(eleTargetPage, self_page, back, {
+				target: target
+			});
 			event.preventDefault();
 		} else if (/^javascript/.test(href)) {
 			// back
@@ -849,6 +854,7 @@
 					back = Mobilebone.isBack(store[clean_url], self_page);
 				}
 				Mobilebone.transition(store[clean_url], self_page, back, {
+					target: target,
 					id: clean_url	
 				});
 			} else {
@@ -912,9 +918,9 @@
 	window.addEventListener("popstate", function() {
 		var hash = location.hash.replace("#&", "").replace("#", ""), page_in = null;
 		if (hash == "") {
-			// if no hash, get init page as 'page_in'
-			page_in = store._initPage;
-			if (!page_in) return;			
+			// if no hash, get first page as 'page_in'
+			page_in = document.querySelector("." + Mobilebone.classPage);
+			if (page_in.id) return;			
 		} else {
 			page_in = store[hash];
 		}
