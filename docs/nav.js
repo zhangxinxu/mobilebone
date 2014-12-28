@@ -4,7 +4,7 @@
 	
 	var key = window.navKey, html = '<nav>', active = '', matchs = false;
 	
-	["Mobilebone.support", "Mobilebone.VERSION", "Mobilebone.autoInit", "Mobilebone.captureLink", "Mobilebone.captureForm", "Mobilebone.rootTransition", "Mobilebone.mergeCallback", "Mobilebone.classPage", "Mobilebone.classMask", "Mobilebone.pushStateEnabled", "Mobilebone.transition()", "Mobilebone.getCleanUrl()", "Mobilebone.getPage()", "Mobilebone.createPage()", "Mobilebone.getFunction()", "Mobilebone.ajax()", "Mobilebone.submit()", "Mobilebone.isBack()", "Mobilebone.jsonHandle()", "Mobilebone.init()", "Mobilebone.handleTapEvent()", "otherAnonymousAPIs", "data-title", "data-root", "data-params", "data-callbackKeys", "data-mask", "data-rel", "data-ajax", "data-ajaxKeys"].forEach(function(innerhtml) {
+	["Mobilebone.support", "Mobilebone.VERSION", "Mobilebone.autoInit", "Mobilebone.captureLink", "Mobilebone.captureForm", "Mobilebone.rootTransition", "Mobilebone.mergeCallback", "Mobilebone.classAnimation", "Mobilebone.classPage", "Mobilebone.classMask", "Mobilebone.pushStateEnabled", "Mobilebone.transition()", "Mobilebone.getCleanUrl()", "Mobilebone.getPage()", "Mobilebone.createPage()", "Mobilebone.getFunction()", "Mobilebone.ajax()", "Mobilebone.submit()", "Mobilebone.isBack()", "Mobilebone.jsonHandle()", "Mobilebone.init()", "Mobilebone.handleTapEvent()", "otherAnonymousAPIs", "data-title", "data-root", "data-form", "data-params", "data-callbackKeys", "data-mask", "data-rel", "data-ajax", "data-ajaxKeys"].forEach(function(innerhtml) {
 		if (matchs == true) {
 			active = '';
 		} else if (key && (key == innerhtml || new RegExp(key).test(innerhtml))) {

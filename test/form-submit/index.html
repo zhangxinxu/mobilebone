@@ -10,7 +10,7 @@
 <style>
 input { font-size: 100%; }
 input[name] {
-	height: 40px; width: 100%; padding: 10px; box-sizing: border-box;font-size: 100%;
+	height: 40px; width: 100%; padding: 10px; box-sizing: border-box; font-size: 100%;
 }
 .search { height: 40px; padding: 10px; box-sizing: border-box; }
 .submit { height: 40px; font-size: 16px; padding: 0 25px; }
@@ -21,8 +21,8 @@ input[name] {
 <div id="pageHome" class="page out">
 	<ul>
         <li class="pl10">
-            <form method="get" action="search.html">
-                <input type="search" class="search mr10"><input type="submit" class="submit" value="搜索">
+            <form method="get" action="search.html" data-validate="validate">
+                <input type="search" class="search mr10" required><input type="submit" class="submit" value="搜索">
             </form>
     	</li>
     </ul>
@@ -35,5 +35,10 @@ input[name] {
 </div>
 
 <script src="../../src/mobilebone.js"></script>
+<script>
+var validate = function() {
+	
+};
+</script>
 </body>
 </html>

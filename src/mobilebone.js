@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.1.0';
+	Mobilebone.VERSION = '2.1.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -86,7 +86,13 @@
 	 * @type boolean
 	**/
 	Mobilebone.mergeCallback = true;
-	
+
+	/**
+	 *  for mark page element
+	 *
+	 * @type string
+	**/
+	Mobilebone.classAnimation = "slide";
 	/**
 	 *  for mark page element
 	 *
@@ -146,7 +152,7 @@
 			root: this.rootTransition,
 			// the form of transition, the value (eg. 'slide') will be a className to add or remove. 
 			// of course, u can set to other valeu, for example, 'fade' or 'flip'. However, u shou add corresponding CSS3 code.
-			form: this.form || 'slide',
+			form: this.form || this.classAnimation,
 			// 'animationstart/animationend/...' are callbacks params
 			// Note: those all global callbacks!
 			onpagefirstinto: this.onpagefirstinto,
