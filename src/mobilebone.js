@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.1.1';
+	Mobilebone.VERSION = '2.1.2';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -88,7 +88,7 @@
 	Mobilebone.mergeCallback = true;
 
 	/**
-	 *  for mark page element
+	 *  className of animation
 	 *
 	 * @type string
 	**/
@@ -175,7 +175,7 @@
 				_params.root = Mobilebone.getFunction(_params.root);
 			}
 			
-			["onpagefirstinto", "callback", "fallback", "animationstart", "animationend"].forEach(function(key) {
+			["onpagefirstinto", "callback", "fallback", "animationstart", "animationend", "preventdefault"].forEach(function(key) {
 				if (Mobilebone.mergeCallback == true && typeof defaults[key] == "function") {
 					// merge global callback
 					var local_function_key = element.getAttribute("data-" + key) || _dataparams[key];
@@ -205,18 +205,33 @@
 		var params_out = params(pageOut), params_in = params(pageInto);
 		
 		if (pageOut != null && pageOut.classList) {
-			// do transition
-			pageOut.classList.add("out");
-			pageOut.classList.add(params_out.form);
-			pageOut.classList.remove("in");
-			// if reverse direction
-			pageOut.classList[back? "add": "remove"]("reverse");
-			// do fallback every time
-			var fallback = params_out.fallback;
-			if (typeof fallback == "string") fallback = params_out.root[fallback];
-			if (typeof fallback == "function") fallback.call(params_out.root, pageInto, pageOut, options.response);
+			// weather prevent transition
+			var preventOut = params_out.preventdefault, isPreventOut = false;
+			if (typeof preventOut == "string") preventOut = params_out.root[preventOut];
+			if (typeof preventOut == "function") isPreventOut = preventOut.call(params_out.root, pageInto, pageOut, options);
+			
+			// do transition if there are no 'prevent'
+			if (isPreventOut != true) {
+				pageOut.classList.add("out");
+				pageOut.classList.add(params_out.form);
+				pageOut.classList.remove("in");
+				// if reverse direction
+				pageOut.classList[back? "add": "remove"]("reverse");
+				// do fallback every time
+				var fallback = params_out.fallback;
+				if (typeof fallback == "string") fallback = params_out.root[fallback];
+				if (typeof fallback == "function") fallback.call(params_out.root, pageInto, pageOut, options);
+			}
 		}
-		if (pageInto != null && pageInto.classList) {		
+		if (pageInto != null && pageInto.classList) {
+			// weather prevent transition
+			var preventInto = params_in.preventdefault;
+			if (typeof preventInto == "string") preventInto = params_in.root[preventInto];
+			if (typeof preventInto == "function" && preventInto.call(params_in.root, pageInto, pageOut, options) == true) {
+				// only run here and nothing more
+				return this;	
+			}			
+				
 			// for title change
 			var title = params_in.title, 
 			    header = document.querySelector("h1"), 
@@ -672,6 +687,16 @@
 		if (ajax == "false" || (this.captureForm == false && ajax != "true")) return;
 		
 		form.addEventListener("submit", function(event) {
+			// prevent detect
+			var attrPrevent = this.getAttribute("data-preventdefault");
+			// get 'preventDefault' function
+			var funPrevent = Mobilebone.getFunction(attrPrevent);
+			if (typeof funPrevent == "function" && funPrevent(this) == true) {
+				// if the return value of prevent function is true, prevent everything~
+				event.preventDefault();
+				return false;
+			}
+			
 			Mobilebone.ajax(this);
 			event.preventDefault();
 		});
@@ -797,6 +822,17 @@
 		var self_page = document.querySelector(".in." + Mobilebone.classPage);
 		
 		if (self_page == null || !target) return;
+		
+		// prevent detect
+		var attrPrevent = target.getAttribute("data-preventdefault") 
+			|| _queryToObject(target.getAttribute("data-params") || "").preventdefault;
+		// get 'preventDefault' function
+		var funPrevent = Mobilebone.getFunction(attrPrevent);
+		if (typeof funPrevent == "function" && funPrevent(target) == true) {
+			// if the return value of prevent function is true, prevent everything~
+			event.preventDefault();
+			return false;
+		}
 		
 		// if mask element exist and displaying, prevent double trigger
 		var ele_mask = target.getElementsByClassName(Mobilebone.classMask)[0];
