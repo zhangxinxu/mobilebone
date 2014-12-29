@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-preventDefault</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-preventDefault (v2.2.0+)</h2>
+        <p>用来阻止（或介入）Mobilebone的一些默认行为，这些行为包括，页面过场；点击链接过场或请求；点击表单提交。</p>
+        <h3>使用</h3>
+        <p>例如，页面上有如下HTML：</p>
+        <pre>&lt;a href="form.html">点击加载一个表单&lt;/a></pre>
+        <p>如果没有其他设置，Mobilebone会自动请求<code>form.html</code>这个页面并过场载入。但是，往往，我们可能需要先判断用户是否已经登录了，此时，就需要<code>data-preventdefault</code>(不区分大小写)的介入。如：</p>
+        <pre>&lt;a href="form.html" data-preventdefault="isLoginout">点击加载一个表单&lt;/a></pre>
+        <p>于是，我们就可以在<code>isLogin</code>这个方法中做阻断判断了：</p>
+        <pre>var isLoginout = function(target) {
+    <span style="color:green;">// 支持一个参数target, 指的就是对应的a元素
+    // 如果没有登录，返回true</span>
+    if (isLogin == false) return true;    
+};</pre>
+		<p>从上面代码可以看到，当<code>data-preventdefault</code>中介函数返回值为<code>true</code>的时候，就会中断Mobilebone的默认行为，你就可以做一些你想做的其他事情，例如，先弹出个登录弹框。</p>
+        <h3>使用</h3>
+        <p><code>data-preventdefault</code>中介函数还有一个很重要的应用就是表单验证。默认情况下，表单点击提交按钮，就会走原生验证，然后Ajax过场。但是，实际开发，验证是交给自己，而不是浏览器，于是，在提交之前，我们有必要验证下，此时，就得靠<code>data-preventdefault</code>.</p>
+        <p>写在<code>form</code>标签上，如下：</p>
+        <pre>&lt;form method="get" action="search.html" data-preventDefault="validate_false" novalidate>&lt;/form></pre>
+        <p>由于<code>data-preventdefault</code>中介函数返回<code>true</code>时候才中断，因此，对应的函数关键字应该是“验证不通过”的意思，例如这里的<code>validate_false</code>.</p>
+        <pre>var validate_false = function(form) {
+    <span style="color:green;">// 支持一个参数form, 指的就是表单元素
+    // 如果文本框没有值</span>
+    if (input.value.trim() == "") {
+        <span style="color:green;">// 显示错误提示
+        // xxxx.show();
+        // 中断Mobilebone行为</span>
+        return true;    
+    }
+};</pre>
+		<h3>使用</h3>
+		<p><code>page</code>页面元素上也可以使用此中介阻断API，其绑定以及函数参数与<code>callback</code>/<code>fallback</code>完全一致。</p>
+        <p>例如，我们Ajax请求页面的是一个弹框页面，此时，当前页面是不能离开舞台的，就可以使用<code>data-preventdefault</code>中断。这个以后有机会再放置实例。</p>
+        <p>或者实现页面跳转效果等。</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-preventDefault";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

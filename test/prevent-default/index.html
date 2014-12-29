@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>表单提交</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+<link rel="stylesheet" href="zxx.lib.css">
+<style>
+input { font-size: 100%; }
+input[name] {
+	height: 40px; width: 100%; padding: 10px; box-sizing: border-box; font-size: 100%;
+}
+.search { height: 40px; padding: 10px; box-sizing: border-box; }
+.submit { height: 40px; font-size: 16px; padding: 0 25px; }
+
+.error { position: absolute; line-height: 32px; top: 0; left: 0; right: 0; text-align: center; color: #fff; background-color: rgba(0,0,0,.5); -webkit-transition: all .25s; transition: all .25s; z-index: 1; }
+.error.out {
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+}
+
+input[name=login] { width: 60px; height: 20px; position: absolute; z-index: 1; opacity: 0; }
+.iradio {
+	display: inline-block;
+	 width: 40px; height: 20px;
+	 border-radius: 20px; border: 1px solid #ccc;
+	 background-color: #eee;
+	 position: relative;
+	 vertical-align: middle;
+}
+.iradio::before { content: ''; position:absolute; width: 20px; height: 20px; background-color: #fff; box-shadow: 0 0 2px rgba(0,0,0,.35); border-radius: 20px; }
+input[name=login]:checked + .iradio {
+	background-color: green;	
+}
+input[name=login]:checked + .iradio::before {
+	left: 20px;	
+}
+</style>
+</head>
+
+<body>
+<div id="error" class="error out"></div>
+<div id="pageHome" class="page out">
+	<ul>
+        <li class="pl10">
+            <form method="get" action="search.html" data-preventDefault="validate_false" novalidate>
+                <input type="search" class="search mr10" required><input type="submit" class="submit" value="搜索">
+            </form>
+    	</li>
+    </ul>
+    <ul>
+    	<li class="p10">是否登录：<input type="checkbox" name="login"><label class="iradio"></label></li>
+        <li><a href="form.html" data-preventdefault="loginfirst">点击动态加载一个表单</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+var error = document.getElementById("error");
+var validate_false = function(form) {
+	var ele_search = form.querySelector("input[type=search]");
+	if (ele_search.value.trim() == "") {
+		error.innerHTML = "尚未输入搜索内容";
+		error.classList.remove("out");
+		ele_search.focus();
+		setTimeout(function() {
+			error.classList.add("out");
+		}, 3000);
+		return true;
+	}
+};
+
+var loginfirst = function() {
+	var checkbox = document.querySelector("input[type=checkbox]");
+	if (checkbox.checked == false) {
+		alert("你需要先登录~");
+		return true;
+	}
+};
+
+var otherPageIfGithub = function(elein) {
+	if (elein.id == "searchResult" && /rawgit/i.test(location.href)) {
+		Mobilebone.ajax({
+			url: "other.html",
+			success: function() {
+				var result = document.getElementById("searchResult");
+				if (result) result.parentNode.removeChild(result);
+			}
+		});
+		return true;
+	}
+};
+</script>
+</body>
+</html>

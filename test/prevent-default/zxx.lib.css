@@ -1,0 +1,291 @@
+/*!
+* by zhangxinxu(.com) 2010-?
+* 2010-07-12 v1.0
+* 2010-07-21 v1.1 添加block元素居中之auto属性，增加鼠标手形样式
+* 2010-09-17 v1.2 添加z-index层级属性
+* 2010-09-29 v1.3 添加break-word属性
+* 2010-11-12 v1.4 添加white-space:nowrap;值，去掉Georgia字体
+* 2011-01-17 v1.5 去除red颜色，添加cell双栏自适应属性，z样式影响扩至IE7，样式位置以及顺序调整，dib样式忽略Firefox 2，去除Lucida Console字体，添加Verdana字体，添加letter-spacing样式
+* 2011-07-28 v1.6 增加vertical-align:bottom属性，增加点点点效果多样
+* 2012-01-18 v1.7 点点点效果样式去除-moz-前缀，多余；增加修复cell下连续单词字符换行问题；去除.ovs{overflow:scroll;}
+                  去除.vimg{margin-bottom:-3px;}
+* 2013-05-24 v2.0 为开源到github上做大改
+                  1. 增加margin负值范围
+                  2. margin/padding增加15px/30px组
+                  3. 中文字体改成英文字符表示，例如“微软雅黑” → "microsoft yahei"
+                  4. 新增border系列, background-color系列, width(fixed value/percent value)系列以及.ell以下所有样式
+* 保留版权说明
+*/
+
+/* ---------------------single CSS----------------------- */
+/* display */
+.dn{display:none;}
+.di{display:inline;}
+.db{display:block;}
+.dib{display:inline-block;} /* if the element is block level(eg. div, li), using 'inline_any' instead */
+/* height */
+.h14{height:14px;}
+.h16{height:16px;}
+.h18{height:18px;}
+.h20{height:20px;}
+.h22{height:22px;}
+.h24{height:24px;}
+/* width */
+/* fixed width value */
+.w20{width:20px;}
+.w50{width:50px;}
+.w70{width:70px;}
+.w100{width:100px;}
+.w120{width:120px;}
+.w140{width:140px;}
+.w160{width:160px;}
+.w180{width:180px;}
+.w200{width:200px;}
+.w220{width:220px;}
+.w250{width:250px;}
+.w280{width:280px;}
+.w300{width:280px;}
+.w320{width:320px;}
+.w360{width:360px;}
+.w400{width:400px;}
+.w460{width:460px;}
+.w500{width:500px;}
+.w600{width:600px;}
+.w640{width:640px;}
+.w700{width:700px;}
+/* percent width value */
+.pct10{width:10%;}
+.pct15{width:15%;}
+.pct20{width:20%;}
+.pct25{width:25%;}
+.pct30{width:30%;}
+.pct33{width:33.3%;}
+.pct40{width:40%;}
+.pct50{width:50%;}
+.pct60{width:60%;}
+.pct66{width:66.6%;}
+.pct70{width:70%;}
+.pct75{width:75%;}
+.pct80{width:80%;}
+.pct90{width:90%;}
+.pct100{width:100%;}
+/* line-height */
+.lh14{line-height:14px;}
+.lh16{line-height:16px;}
+.lh18{line-height:18px;}
+.lh20{line-height:20px;}
+.lh22{line-height:22px;}
+.lh24{line-height:24px;}
+/* margin */
+.m0{margin:0;}
+.ml1{margin-left:1px;}
+.ml2{margin-left:2px;}
+.ml5{margin-left:5px;}
+.ml10{margin-left:10px;}
+.ml15{margin-left:15px;}
+.ml20{margin-left:20px;}
+.ml30{margin-left:30px;}
+.mr1{margin-right:1px;}
+.mr2{margin-right:2px;}
+.mr5{margin-right:5px;}
+.mr10{margin-right:10px;}
+.mr15{margin-right:15px;}
+.mr20{margin-right:20px;}
+.mr30{margin-right:30px;}
+.mt1{margin-top:1px;}
+.mt2{margin-top:2px;}
+.mt5{margin-top:5px;}
+.mt10{margin-top:10px;}
+.mt15{margin-top:15px;}
+.mt20{margin-top:20px;}
+.mt30{margin-top:30px;}
+.mb1{margin-bottom:1px;}
+.mb2{margin-bottom:2px;}
+.mb5{margin-bottom:5px;}
+.mb10{margin-bottom:10px;}
+.mb15{margin-bottom:15px;}
+.mb20{margin-bottom:20px;}
+.mb30{margin-bottom:30px;}
+/* margin negative */
+.ml-1{margin-left:-1px;}
+.mr-1{margin-right:-1px;}
+.mt-1{margin-top:-1px;}
+.mb-1{margin-bottom:-1px;}
+.ml-l{margin-left:-3px;}
+.mr-3{margin-right:-3px;}
+.mt-3{margin-top:-3px;}
+.mb-3{margin-bottom:-3px;}
+.ml-20{margin-left:-20px;}
+.mr-20{margin-right:-20px;}
+.mt-20{margin-top:-20px;}
+.mb-20{margin-bottom:-20px;}
+/* padding */
+.p1{padding:1px;}
+.pl1{padding-left:1px;}
+.pt1{padding-top:1px;}
+.pr1{padding-right:1px;}
+.pb1{padding-bottom:1px;}
+.p2{padding:2px;}
+.pl2{padding-left:2px;}
+.pt2{padding-top:2px;}
+.pr2{padding-right:2px;}
+.pb2{padding-bottom:2px;}
+.pl5{padding-left:5px;}
+.p5{padding:5px;}
+.pt5{padding-top:5px;}
+.pr5{padding-right:5px;}
+.pb5{padding-bottom:5px;}
+.p10{padding:10px;}
+.pl10{padding-left:10px;}
+.pt10{padding-top:10px;}
+.pr10{padding-right:10px;}
+.pb10{padding-bottom:10px;}
+.p15{padding:15px;}
+.pl15{padding-left:15px;}
+.pt15{padding-top:15px;}
+.pr15{padding-right:15px;}
+.pb15{padding-bottom:15px;}
+.p20{padding:20px;}
+.pl20{padding-left:20px;}
+.pt20{padding-top:20px;}
+.pr20{padding-right:20px;}
+.pb20{padding-bottom:20px;}
+.p30{padding:30px;}
+.pl30{padding-left:30px;}
+.pt30{padding-top:30px;}
+.pr30{padding-right:30px;}
+.pb30{padding-bottom:30px;}
+/* border-color name rule: border(b)-position(l/r/t/b/d)-width(null/2)-style(null/sh)-color(first one letter/first two letter) |-> All colors are safe color*/
+.bdc{border:1px solid #ccc;}
+.blc{border-left:1px solid #ccc;}
+.brc{border-right:1px solid #ccc;}
+.btc{border-top:1px solid #ccc;}
+.bbc{border-bottom:1px solid #ccc;}
+.bdd{border:1px solid #ddd;}
+.bld{border-left:1px solid #ddd;}
+.brd{border-right:1px solid #ddd;}
+.btd{border-top:1px solid #ddd;}
+.bbd{border-bottom:1px solid #ddd;}
+.bde{border:1px solid #eee;}
+.ble{border-left:1px solid #eee;}
+.bre{border-right:1px solid #eee;}
+.bte{border-top:1px solid #eee;}
+.bbe{border-bottom:1px solid #eee;}
+/* background-color name rule: bg - (key word/Hex color) |-> All colors are safe color */
+.bgwh{background-color:#fff;}
+.bgfb{background-color:#fbfbfb;}
+.bgf5{background-color:#f5f5f5;}
+.bgf0{background-color:#f0f0f0;}
+.bgeb{background-color:#ebebeb;}
+.bge0{background-color:#e0e0e0;}
+/* safe color */
+.g0{color:#000;}
+.g3{color:#333;}
+.g6{color:#666;}
+.g9{color:#999;}
+.gc{color:#ccc;}
+.wh{color:white;}
+/* font-size */
+.f0{font-size:0;}
+.f10{font-size:10px;}
+.f12{font-size:12px;}
+.f13{font-size:13px;}
+.f14{font-size:14px;}
+.f16{font-size:16px;}
+.f20{font-size:20px;}
+.f24{font-size:24px;}
+/* font-family */
+.fa{font-family:Arial;}
+.ft{font-family:Tahoma;}
+.fv{font-family:Verdana;}
+.fs{font-family:'simsun';}
+.fw{font-family:'microsoft yahei';}
+/* font-style */
+.n{font-weight:normal; font-style:normal;}
+.b{font-weight:bold;}
+.i{font-style:italic;}
+/* text-align */
+.tc{text-align:center;}
+.tr{text-align:right;}
+.tl{text-align:left;}
+.tj{text-align:justify;}
+/* text-decoration */
+.tdl{text-decoration:underline;}
+.tdn,.tdn:hover,.tdn a:hover,a.tdl:hover{text-decoration:none;}
+/* letter-spacing */
+.lt-1{letter-spacing:-1px;}
+.lt0{letter-spacing:0;}
+.lt1{letter-spacing:1px;}
+/* white-space */
+.nowrap{white-space:nowrap;}
+/* word-wrap */
+.bk{word-wrap:break-word;}
+/* vertical-align */
+.vm{vertical-align:middle;}
+.vtb{vertical-align:text-bottom;}
+.vb{vertical-align:bottom;}
+.vt{vertical-align:top;}
+.vn{vertical-align:-2px;}
+/* float */
+.l{float:left;}
+.r{float:right;}
+/* clear */
+.cl{clear:both;}
+/* position */
+.rel{position:relative;}
+.abs{position:absolute;}
+/*z-index*/
+.zx1{z-index:1;}
+.zx2{z-index:2;}
+/* cursor */
+.poi{cursor:pointer;}
+.def{cursor:default;}
+/* overflow */
+.ovh{overflow:hidden;}
+/* visibility */
+.vh{visibility:hidden;}
+.vv{visibility:visible;}
+/* zoom */
+.z{*zoom:1;}
+
+
+/* ------------------- multiply CSS ------------------ */
+/* 块状元素水平居中 */
+.auto{margin-left:auto; margin-right:auto;}
+/* 清除浮 动*/
+.fix{*zoom:1;}
+.fix:after{display:table; content:''; clear:both;}
+/* 基于display:table-cell的自适应布局 */
+.cell{display:table-cell; *display:inline-block; width:2000px; *width:auto;}
+/* 双栏自适应cell部分连续英文字符换行 */
+.cell_bk{display:table; width:100%; table-layout:fixed; word-wrap:break-word;}
+/* 单行文字溢出虚点显 示*/
+.ell{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+/* css3过渡动画效果 */
+.trans{
+	-webkit-transition:all 0.3s;
+	   -moz-transition:all 0.3s;
+	    -ms-transition:all 0.3s;
+	     -o-transition:all 0.3s;	
+	        transition:all 0.3s;
+}
+/* 大小不定元素垂直居中 */
+.dib_vm{display:inline-block; width:0; height:100%; vertical-align:middle;}
+/* 加载中背景图片 */
+/*.loading{background:url(http://www.zhangxinxu.com/study/image/loading.gif) no-repeat center;}*/
+/* 无框文本框文本域 */
+.bd_none{border:0; outline:none;}
+/* 按钮禁用 */
+.disabled{color:#acacac!important; border-color:#acacac!important; text-shadow:1px 1px #fff!important; outline:0!important; cursor:default!important; pointer-events:none;}
+.disabled:hover{text-decoration:none!important;}
+/*inline-block与float等宽列表*/
+.inline_box{font-size:1px; letter-spacing:-3px; font-family:Arial;}
+.inline_two, .inline_three, .inline_four, .inline_five, .inline_six, .inline_any{display:inline-block; *display:inline; font-size:12px; letter-spacing:0; vertical-align:top; *zoom:1;}
+.float_two, .float_three, .float_four, .float_five, .float_six,.float_seven{float:left;}
+.inline_two, .float_two{width:49.9%;}
+.inline_three, .float_three{width:33.3%;}
+.inline_four, .float_four{width:24.9%;}
+.inline_five, .float_five{width:19.9%;}
+.inline_six, .float_six{width:16.6%;}
+.inline_fix{display:inline-block; width:100%; height:0; overflow:hidden;}
+
