@@ -83,10 +83,14 @@ var loginfirst = function() {
 	}
 };
 
-var otherPageIfGithub = function() {
-	if (/rawgit/i.test(location.href)) {
+var otherPageIfGithub = function(elein) {
+	if (elein.id == "searchResult" && /rawgit/i.test(location.href)) {
 		Mobilebone.ajax({
-			url: "other.html"	
+			url: "other.html",
+			success: function() {
+				var result = document.getElementById("searchResult");
+				if (result) result.parentNode.removeChild(result);
+			}
 		});
 		return true;
 	}

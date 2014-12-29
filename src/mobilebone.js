@@ -209,7 +209,20 @@
 			var preventOut = params_out.preventdefault, isPreventOut = false;
 			if (typeof preventOut == "string") preventOut = params_out.root[preventOut];
 			if (typeof preventOut == "function") isPreventOut = preventOut.call(params_out.root, pageInto, pageOut, options);
-			
+		}
+		if (pageInto != null && pageInto.classList) {
+			// weather prevent transition
+			var preventInto = params_in.preventdefault, isPreventInto = false;
+			if (typeof preventInto == "string") preventInto = params_in.root[preventInto];
+			if (typeof preventInto == "function") isPreventInto = preventInto.call(params_in.root, pageInto, pageOut, options);
+			// if pageinto stopped, stop all
+			if (isPreventInto == true) {
+				// only run here and nothing more
+				return this;	
+			}		
+		}
+		
+		if (pageOut != null && pageOut.classList) {
 			// do transition if there are no 'prevent'
 			if (isPreventOut != true) {
 				pageOut.classList.add("out");
@@ -223,15 +236,7 @@
 				if (typeof fallback == "function") fallback.call(params_out.root, pageInto, pageOut, options);
 			}
 		}
-		if (pageInto != null && pageInto.classList) {
-			// weather prevent transition
-			var preventInto = params_in.preventdefault;
-			if (typeof preventInto == "string") preventInto = params_in.root[preventInto];
-			if (typeof preventInto == "function" && preventInto.call(params_in.root, pageInto, pageOut, options) == true) {
-				// only run here and nothing more
-				return this;	
-			}			
-				
+		if (pageInto != null && pageInto.classList) {				
 			// for title change
 			var title = params_in.title, 
 			    header = document.querySelector("h1"), 
