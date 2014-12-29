@@ -1,4 +1,4 @@
-/*! 
+/*!
  * mobilebone.css
  * by zhangxinxu(.com) 2014-09-26
  * some necessary CSS for mobilebone.js
@@ -27,12 +27,12 @@ html, body, .page {
 }
 .page.out {
 	display: none;
-	-webkit-transform: translateX(-100%);
-	transform: translateX(-100%);
+	-webkit-transform: translate3d(-100%, 0, 0);
+	transform: translate3d(-100%, 0, 0);
 }
 .page.in {
-	-webkit-transform: translateX(0);
-	transform: translateX(0);
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
 }
 
 /* mask layer when ajax sending... */
@@ -44,18 +44,18 @@ html, body, .page {
 }
 .loading { /* more info: http://www.zhangxinxu.com/wordpress/?p=3357 */
     width: 3px; height:3px;
-    border-radius: 100%;                      
+    border-radius: 100%;
     box-shadow: 0 -10px 0 1px currentColor,           /* top, 1px expand */
-                10px 0px currentColor,                /* right */    
+                10px 0px currentColor,                /* right */
                 0 10px currentColor,                  /* bottom */
                 -10px 0 currentColor,                 /* left */
-                              
+
                 -7px -7px 0 .5px currentColor,        /* left-top, 0.5px expand */
-                7px -7px 0 1.5px currentColor,        /* right-top, 1.5px expand */                    
+                7px -7px 0 1.5px currentColor,        /* right-top, 1.5px expand */
                 7px 7px currentColor,                 /* right-bottom */
                 -7px 7px currentColor;                /* left-bottom */
 	-webkit-animation: loading 1s step-start infinite;
-	animation: loading 1s step-start infinite; 
+	animation: loading 1s step-start infinite;
 	/*center*/
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;
@@ -81,36 +81,36 @@ html, body, .page {
 }
 
 @-webkit-keyframes slideinfromright {
-    from { -webkit-transform: translateX(100%); }
-    to { -webkit-transform: translateX(0); }
+    from { -webkit-transform: translate3d(100%, 0, 0); }
+    to { -webkit-transform: translate3d(0, 0, 0); }
 }
 @keyframes slideinfromright {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    from { transform: translate3d(100%, 0, 0); }
+    to { transform: translate3d(0, 0, 0); }
 }
 @-webkit-keyframes slideinfromleft {
-    from { -webkit-transform: translateX(-100%); }
-    to { -webkit-transform: translateX(0); }
+    from { -webkit-transform: translate3d(-100%, 0, 0); }
+    to { -webkit-transform: translate3d(0, 0, 0); }
 }
 @keyframes slideinfromleft {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+    from { transform: translate3d(-100%, 0, 0); }
+    to { transform: translate3d(0, 0, 0); }
 }
 @-webkit-keyframes slideouttoleft {
-    from { -webkit-transform: translateX(0); }
-    to { -webkit-transform: translateX(-100%); }
+    from { -webkit-transform: translate3d(0, 0, 0); }
+    to { -webkit-transform: translate3d(-100%, 0, 0); }
 }
 @keyframes slideouttoleft {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-100%, 0, 0); }
 }
 @-webkit-keyframes slideouttoright {
-    from { -webkit-transform: translateX(0); }
-    to { -webkit-transform: translateX(100%); }
+    from { -webkit-transform: translate3d(0, 0, 0); }
+    to { -webkit-transform: translate3d(100%, 0, 0); }
 }
 @keyframes slideouttoright {
-    from { transform: translateX(0); }
-    to { transform: translateX(100%); }
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(100%, 0, 0); }
 }
 
 /* chrysanthemum loading effect */
