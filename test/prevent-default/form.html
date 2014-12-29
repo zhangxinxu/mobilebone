@@ -10,8 +10,7 @@
 </head>
 
 <body>
-<div id="searchResult" class="page out">
-	<p class="p10">本表单提交至php页面，返回数据为动态数据，因此在Github上是提交不成功的。</p>
+<div id="searchResult" class="page out" data-preventdefault="window.otherPageIfGithub">
     <form method="post" action="submit.php" class="pl10 pr10">
     	<div class="mt20">
         	<label>用户名：</label>
@@ -30,3 +29,4 @@
 <script src="../../src/mobilebone.js"></script>
 </body>
 </html>
+

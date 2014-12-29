@@ -84,7 +84,7 @@ var loginfirst = function() {
 };
 
 var otherPageIfGithub = function() {
-	if (/github/i.test(location.href)) {
+	if (/rawgit/i.test(location.href)) {
 		Mobilebone.ajax({
 			url: "other.html"	
 		});
