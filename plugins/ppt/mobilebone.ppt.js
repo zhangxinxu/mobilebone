@@ -1,10 +1,17 @@
+/*
+ * by zhangxinxu(.com) 2014-10-29
+ * https://github.com/zhangxinxu/mobilebone
+ * plugin for slide show
+*/
 if (window.Mobilebone && Mobilebone.support) {
 	(function(window, document, undefined) {
 		var pages = document.querySelectorAll("." + Mobilebone.classPage),
 			length_page = pages.length;
 			index_page = 0, 
 			hash = location.hash.replace("#&", "");
-			
+		
+		// add pageid if don't exist
+		// and get the index of those pages	
 		[].slice.call(pages).forEach(function(page, index) {
 			if (!page.id) page.id = "page" + (index+1);
 			
@@ -13,14 +20,37 @@ if (window.Mobilebone && Mobilebone.support) {
 			}
 		});
 		
+		// get prev slide-page
 		var prev = function() {
-			if (index_page > 0 && Mobilebone.transition(pages[index_page-1], pages[index_page], true) !== false) {
+			var pageout = pages[index_page] || null, pagein = pages[index_page-1] || null;
+			if (index_page > 0 && Mobilebone.transition(pagein, pageout, true) !== false) {
+				// if there are no preventDefault, add page index
 				index_page--;
+			} else if (index_page == 0) {
+				// first page, can't trigger inner animation by 'Mobilebone.preventdefault'
+				// so we need excute code as below
+				var eleins = pageout.querySelectorAll(".in");
+				if (elein = eleins[eleins.length - 1]) {
+					elein.style.display = elein.getAttribute("data-display") || "block";
+					elein.classList.remove("in");
+					elein.classList.add("out");
+				}
 			}
-		}, next = function() {
-			if (index_page < length_page - 1 && Mobilebone.transition(pages[index_page + 1], pages[index_page]) !== false) {
+		}
+		// get next slide-page
+		, next = function() {
+			var pageout = pages[index_page] || null, pagein = pages[index_page+1] || null;
+			if (index_page < length_page - 1 && Mobilebone.transition(pagein, pageout) !== false) {
 				index_page++;
-			}	
+			} else if (index_page == length_page - 1) {
+				// last page, can't trigger inner animation by 'Mobilebone.preventdefault'
+				// so we need excute code as below
+				var eleout = pageout.querySelector(".out");
+				if (eleout) {
+					eleout.classList.remove("out");
+					eleout.classList.add("in");
+				}
+			}
 		};
 		
 		/*document.addEventListener("click", function(event) {
@@ -60,11 +90,13 @@ if (window.Mobilebone && Mobilebone.support) {
 		
 		Mobilebone.preventdefault = function(pagein, pageout) {
 			if (pageout == null) return;
+			
 			var isBack = Mobilebone.isBack(pagein, pageout);
+			
 			if (isBack == true) {
-				var elein = pageout.querySelector(".in");
-				if (elein) {
-					elein.style.display = "block";
+				var eleins = pageout.querySelectorAll(".in");
+				if (elein = eleins[eleins.length - 1]) {
+					elein.style.display = elein.getAttribute("data-display") || "block";
 					elein.classList.remove("in");
 					elein.classList.add("out");
 					return true;

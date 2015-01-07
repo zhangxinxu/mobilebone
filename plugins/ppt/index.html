@@ -6,6 +6,38 @@
 <title>屁屁踢在线幻灯片插件演示</title>
 <link rel="stylesheet" href="../../src/mobilebone.css">
 <link rel="stylesheet" href="ppt.css">
+<style>
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@-webkit-keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+@keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+.fade.out {
+	opacity: 0;
+	-webkit-animation-duration: 125ms;
+	-webkit-animation-name: fadeout;
+	animation-duration: 125ms;
+	animation-name: fadeout;
+}
+.fade.in {
+	opacity: 1;
+	-webkit-animation-duration: 225ms;
+	-webkit-animation-name: fadein;
+	animation-duration: 225ms;
+	animation-name: fadein;
+}
+</style>
 </head>
 
 <body>
@@ -19,18 +51,18 @@
 	<div class="content only-header">
         <h1>为何需要？</h1>
         <ol>
-            <li>Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。</li>
-            <li>Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。</li>
-            <li>就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选型策略。</li>
+            <li class="fade out">Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。</li>
+            <li class="fade out">Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。</li>
+            <li class="fade out">就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选型策略。</li>
         </ol>
     </div>
 </div>
 <div class="page out">
 	<div class="content only-header">
         <h1>如何使用？</h1>
-        <pre>&lt;link rel="stylesheet" href="mobilebone.css"></pre>
-        <pre>&lt;script src="mobilebone.js">&lt;/script></pre>
-        <pre>body
+        <pre class="fade out">&lt;link rel="stylesheet" href="mobilebone.css"></pre>
+        <pre class="fade out">&lt;script src="mobilebone.js">&lt;/script></pre>
+        <pre class="fade out">body
   page
   page
   page</pre>
