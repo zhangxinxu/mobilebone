@@ -112,5 +112,24 @@ if (window.Mobilebone && Mobilebone.support) {
 			}
 		};
 		
+		// 确定缩放比例
+		var funGetScale = function() {
+			var width = window.innerWidth, height = window.innerHeight;
+			var scaleWidth = width / 1024,
+				scaleHeight = height / 768;
+			return Math.min(scaleWidth, scaleHeight).toFixed(2);
+		};
+	
+		var scale = funGetScale();
+		
+		var style = document.createElement("style");
+		style.innerHTML = '.content{-webkit-transform:scale('+ scale +');transform:scale('+ scale +');}';
+		document.querySelector("head").appendChild(style);
+		
+		window.addEventListener("resize", function() {
+			scale = funGetScale();
+			style.innerHTML = '.content{-webkit-transform:scale('+ scale +');transform:scale('+ scale +');}';	
+		});
+		
 	})(window, document);
 }
