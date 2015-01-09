@@ -112,11 +112,18 @@ if (window.Mobilebone && Mobilebone.support) {
 			}
 		};
 		
+		var eleContent = document.querySelector(".content");
 		// 确定缩放比例
 		var funGetScale = function() {
 			var width = window.innerWidth, height = window.innerHeight;
-			var scaleWidth = width / 1024,
-				scaleHeight = height / 768;
+			var sizeX = 1024; sizeY = 768, styleContent = {};
+			if (eleContent) {
+				styleContent = window.getComputedStyle(eleContent);
+				sizeX = parseInt(styleContent.width);
+				sizeY = parseInt(styleContent.height);
+			}
+			var scaleWidth = width / sizeX,
+				scaleHeight = height / sizeY;
 			return Math.min(scaleWidth, scaleHeight).toFixed(2);
 		};
 	
