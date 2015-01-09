@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.2.0';
+	Mobilebone.VERSION = '2.2.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -158,6 +158,7 @@
 			onpagefirstinto: this.onpagefirstinto,
 			animationstart: this.animationstart,
 			animationend: this.animationend,
+			preventdefault: this.preventdefault,
 			fallback: this.fallback,
 			callback: this.callback
 		}, params = function(element) {
@@ -208,18 +209,23 @@
 			// weather prevent transition
 			var preventOut = params_out.preventdefault, isPreventOut = false;
 			if (typeof preventOut == "string") preventOut = params_out.root[preventOut];
-			if (typeof preventOut == "function") isPreventOut = preventOut.call(params_out.root, pageInto, pageOut, options);
 		}
 		if (pageInto != null && pageInto.classList) {
 			// weather prevent transition
 			var preventInto = params_in.preventdefault, isPreventInto = false;
 			if (typeof preventInto == "string") preventInto = params_in.root[preventInto];
-			if (typeof preventInto == "function") isPreventInto = preventInto.call(params_in.root, pageInto, pageOut, options);
-			// if pageinto stopped, stop all
-			if (isPreventInto == true) {
-				// only run here and nothing more
-				return this;	
-			}		
+			
+		}
+		if (typeof preventOut == "function") isPreventOut = preventOut.call(params_out.root, pageInto, pageOut, options);
+		
+		// if functions of 'preventdefault' are same for pageIn and pageout, just excute once.
+		if (isPreventOut == true && preventOut === preventInto) return false;
+		
+		if (typeof preventInto == "function") isPreventInto = preventInto.call(params_in.root, pageInto, pageOut, options);
+		// if pageinto stopped, stop all
+		if (isPreventInto == true) {
+			// only run here and nothing more
+			return false;	
 		}
 		
 		if (pageOut != null && pageOut.classList) {

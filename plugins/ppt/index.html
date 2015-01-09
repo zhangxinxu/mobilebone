@@ -6,43 +6,132 @@
 <title>屁屁踢在线幻灯片插件演示</title>
 <link rel="stylesheet" href="../../src/mobilebone.css">
 <link rel="stylesheet" href="ppt.css">
+<style>
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@-webkit-keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+@keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+.fade.out {
+	opacity: 0;
+	-webkit-animation-duration: 125ms;
+	-webkit-animation-name: fadeout;
+	animation-duration: 125ms;
+	animation-name: fadeout;
+}
+.fade.in {
+	opacity: 1;
+	-webkit-animation-duration: 225ms;
+	-webkit-animation-name: fadein;
+	animation-duration: 225ms;
+	animation-name: fadein;
+}
+</style>
 </head>
 
 <body>
-<div id="page1" class="page out">
+<div class="page out">
 	<div class="content section-header">
         <h1>mobilebone.js</h1>
         <h2>mobile移动web APP单页切换骨架</h2>
     </div>
 </div>
-<div id="page2" class="page out">
+<div class="page out">
 	<div class="content only-header">
         <h1>为何需要？</h1>
         <ol>
-            <li>Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。</li>
-            <li>Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。</li>
-            <li>就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选型策略。</li>
+            <li class="fade out">Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。</li>
+            <li class="fade out">Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。</li>
+            <li class="fade out">就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选型策略。</li>
         </ol>
     </div>
 </div>
-<div id="page3" class="page out">
+<div class="page out">
 	<div class="content only-header">
         <h1>如何使用？</h1>
-        <pre>&lt;link rel="stylesheet" href="mobilebone.css"></pre>
-        <pre>&lt;script src="mobilebone.js">&lt;/script></pre>
-        <pre>body
+        <pre class="fade out">&lt;link rel="stylesheet" href="mobilebone.css"></pre>
+        <pre class="fade out">&lt;script src="mobilebone.js">&lt;/script></pre>
+        <pre class="fade out">body
   page
   page
   page</pre>
     </div>
 </div>
-<div id="page4" class="page out">
+<div class="page out">
 	<div class="content only-header">
         <h1>优势？</h1>
         <p>mobilebone.js只做了一件事情，切换。所以，JS文件很小，gzip后3~4K, 而且很灵活，几乎没有任何UI的限制，适用于各个项目各个场景。</p>
     </div>
 </div>
-<div id="page5" class="page out">
+
+<div class="page out">
+	<div class="content only-header">
+    	<h1>mobilebone.js深入</h1>
+        <h4>基本触发机制</h4>
+        <p>与jQuery Mobile类似的机制，引入mobilebone.js, 即对页面所有a标签做了委托。根据<code>href</code>值做智能判断直接过场，Ajax请求过场，还是无作为(javascript:*或外链)。<code>data-ajax="false"</code>会还原链接为传统跳转。</p>
+        <p>默认是<code>click</code>绑定，但如果你引用类似Zepto的<code>touch</code>模块，则mobilebone走<code>touch</code>事件。</p>
+        <p><code>Mobilebone.captureLink = false</code>全局设置，会让页面所有链接普通化，除非有<code>data-ajax=true</code>.</p>
+       	<p>对页面所有<code>form</code>的<code>submit</code>也做了委托，默认所有的表单都是<code>ajax</code>提交，并根据返回内容实现过场效果。规则与<code>a</code>元素<code>ajax</code>提交类似。</p>
+    </div>
+</div>
+
+<div class="page out">
+	<div class="content only-header">
+    	<h1>mobilebone.js深入</h1>
+        <h4>过场原理</h4>
+        <p>与jQuery Mobile一样的机制，in/out/reverse类名切换触发：</p>
+        <pre class="f20">"page slide in" / "page slide out" → "page slide out" / "page slide in"</pre>
+        <p class="fade out">其中<code>slide</code>是动画的类型，默认值。你可以自定义，或者使用<code>animate.css</code>(jQuery Mobile中CSS分离), 含更多过场效果。</p>
+        <div class="fade out">
+        	<h4>路由管理机制</h4>
+            <p>使用HTML5 <code>history</code> API. 使用url <code>hash</code>记录, 格式同样借鉴J&amp;M, <code>#&amp;</code>, 后面跟随每个页面对应的标志量（页面id或ajax地址）。</p>
+            <p>每当页面刷新、前进或后退(<code>popstate</code>), Mobilebone会根据<code>hash</code>对应标志量直接显示或重新请求对应页面。</p>
+        </div>
+    </div>
+</div>
+
+<div class="page out">
+	<div class="content only-header">
+    	<h1>mobilebone.js深入</h1>
+        <h4>页面缓存机制</h4>
+        <p>默认即存在的page默认都缓存；ajax请求页面默认缓存，<code>data-reload="true"</code>时候请求页面不会缓存。</p>
+        <div class="fade out">
+            <h4>页面事件管理</h4>
+            <p>可全局或单独页面设置各类回调事件，目前有：<code>callback</code>, <code>fallback</code>, <code>onpagefirstinto</code>, <code>animationstart</code>, <code>animationend</code>, <code>preventdefault</code>.</p>
+            <p>全局定义如：Mobilebone.callback = function() {};</p>
+            <p>局部定义<code>data-callback="function_key"</code>. 可以使用<code>data-root</code>指定暴露的全局对象，例如：<code>data-root="$"</code></p>
+            <p><code>Mobilebone.mergeCallback</code>可以控制全局和局部回调是覆盖还是合并(默认)。</p>
+        </div>
+    </div>
+</div>
+
+<div class="page out">
+	<div class="content only-header">
+    	<h1>mobilebone.js深入</h1>
+        <h4 class="mb-3">Ajax参数以及事件管理</h4>
+        <p>与jQuery, Zepto <code>$.ajax()</code>一致，例如<code>data-success</code>, <code>data-error</code>, <code>data-timeout</code>等，也可以使用<code>data-params</code>以查询字符串形式设置多个参数。</p>
+        <p class="fade out"><code>form</code>表单也是如此。</p>
+        <p class="fade out">如果<code>datatype</code>为<code>"json"</code>，Mobilebone会拿<code>Mobilebone.jsonHandle(response)</code>的返回值作为新页面载入。如果是默认字符串类型，则直接载入<code>response</code>(有处理，获取<code>title</code>, <code>page</code>元素等).</p>
+        <div class="fade out">
+            <h4 class="mb-3">其他细节</h4>
+            <p>有<code>title</code>管理机制，方向管理机制<code>data-rel="abck/auto"</code>，菊花可定制（整页或某元素内），或者模块化加载等。</p>
+            <pre class="mt-3">var Mobilebone = require('mobilebone');
+Mobilebone.init();</pre>
+		</div>
+    </div>
+</div>
+<div class="page out">
 	<div class="content section-header">
         <h1>Q&amp;A</h1>
         <h2>by zhangxinxu 2014-10</h2>
