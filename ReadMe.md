@@ -50,7 +50,7 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 插件
 ----------------
 <ol>
-	<li><strong>mobilebone.ppt.js</strong>: 可以让web页面表现如幻灯片演示，尺寸自适应。 <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/plugins/ppt/index.html">docs/index.html</a>demo点击这里</a>。</li>
+	<li><strong>mobilebone.ppt.js</strong>: 可以让web页面表现如幻灯片演示，尺寸自适应。 <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/plugins/ppt/index.html">demo点击这里</a>。</li>
 </ol>
 
 优势？
@@ -120,7 +120,7 @@ For more detail, you can [visit here](http://www.zhangxinxu.com/wordpress/?p=438
 Plugins
 ----------------
 <ol>
-	<li><strong>mobilebone.ppt.js</strong>: make web page to powerpoint presentation. <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/plugins/ppt/index.html">docs/index.html</a>demo here</a>.</li>
+	<li><strong>mobilebone.ppt.js</strong>: make web page to powerpoint presentation. <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/plugins/ppt/index.html">demo here</a>.</li>
 </ol>
 
 Advantage?
