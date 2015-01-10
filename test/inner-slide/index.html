@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>内部切换</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../test.css">
+<style>
+#container { padding: 0; overflow: hidden; }
+.list { position: absolute; width: 100%; height: 100%;
+	-webkit-animation: .35s ease-in-out forwards;
+	animation: .35s ease-in-out forwards;
+	text-align: center; line-height: 60px;
+}
+.list.out { display: none; }
+.footer { background-color: #eee; }
+.footer a.active { background-color: #333; color: #fff; }
+</style>
+</head>
+
+<body>
+<div id="pageHome" class="page out">
+    <ul>
+        <li><a href="#page1">点击进入一个头尾固定的页面</a></li>
+    </ul>
+    <ul>
+        <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
+    </ul>
+</div>
+<div id="page1" class="page out">
+	<div class="header">
+        <a href="#pageHome" data-rel="back">返回</a>
+        <h1>首页</h1>
+    </div>
+    <div id="container" class="content">
+		<div id="content1" class="in list">内部内容1</div>
+        <div id="content2" class="out list">内部内容2</div>
+        <div id="content3" class="out list">内部内容3</div>
+    </div>
+    <div class="footer">
+        <h4><a href="#content1" class="active" data-rel="auto" data-container="container" data-classpage="list">内容1</a></h4>
+        <h4><a href="#content2" data-rel="auto" data-container="container" data-classpage="list">内容2</a></h4>
+        <h4><a href="#content3" data-rel="auto" data-container="container" data-classpage="list">内容3</a></h4>
+        <h4><a href="ajax-page.html" data-rel="auto" data-container="container" data-classpage="list">ajax内容4</a></h4>
+    </div>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.callback = function(page_in, page_out) {
+	var index_in = page_in.innerHTML.replace(/\D/g, ""), index_out;
+	var footerLinks = document.querySelectorAll(".footer a");
+
+	var ele_link_in = footerLinks[index_in - 1], ele_link_out = null;
+	if (ele_link_in && page_in.classList.contains("list")) {
+		ele_link_in.classList.add("active");
+	}
+	if (page_out && page_out.classList.contains("list")) {
+		index_out = page_out.innerHTML.replace(/\D/g, "");
+		if (ele_link_out = footerLinks[index_out - 1]) {
+			ele_link_out.classList.remove("active");
+		}
+	}
+}
+</script>
+</body>
+</html>
