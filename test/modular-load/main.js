@@ -9,7 +9,7 @@ define(function(require, exports, module) {
 	  	if (target && target.tagName && target.tagName.toLowerCase() == "input") {
 			target.parentElement.insertAdjacentHTML("afterend", '<p>2秒后回首页...</p>'); 
 			setTimeout(function() {
-				Mobilebone.transition(document.getElementById("pageHome"), Mobilebone.getPage(target), true); 
+				Mobilebone.transition(document.getElementById("pageHome"), target.parentElement.parentElement, true); 
 				var p = target.parentElement.nextElementSibling;
 				p && p.parentElement.removeChild(p);
 			}, 2000);

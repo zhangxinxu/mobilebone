@@ -13,7 +13,9 @@
 <div class="page out">
 	<div class="content">
     	<h2>Mobilebone.pushStateEnabled</h2>
-        <p>是否启用历史记录。此参数我是没有想到需要使用的理由，但是长得还挺帅，于是就放着。果断时间看不顺眼了，去掉。所以此API大家就当没看到。</p>
+        <p>是否启用历史记录。在实现一些单页应用时候，尤其针对PC端，此参数很有用。</p>
+        <p>现在流行一种翻屏网页效果，例如QQ浏览器宣传页：<a href="http://browser.qq.com/" target="_blank">http://browser.qq.com</a>, mac qq浏览器宣传页：<a href="http://browser.qq.com/mac/">http://browser.qq.com/mac/</a>.</p>
+        <p>Mobilebone非常适合驾驭这类web应用，此时，我们需要设置<code>Mobilebone.pushStateEnabled=false</code>, 因为每一屏就是个子页，而非独立页，无需历史记录。否则，用户点返回想退出该页，结果只是回到上一屏，会有问题的。</p>
         <h3>值类型</h3>
         <p>布尔值。设置为<code>true</code>或<code>false</code>.</p>
     </div>

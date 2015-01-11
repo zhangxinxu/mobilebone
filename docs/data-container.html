@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-container</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-container (v2.3.0+)</h2>
+        <p>指定Ajax加载或者内部过场效果的容器。</p>
+        <h3>属性值</h3>
+        <p>为容器元素的<code>id</code>值。</p>
+        <h3>使用</h3>
+        <p>例如，页面上有如下HTML：</p>
+        <pre>&lt;div id="container">&lt;/div>
+&lt;a href="ajax-page.html" <span style="color:#cd0000;">data-container="container"</span>&gt;点击ajax加载&lt;/a></pre>
+        <p>则请求的页面会被<code>append</code>到<code>id</code>为<code>container</code>的这个元素内部，而不是默认的<code>document.body</code>的内部。</p>
+        <h3>进阶使用</h3>
+        <p>当<code>data-container</code>和<code>data-classpage</code>同时存在且值有效的时候，可以实现局部过场效果。具体参见API: <a href="data-classPage.html">data-classPage</a>.</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-container";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

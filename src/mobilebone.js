@@ -40,7 +40,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.2.1';
+	Mobilebone.VERSION = '2.3.0';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -231,6 +231,7 @@
 		if (pageOut != null && pageOut.classList) {
 			// do transition if there are no 'prevent'
 			if (isPreventOut != true) {
+				pageOut.style.display = "block";
 				pageOut.classList.add("out");
 				pageOut.classList.add(params_out.form);
 				pageOut.classList.remove("in");
@@ -269,7 +270,6 @@
 	
 			// do transition
 			pageInto.style.display = "block";
-			pageInto.clientWidth;
 			pageInto.classList.remove("out");
 			pageInto.classList.add("in");
 			pageOut && pageInto.classList.add(params_in.form);
@@ -302,7 +302,8 @@
 					index && pageInto.addEventListener(animateEventName, function() {
 						if (this.classList.contains("in") == false) {
 							this.style.display = "none";
-						}						
+						}
+						this.classList.remove(params(this).form);
 					});
 					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
@@ -424,15 +425,17 @@
 	 *
 	**/
 	Mobilebone.createPage = function(dom_or_html, element_or_options, options) {
-		var response = null;
+		var response = null, container = null, classPage = this.classPage;
 		// 'element_or_options' can '.page element', or 'a element', or 'options'
 		// basically, options = ajax options, of course, u can custom it!		
 		if (!dom_or_html) return;
 		options = options || {};
-		// get current page(will be out) according to 'page_or_child'
-		var current_page = document.querySelector(".in." + this.classPage);
+		
+		// 'options' that 'Mobilebone.transition()' needs
+		var optionsTransition = {};
+		
 		// get page-title from element_or_options or options
-		var page_title;
+		var page_title, id_container, classPageInside;
 		if (element_or_options) {
 			if (element_or_options.nodeType == 1) {
 				// legal elements
@@ -440,12 +443,24 @@
 					page_title = element_or_options.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
+				id_container = element_or_options.getAttribute("data-container");
+				container = document.getElementById(id_container);
+				classPageInside = element_or_options.getAttribute("data-classpage");
+				// pass element as target params, add on v2.3.0
+				optionsTransition.target = element_or_options;
 			} else {
 				response = element_or_options.response || options.response;	
 				page_title = element_or_options.title || options.title;
+				container = element_or_options.container || options.container;
+				classPageInside = element_or_options.classPage || options.classPage;
+				optionsTransition.target = element_or_options.target;
 			}
+			if (container && classPageInside) classPage = classPageInside;	
 		}
 		
+		// get current page(will be out) according to 'page_or_child'
+		var current_page = (classPage == classPageInside? container : document).querySelector(".in." + classPage);
+
 		// get create page (will be into) according to 'dom_or_html'
 		var create_page = null;
 		
@@ -457,8 +472,8 @@
 		}
 		var create_title = create.getElementsByTagName("title")[0];
 		// get the page element
-		if (!(create_page = create.querySelector("." + this.classPage))) {
-			create.className = "page out";
+		if (!(create_page = create.querySelector("." + classPage))) {
+			create.className = classPage + " out";
 			if (typeof page_title == "string") create.setAttribute("data-title", page_title);
 			create_page = create;
 		} else {
@@ -469,16 +484,14 @@
 			}
 		}
 		// insert create page as a last-child
-		document.body.appendChild(create_page);
+		(container || document.body).appendChild(create_page);
 		
 		// release memory
 		create = null;
 		
 		// do transition
-		var optionsTransition = {
-			response: response || dom_or_html,
-			id: this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now())
-		};		
+		optionsTransition.response = response || dom_or_html;
+		optionsTransition.id = this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now());	
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") { 
 			if (typeof options.history != "undefined") {
@@ -491,6 +504,11 @@
 				optionsTransition.target = options.target;
 			}
 		}
+		if (classPage == classPageInside) {
+			optionsTransition.history = false;
+			optionsTransition.classPage = classPage;
+		}
+		// do transition
 		this.transition(create_page, current_page, optionsTransition);
 	};
 	
@@ -726,21 +744,12 @@
 	**/
 	Mobilebone.isBack = function(page_in, page_out) {
 		// back or forword, according to the order of two pages
-		var index_in = -1, index_out = -1;
 		if (history.tempBack == true) {
 			// backwords
-			index_out = 0;
-		} else {
-			slice.call(document.querySelectorAll("." + Mobilebone.classPage)).forEach(function(page, index) {
-				if (page == page_in) {
-					index_in = index;
-				} else if (page == page_out) {
-					index_out = index;
-				}
-			});	
+			history.tempBack = null;
+			return true;
 		}
-		history.tempBack = null;
-		return index_in < index_out;
+		return page_in.compareDocumentPosition(page_out) == 4;
 	};
 	
 	/**
@@ -834,6 +843,11 @@
 		
 		if (self_page == null || !target) return;
 		
+		// optional params for Mobilebone.transition
+		var options = {
+			target: target	
+		};
+		
 		// prevent detect
 		var attrPrevent = target.getAttribute("data-preventdefault") 
 			|| _queryToObject(target.getAttribute("data-params") || "").preventdefault;
@@ -852,6 +866,16 @@
 			return false;
 		}
 		
+		var idContainer = target.getAttribute("data-container"),
+			classPageInside = target.getAttribute("data-classpage"),
+			container = idContainer && document.getElementById(idContainer);
+		if (container && classPageInside && classPageInside != Mobilebone.classPage) {
+			self_page = container.querySelector(".in." + classPageInside) || container.querySelector(classPageInside);
+			if (self_page == null) return false;
+			options.history = false;
+			options.classPage = classPageInside;
+		}
+		
 		// if captureLink
 		var capture = (Mobilebone.captureLink == true);
 		// get rel
@@ -861,6 +885,7 @@
 		if (rel == "back") {
 			back = true;
 		}
+				
 		// if external link
 		var external = (rel == "external");
 		
@@ -870,10 +895,12 @@
 		// 2. javascript: (except data-rel="back")
 		// 3. cros, or not capture (except data-ajax="true")
 		if (!href) return;
+		
 		if (target.getAttribute("href").replace(/#/g, "") === "") {
 			event.preventDefault();
 			return;
 		}
+
 		if (/^javascript/.test(href)) {
 			if (back == false) return;	
 		} else {
@@ -888,9 +915,7 @@
 			if (back == false && rel == "auto") {
 				back = Mobilebone.isBack(eleTargetPage, self_page);
 			}
-			if (eleTargetPage) Mobilebone.transition(eleTargetPage, self_page, back, {
-				target: target
-			});
+			if (eleTargetPage) Mobilebone.transition(eleTargetPage, self_page, back, options);
 			event.preventDefault();
 		} else if (/^javascript/.test(href)) {
 			// back
@@ -906,10 +931,8 @@
 				if (back == false && rel == "auto") {
 					back = Mobilebone.isBack(store[clean_url], self_page);
 				}
-				Mobilebone.transition(store[clean_url], self_page, back, {
-					target: target,
-					id: clean_url	
-				});
+				options.id = clean_url;
+				Mobilebone.transition(store[clean_url], self_page, back, options);
 			} else {
 				Mobilebone.ajax(target);
 			}
