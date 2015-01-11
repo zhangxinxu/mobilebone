@@ -22,17 +22,28 @@ html, body, .page {
 }
 .page {
 	position: absolute; left: 0; top: 0;
-	-webkit-animation: .35s ease-in-out;
-	animation: .35s ease-in-out;
 }
-.page.out {
+
+.out {
 	display: none;
-	-webkit-transform: translateX(-100%);
-	transform: translateX(-100%);
 }
-.page.in {
-	-webkit-transform: translateX(0);
-	transform: translateX(0);
+
+.in, .out {
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.in {
+	-webkit-animation-timing-function: ease-out;
+	-webkit-animation-duration: 350ms;
+	animation-timing-function: ease-out;
+	animation-duration: 350ms;
+}
+.out {
+	-webkit-animation-timing-function: ease-in;
+	-webkit-animation-duration: 225ms;
+	animation-timing-function: ease-in;
+	animation-duration: 225ms;
 }
 
 /* mask layer when ajax sending... */
