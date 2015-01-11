@@ -431,6 +431,9 @@
 		if (!dom_or_html) return;
 		options = options || {};
 		
+		// 'options' that 'Mobilebone.transition()' needs
+		var optionsTransition = {};
+		
 		// get page-title from element_or_options or options
 		var page_title, id_container, classPageInside;
 		if (element_or_options) {
@@ -443,17 +446,20 @@
 				id_container = element_or_options.getAttribute("data-container");
 				container = document.getElementById(id_container);
 				classPageInside = element_or_options.getAttribute("data-classpage");
+				// pass element as target params, add on v2.3.0
+				optionsTransition.target = element_or_options;
 			} else {
 				response = element_or_options.response || options.response;	
 				page_title = element_or_options.title || options.title;
 				container = element_or_options.container || options.container;
 				classPageInside = element_or_options.classPage || options.classPage;
+				optionsTransition.target = element_or_options.target;
 			}
-			if (container && classPageInside) classPage = classPageInside;
+			if (container && classPageInside) classPage = classPageInside;	
 		}
 		
 		// get current page(will be out) according to 'page_or_child'
-		var current_page = (container || document).querySelector(".in." + classPage);
+		var current_page = (classPage == classPageInside? container : document).querySelector(".in." + classPage);
 
 		// get create page (will be into) according to 'dom_or_html'
 		var create_page = null;
@@ -484,10 +490,8 @@
 		create = null;
 		
 		// do transition
-		var optionsTransition = {
-			response: response || dom_or_html,
-			id: this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now())
-		};		
+		optionsTransition.response = response || dom_or_html;
+		optionsTransition.id = this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now());	
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") { 
 			if (typeof options.history != "undefined") {
