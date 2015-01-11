@@ -964,7 +964,7 @@
 	};
 	
 	/**
-	 * privatemethod: convert query string to key-value object
+	 * private method: convert query string to key-value object
 	**/
 	var _queryToObject = function(string) {
 		var obj = {};
