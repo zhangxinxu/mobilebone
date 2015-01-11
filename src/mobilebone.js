@@ -30,9 +30,7 @@
 	var supportHistory = "pushState" in history && "replaceState" in history;
 		
 	Mobilebone.support = supportHistory;
-	
-	if (supportHistory == false) return Mobilebone;
-	
+
 	var hasInited = false;
 	
 	/**
@@ -118,6 +116,11 @@
 	) {
 		Mobilebone.pushStateEnabled = false;
 	}
+	
+	/**
+	 * if browser do not support history/classList, stop here
+	**/
+	if (supportHistory == false) return Mobilebone;
 	
 	
 	/**

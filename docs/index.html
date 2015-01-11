@@ -31,7 +31,9 @@ Mobilebone.callback = function() {
 		}
 	});
 };
-Mobilebone.init();
+if (Mobilebone.support == false) {
+	document.getElementById("indexPage").className = "page";
+}
 </script>
 </body>
 </html>

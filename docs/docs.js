@@ -1,4 +1,10 @@
 (function() {
+	if (!document.getElementsByClassName) {
+		return;
+	}
+	if (Mobilebone.support == false) {
+		document.querySelector(".page.out").className = "page";
+	}
 	var ele_version = document.getElementsByClassName("version");
 	[].slice.call(ele_version).forEach(function(version, index) {
 		version.innerHTML = "(v" + Mobilebone.VERSION + ")";
