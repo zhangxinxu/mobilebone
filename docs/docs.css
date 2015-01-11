@@ -1,4 +1,8 @@
-body { font-size: 14px; font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; background-color: #f5f5fa; }
+body { font-size: 14px; font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; background-color: #f5f5fa;
+	-webkit-user-select: auto;
+	user-select: auto;
+	-ms-touch-action: auto;
+}
 a { text-decoration: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
 aside { position: absolute; left: 0; top: 0; bottom: 0; width: 250px; background-color: #0C121A; box-shadow: 2px 0 1px rgba(0,0,0,.3); color: #fff; overflow: auto; z-index: 1; }
 aside > h2 { font-size: 1.2em; }
