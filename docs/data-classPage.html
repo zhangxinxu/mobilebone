@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-classPage</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-classPage (v2.3.0+)</h2>
+        <p>内部过场（局部过场）效果的关键类名，性质等同于全局的<code>Mobilebone.classPage</code>.</p>
+        <h3>使用</h3>
+        <p>此参数若想要生效，必须和<a href="data-container.html" data-rel="auto" class="link">data-container</a>配合使用。</p>
+        <p>例如，下面这个选项卡效果：</p>
+        <style>
+			.tab_container { width: 256px; height: 256px; background-color: #fff; position: relative; overflow: hidden; }
+			.tabview { position: absolute; left: 0; top: 116px; right: 0; text-align: center; z-index: 1; }
+			.tabview a { display: inline-block; padding: 6px 10px; font-size: 14px; text-decoration: none; border-radius: 4px; background-color: #fff; border: 1px solid #bbb; color: #333; font-family: 'microsoft yahei'; }
+			.tabview .active { background-color: #34538b; border-color: #34538b; color: #fff; }
+			.tab { position: absolute; width: 100%; height: 100%; white-space: nowrap; text-align: center; }
+			.tab:after { content: ''; display: inline-block; width: 0; height: 100%; vertical-align: middle; }
+			.tab img { vertical-align: middle; }
+		</style>
+        <div id="tab_container" class="tab_container">
+        	<div class="tabview">
+            	<a href="#tab1" data-container="tab_container" data-classpage="tab" data-rel="auto" class="active">妹子1</a>
+                <a href="#tab2" data-container="tab_container" data-classpage="tab" data-rel="auto">妹子2</a>
+                <a href="#tab3" data-container="tab_container" data-classpage="tab" data-rel="auto">妹子3</a>
+            </div>
+        	<div id="tab1" class="tab in" data-callback="tabButtonActive">
+            	<img src="http://image.zhangxinxu.com/image/study/s/s256/mm1.jpg">
+            </div>
+            <div id="tab2" class="tab out" data-callback="tabButtonActive">
+            	<img src="http://image.zhangxinxu.com/image/study/s/s256/mm2.jpg">
+            </div>
+            <div id="tab3" class="tab out" data-callback="tabButtonActive">
+            	<img src="http://image.zhangxinxu.com/image/study/s/s256/mm3.jpg">
+            </div>
+        </div>
+        <p>其HTML代码结构如下：</p>
+        <pre>&lt;div id="tab_container" class="tab_container">
+    &lt;div class="tabview">
+        &lt;a href="#tab1" data-container="tab_container" <span style="color: #cd0000;">data-classpage="tab"</span> data-rel="auto" class="active">妹子1&lt;/a>
+        &lt;a href="#tab2" data-container="tab_container" <span style="color: #cd0000;">data-classpage="tab"</span> data-rel="auto">妹子2&lt;/a>
+        &lt;a href="#tab3" data-container="tab_container" <span style="color: #cd0000;">data-classpage="tab"</span> data-rel="auto">妹子3&lt;/a>
+    &lt;/div>
+    &lt;div id="tab1" class="tab in" data-callback="tabButtonActive">
+        &lt;img src="http://image.zhangxinxu.com/image/study/s/s256/mm1.jpg">
+    &lt;/div>
+    &lt;div id="tab2" class="tab out" data-callback="tabButtonActive">
+        &lt;img src="http://image.zhangxinxu.com/image/study/s/s256/mm2.jpg">
+    &lt;/div>
+    &lt;div id="tab3" class="tab out" data-callback="tabButtonActive">
+        &lt;img src="http://image.zhangxinxu.com/image/study/s/s256/mm3.jpg">
+    &lt;/div>
+&lt;/div></pre>
+		<p>我们不需要额外的JS，就可以实现局部过场效果！当然，为了按钮选中态即时切换，我们需要回调简单处理下：</p>
+        <pre>tabButtonActive = function(pagein) {
+    var target = document.querySelectorAll(".tabview a")[pagein.id.replace(/\D/g, "") - 1];
+    var eleAcive = document.querySelector(".tabview .active");
+    if (eleAcive) eleAcive.classList.remove("active");
+    if (target) target.classList.add("active");
+};</pre>
+		<p>非<code>page</code>页面的过场效果是不会触发<code>history</code>变化的，其他规则跟主<code>page</code>切换一致，包括各种回调接口的使用等等。</p>
+        
+        
+        
+       
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-classPage";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>
