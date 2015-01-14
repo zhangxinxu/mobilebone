@@ -37,6 +37,13 @@ var optionsTest = function(elein, eleout, options) {
 	// console.log("点击的元素是：" + (options.target && options.target.outerHTML));
 	// console.log("请求内容是：" + options.response);
 };
+var init = function(ele) {
+	var button = document.querySelector(".ajaxButton");
+	button.addEventListener("click", function() {
+		console.log("clicked!");	
+	});
+	ele.querySelector(".result").innerHTML += 'inited! ';
+};
 </script>
 </body>
 </html>
