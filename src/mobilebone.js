@@ -122,6 +122,10 @@
 	**/
 	if (supportHistory == false) return Mobilebone;
 	
+	/**
+	 * don't excute window.onpopstate when page load
+	**/
+	history.popstate = false;
 	
 	/**
 	 * Function for transition
@@ -326,10 +330,15 @@
 			if (url_push && /^#/.test(url_push) == false) {
 				url_push = "#" + url_push;
 			}
+
 			if (supportHistory && this.pushStateEnabled && options.history !== false && url_push) {
+				// don't trigger 'popstate' events
+				history.popstate = false;
 				// if only pageIn, use 'replaceState'
 				history[pageOut? "pushState": "replaceState"](null, document.title, url_push.replace(/^#/, "#&"));
 			}
+			// reset to popable state
+			history.popstate = true;
 
 			// store page-id, just once
 			if (!store[pageid]) {
@@ -782,7 +791,8 @@
 	 * Initialization. Load page according to location.hash. And bind link-catch events.
 	**/
 	Mobilebone.init = function() {	
-		if (hasInited == true) return 'Don\'t repeat initialization!';	
+		if (hasInited == true) return 'Don\'t repeat initialization!';
+
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
@@ -995,6 +1005,12 @@
 	 * page change when history change
 	**/
 	window.addEventListener("popstate", function() {
+		console.log(history.popstate);
+		if (history.popstate == false) {
+			history.popstate = true;
+			return;
+		}
+		
 		var hash = location.hash.replace("#&", "").replace("#", ""), page_in = null;
 		if (hash == "") {
 			// if no hash, get first page as 'page_in'
