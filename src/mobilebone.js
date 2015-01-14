@@ -802,7 +802,7 @@
 		
 		// Initialization link-catch events.
 		var eventName = "click", $ = root.$ || root.jQuery || root.Zepto;
-		if ($ && $.fn && $.fn.tap) eventName = "tap"; 
+		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) eventName = "tap"; 
 	
 		if (this.captureLink == true) {
 			document.addEventListener(eventName, this.handleTapEvent);	
