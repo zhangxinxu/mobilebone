@@ -853,8 +853,9 @@
 		// which is none of Mobilebone's business
 		// However, you can let code below go to avoid twice tap in Mobilebone
 		// but the tap event bind out of Mobilebone also has bug
-		// so my advice is that 
-		// 1. use Date.now to judge as Mobilebone did;
+		// so my advice is that: 
+		// 1. use Date.now to judge as Mobilebone did; 
+		// or
 		// 2. keep this code in the form of comment and fixed bug outside
 		if (store.timerTap && Date.now() - store.timerTap < 100) {	
 			event.preventDefault();
