@@ -12,7 +12,7 @@
 <div id="container"></div>
 <div id="pageHome" class="page out">
     <ul>
-        <li><a href="ajax-page.html" data-container="container">点击加载(缓存，若后2项已请求，则无请求)</a></li>
+        <li><a href="http://localhost/GitHub/mobilebone/test/ajax-html/ajax-page.html" data-container="container">点击加载(缓存，若后2项已请求，则无请求)</a></li>
         <li><a href="ajax-page.html" data-reload>点击加载(每次都请求， 返回含page结构)</a></li>
         <li><a href="ajax-page.html?&&" data-formdata="?a=1">点击加载(缓存, url过滤测试)</a></li>
         <li><a href="ajax-page.html?a" data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
@@ -24,6 +24,9 @@
     </ul>
     <ul>
         <li><a href="b.html">连续加载测试-加载b页面</a></li>
+    </ul>
+    <ul>
+        <li><a href="http://www.zhangxinxu.com/sp/char.html" target="_blank">外部地址测试，应该直接跳转</a></li>
     </ul>
     <ul>
         <li><a href="../index.html" data-ajax="false">&laquo; 返回测试引导首页</a></li>
