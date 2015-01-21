@@ -848,12 +848,20 @@
 	 * If 'a' element has href, slide auto when tapping~
 	**/
 	Mobilebone.handleTapEvent = function(event) {
+		/**
 		// iscroll(set tap: true) may cause twice tap problem 
+		// which is none of Mobilebone's business
+		// However, you can let code below go to avoid twice tap in Mobilebone
+		// but the tap event bind out of Mobilebone also has bug
+		// so my advice is that 
+		// 1. use Date.now to judge as Mobilebone did;
+		// 2. keep this code in the form of comment and fixed bug outside
 		if (store.timerTap && Date.now() - store.timerTap < 100) {	
 			event.preventDefault();
 			return false;
 		}
 		store.timerTap = Date.now();
+		*/
 
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
