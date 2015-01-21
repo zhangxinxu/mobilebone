@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.3.0';
+	Mobilebone.VERSION = '2.3.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -828,7 +828,7 @@
 					// if not ajax request
 					if (target.getAttribute("data-rel") == "external" 
 						|| ajax == "false"
-						|| (href.split("/")[0] !== location.href.split("/")[0] && ajax != "true")
+						|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
 						|| (Mobilebone.captureLink == false && ajax != "true")
 					) return;
 					
@@ -917,7 +917,7 @@
 		if (/^javascript/.test(href)) {
 			if (back == false) return;	
 		} else {
-			external = external || (href.split("/")[0] !== location.href.split("/")[0]);
+			external = external || (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0]);
 			if ((external == true || capture == false) && target.getAttribute("data-ajax") != "true") return;
 		}
 		
