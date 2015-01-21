@@ -712,6 +712,10 @@
 			ele_mask.style.visibility = "hidden";
 		};
 		
+		// set request header for server
+		xhr.setRequestHeader("Type", "ajax");
+		xhr.setRequestHeader("From", "mobilebone");
+		
 		xhr.send(formData);
 	};
 	
