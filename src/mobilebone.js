@@ -835,7 +835,6 @@
 						|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
 						|| (Mobilebone.captureLink == false && ajax != "true")
 					) return;
-					
 					event.preventDefault();
 				});		
 			}
@@ -849,6 +848,13 @@
 	 * If 'a' element has href, slide auto when tapping~
 	**/
 	Mobilebone.handleTapEvent = function(event) {
+		// iscroll(set tap: true) may cause twice tap problem 
+		if (store.timerTap && Date.now() - store.timerTap < 100) {	
+			event.preventDefault();
+			return false;
+		}
+		store.timerTap = Date.now();
+
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
