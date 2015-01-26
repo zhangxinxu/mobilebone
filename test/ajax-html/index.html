@@ -23,6 +23,10 @@
         <li><a href="ajax-without-page.html" data-title="纯a标签元素返回页面">点击加载-返回不含page, 自动创建page</a></li>
     </ul>
     <ul>
+    	<li><a href="root-reload.php?id=1" data-reload="root">根地址不缓存1</a></li>
+        <li><a href="root-reload.php?id=2" data-reload="root">根地址不缓存2</a></li>
+    </ul>
+    <ul>
         <li><a href="b.html">连续加载测试-加载b页面</a></li>
     </ul>
     <ul>
@@ -46,6 +50,13 @@ var init = function(ele) {
 		console.log("clicked!");	
 	});
 	ele.querySelector(".result").innerHTML += 'inited! ';
+};
+
+var root_reload = function() {
+	var show = document.getElementById("idShow"), should = document.getElementById("idShould");
+	if (show && should) {
+		show.innerHTML = should.innerHTML;
+	}
 };
 </script>
 </body>

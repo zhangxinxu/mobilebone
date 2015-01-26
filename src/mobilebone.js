@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.3.1';
+	Mobilebone.VERSION = '2.3.2';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -437,7 +437,7 @@
 	 *
 	**/
 	Mobilebone.createPage = function(dom_or_html, element_or_options, options) {
-		var response = null, container = null, classPage = this.classPage;
+		var response = null, container = null, classPage = this.classPage, is_root = false;
 		// 'element_or_options' can '.page element', or 'a element', or 'options'
 		// basically, options = ajax options, of course, u can custom it!		
 		if (!dom_or_html) return;
@@ -460,6 +460,8 @@
 				classPageInside = element_or_options.getAttribute("data-classpage");
 				// pass element as target params, add on v2.3.0
 				optionsTransition.target = element_or_options;
+				// weather is root reload
+				is_root = element_or_options.getAttribute("data-reload") == "root";
 			} else {
 				response = element_or_options.response || options.response;	
 				page_title = element_or_options.title || options.title;
@@ -503,7 +505,10 @@
 		
 		// do transition
 		optionsTransition.response = response || dom_or_html;
-		optionsTransition.id = this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now());	
+		optionsTransition.id = this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now());
+		if (is_root == true) {
+			optionsTransition.id = optionsTransition.id.split("?")[0];
+		}
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") { 
 			if (typeof options.history != "undefined") {

@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-reload</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-reload</h2>
+        <p>主要针对Ajax请求。默认情况下，Mobilebone会缓存所有的Ajax请求，也就是第二次点击同样地址的时候，不是去重新拉数据，而是直接显示之前已经加载的页面。但是，如果你希望请求的页面不被缓存（每次都重新加载页面），则就需要使用这里的<code>data-reload</code>参数。</p>
+        <p>目前有两种使用场景：</p>
+        <ol>
+        	<li><strong>url完整地址重加载</strong>：<code>data-reload</code>/<code>data-reload="true"</code>.</li>
+            <li><strong>url根地址重新加载</strong>：<code>data-reload="root"</code> (v2.3.2+)</li>
+        </ol>
+        <p>分别表示什么意思呢？</p>
+        <h4>url完整地址重加载</h4>
+        <p>如下两个请求：</p>
+        <pre>&lt;a href="detail.php?id=112" data-reload="true">请求详情页&lt;/a></pre>
+        <pre>&lt;a href="detail.php?id=113" data-reload="true">请求详情页&lt;/a></pre>
+        <p>可以看到查询<code>id</code>是不一样的。所谓“完整地址重加载”是指，只有在第二次请求的页面<code>url</code>(包括查询字符串)完全匹配的时候，才移除缓存，重新加载！</p>
+        <p>比方说上面的两个请求，最后页面HTML会有两个独立的页面。</p>
+        <h4>url根地址重加载</h4>
+        <p>请求地址还是一样，但<code>data-reload</code>值为<code>root</code>:</p>
+        <pre>&lt;a href="detail.php?id=112" data-reload="root">请求详情页&lt;/a></pre>
+        <pre>&lt;a href="detail.php?id=113" data-reload="root">请求详情页&lt;/a></pre>
+        <p>这里的就是“根地址重加载”，指只要Ajax请求的url的根地址是一样的，就不会缓存，直接清除之前同源页面。</p>
+        <p>所以，这里，页面上永远最多就一个详情页对应HTML. 很多小伙伴喜欢使用全局<code>id</code>绑定事件，此时，就务必需要设置<code>data-reload="root"</code>, 以免<code>id</code>冲突，事件重复绑定等问题。</p>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-reload";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>
