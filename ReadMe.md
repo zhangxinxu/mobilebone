@@ -41,9 +41,16 @@ HTML结构需要有一定的要求：
 每个page是个满屏元素, 相当于一个独立的页面。
 
 Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，就会触发切换行为。例如：
-<pre>&lt;a href="#targetPage">target page&lt;/a></pre>
+<pre>&lt;a href="#targetPage">目标页面&lt;/a></pre>
 
-当tap此元素时候，页面会自动无刷新切换到<code>id</code>为<code>targetPage</code>的页面。你可以控制切换的方向，或者使用Ajax获取HTML或JSON, 可以被seajs, requiejs模块化加载(<code>require('mobilebone')</code>)，可以和Backbone组合使用等。
+当click/tap此元素时候，页面会自动无刷新切换到<code>id</code>为<code>targetPage</code>的页面。
+
+也可以使用ajax请求。例如：
+<pre>&lt;a href="detail.php?id=112">请求详情页&lt;/a></pre>
+
+所有ajax请求默认是缓存的，如果你想根据url地址不缓存，可以设置<code>data-reload</code>或者<code>data-reload="true"</code>；如果你想根据url根地址不缓存，需要设置<code>data-reload="root"</code>。
+
+你可以控制切换的方向，可以被seajs, requiejs模块化加载(<code>require('mobilebone')</code>)，可以和Backbone组合使用等。
 
 当然，上面介绍的，只是强大功能的冰山一角，更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=4381). 
 
