@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.3.2';
+	Mobilebone.VERSION = '2.3.3';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -1029,13 +1029,14 @@
 	 * page change when history change
 	**/
 	window.addEventListener("popstate", function() {
-		console.log(history.popstate);
+		
 		if (history.popstate == false) {
 			history.popstate = true;
 			return;
 		}
 		
-		var hash = location.hash.replace("#&", "").replace("#", ""), page_in = null;
+		var hash = location.hash.replace("#&", "").replace(/^#/, ""), page_in = null;
+		
 		if (hash == "") {
 			// if no hash, get first page as 'page_in'
 			page_in = document.querySelector("." + Mobilebone.classPage);
@@ -1045,7 +1046,7 @@
 		}
 		
 		if (!page_in) {
-			if(isSimple.test(hash) == false) {
+			if(isSimple.test(hash) == false || (/&/.test(hash) == true)) {
 				// as a url
 				Mobilebone.ajax({
 					url: hash,
