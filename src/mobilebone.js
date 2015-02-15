@@ -947,18 +947,19 @@
 		
 		// judge that if it's a ajax request
 		if (/^#/.test(target.getAttribute("href")) == true) {
+			event.preventDefault();
 			// hash slide
 			var idTargetPage = href.split("#")[1], eleTargetPage = idTargetPage && document.getElementById(idTargetPage);
 			if (back == false && rel == "auto") {
 				back = Mobilebone.isBack(eleTargetPage, self_page);
 			}
 			if (eleTargetPage) Mobilebone.transition(eleTargetPage, self_page, back, options);
-			event.preventDefault();
 		} else if (/^javascript/.test(href)) {
 			// back
 			history.tempBack = true;
 			history.back();
-		} else if (target.getAttribute("data-ajax") != "false") {				
+		} else if (target.getAttribute("data-ajax") != "false") {	
+			event.preventDefault();				
 			// get a clean ajax url as page id
 			var clean_url = Mobilebone.getCleanUrl(target);
 			
@@ -973,7 +974,6 @@
 			} else {
 				Mobilebone.ajax(target);
 			}
-			event.preventDefault();	
 		}
 	};
 	
