@@ -34,14 +34,18 @@ p > a { color: green; }
     <h4><a href="#pageHome" data-rel="auto">首页</a></h4>
     <!--<h4><a href="1.html" data-rel="auto" data-container="container">页面1</a></h4>
     <h4><a href="2.html" data-rel="auto" data-container="container">页面2</a></h4>-->
-    <h4><a href="#page1" data-rel="auto">页面3</a></h4>
-    <h4><a href="#page2" data-rel="auto">页面3</a></h4>
+    <h4><a href="#page1" data-rel="auto">页面1</a></h4>
+    <h4><a href="#page2" data-rel="auto">页面2</a></h4>
     <h4><a href="#page3" data-rel="auto">页面3</a></h4>
 </div>
 
 
 
 <script src="../../src/mobilebone.js"></script>
+<script src="../complex/js/fastclick.js"></script>
+<script>
+FastClick.attach(document.body);
+</script>
 <script>
 Mobilebone.callback = function(page_in, page_out) {
 	var id_in = page_in.id, id_out = "";
