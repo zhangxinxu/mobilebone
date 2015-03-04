@@ -254,7 +254,8 @@
 			// for title change
 			var title = params_in.title, 
 			    header = document.querySelector("h1"), 
-			    first_page = document.querySelector("." + this.classPage);		
+			    first_page = document.querySelector("." + this.classPage);	
+				
 			// do title change	
 			if (title) {
 				document.title = title;
@@ -266,10 +267,22 @@
 				// set data-title for first visibie page
 				pageInto.setAttribute("data-title", document.title);
 			}
+			// Fastclick may cause slide bug in iOS8, any innerHTML change can fix it!
+			// issues #80
+			if (typeof FastClick != "undefined") {
+				var mobilebone = document.querySelector("mobilebone");
+				if (mobilebone == null) {
+					mobilebone = document.createElement("mobilebone");
+					mobilebone.style.position = "absolute";
+					mobilebone.style.clip = "rect(0 0 0 0)";
+					document.body.appendChild(mobilebone);
+				}
+				mobilebone.innerHTML = mobilebone.innerHTML.replace('11', '') + '1';
+			}			
 			
 			// delete page with same id when options.remove !== false
 			var pageid = options.id || pageInto.id;
-
+			
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
@@ -868,7 +881,7 @@
 		}
 		store.timerTap = Date.now();
 		*/
-
+		
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
@@ -944,7 +957,7 @@
 			external = external || (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0]);
 			if ((external == true || capture == false) && target.getAttribute("data-ajax") != "true") return;
 		}
-		
+	
 		// judge that if it's a ajax request
 		if (/^#/.test(target.getAttribute("href")) == true) {
 			// hash slide
@@ -952,7 +965,10 @@
 			if (back == false && rel == "auto") {
 				back = Mobilebone.isBack(eleTargetPage, self_page);
 			}
-			if (eleTargetPage) Mobilebone.transition(eleTargetPage, self_page, back, options);
+			
+			if (eleTargetPage) {
+				Mobilebone.transition(eleTargetPage, self_page, back, options);
+			}
 			event.preventDefault();
 		} else if (/^javascript/.test(href)) {
 			// back
@@ -1064,6 +1080,7 @@
 		// hash ↔ id													
 		if (page_in) {
 			Mobilebone.transition(page_in, page_out, Mobilebone.isBack(page_in, page_out), {
+				id: hash,  // fix issue #83
 				history: false,
 				remove: false
 			});

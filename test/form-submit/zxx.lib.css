@@ -1,5 +1,9 @@
 /*!
 * by zhangxinxu(.com) 2010-?
+* https://github.com/zhangxinxu/zxx.lib.css
+* under MIT license
+*/
+/*
 * 2010-07-12 v1.0
 * 2010-07-21 v1.1 添加block元素居中之auto属性，增加鼠标手形样式
 * 2010-09-17 v1.2 添加z-index层级属性
@@ -14,7 +18,18 @@
                   2. margin/padding增加15px/30px组
                   3. 中文字体改成英文字符表示，例如“微软雅黑” → "microsoft yahei"
                   4. 新增border系列, background-color系列, width(fixed value/percent value)系列以及.ell以下所有样式
-* 保留版权说明
+* 2013-07-31 v2.1 inline_any等12px字体大小限制去除，inline_box的-3px间距缩进改成-.25em, 以便适应各种字体大小环境
+* 2013-09-13 v2.2 12px字体大小限制修改为1px笔误了，应该为1em, 删除-ms-transition
+* 2013-10-11 v2.3 float_seven一直没删除，清掉。增加两个绝对定位隐藏：abs_out和abs_clip
+* 2013-11-23 v2.4 add p0, ova, f18. 去除trans中-moz-和-o-私有前缀
+* 2014-02-26 v2.5 fix two name mistake
+* 2014-02-27 v2.6 add fl
+* 2015-02-08 v2.7 具体改动有：
+                  1. 添加h0
+                  2. 修改 .vn -2px → -4px
+				  3. zoom增加webkit重绘修复
+				  4. 去除.trans非webkit私有前缀
+				  5. loading背景图使用about:blank代替
 */
 
 /* ---------------------single CSS----------------------- */
@@ -24,6 +39,7 @@
 .db{display:block;}
 .dib{display:inline-block;} /* if the element is block level(eg. div, li), using 'inline_any' instead */
 /* height */
+.h0{height:0;}
 .h14{height:14px;}
 .h16{height:16px;}
 .h18{height:18px;}
@@ -111,7 +127,7 @@
 .mr-1{margin-right:-1px;}
 .mt-1{margin-top:-1px;}
 .mb-1{margin-bottom:-1px;}
-.ml-l{margin-left:-3px;}
+.ml-3{margin-left:-3px;}
 .mr-3{margin-right:-3px;}
 .mt-3{margin-top:-3px;}
 .mb-3{margin-bottom:-3px;}
@@ -120,6 +136,7 @@
 .mt-20{margin-top:-20px;}
 .mb-20{margin-bottom:-20px;}
 /* padding */
+.p0{padding:0;}
 .p1{padding:1px;}
 .pl1{padding-left:1px;}
 .pt1{padding-top:1px;}
@@ -192,14 +209,16 @@
 .f13{font-size:13px;}
 .f14{font-size:14px;}
 .f16{font-size:16px;}
+.f18{font-size:18px;}
 .f20{font-size:20px;}
 .f24{font-size:24px;}
 /* font-family */
 .fa{font-family:Arial;}
 .ft{font-family:Tahoma;}
 .fv{font-family:Verdana;}
-.fs{font-family:'simsun';}
-.fw{font-family:'microsoft yahei';}
+.fs{font-family:Simsun;}
+.fl{font-family:'Lucida Console';}
+.fw{font-family:'Microsoft Yahei';}
 /* font-style */
 .n{font-weight:normal; font-style:normal;}
 .b{font-weight:bold;}
@@ -225,7 +244,7 @@
 .vtb{vertical-align:text-bottom;}
 .vb{vertical-align:bottom;}
 .vt{vertical-align:top;}
-.vn{vertical-align:-2px;}
+.vn{vertical-align:-4px;}
 /* float */
 .l{float:left;}
 .r{float:right;}
@@ -242,11 +261,12 @@
 .def{cursor:default;}
 /* overflow */
 .ovh{overflow:hidden;}
+.ova{overflow:auto;}
 /* visibility */
 .vh{visibility:hidden;}
 .vv{visibility:visible;}
 /* zoom */
-.z{*zoom:1;}
+.z{*zoom:1; -webkit-transform: translateZ(0);}
 
 
 /* ------------------- multiply CSS ------------------ */
@@ -263,25 +283,25 @@
 .ell{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
 /* css3过渡动画效果 */
 .trans{
-	-webkit-transition:all 0.3s;
-	   -moz-transition:all 0.3s;
-	    -ms-transition:all 0.3s;
-	     -o-transition:all 0.3s;	
+	-webkit-transition:all 0.3s;	
 	        transition:all 0.3s;
 }
 /* 大小不定元素垂直居中 */
 .dib_vm{display:inline-block; width:0; height:100%; vertical-align:middle;}
-/* 加载中背景图片 */
-/*.loading{background:url(http://www.zhangxinxu.com/study/image/loading.gif) no-repeat center;}*/
+/* 加载中背景图片 - 如果您使用该CSS小库，务必修改此图片地址 */
+.loading{background:url(about:blank) no-repeat center;}
 /* 无框文本框文本域 */
 .bd_none{border:0; outline:none;}
+/* 绝对定位隐藏 */
+.abs_out{position:absolute; left:-999em; top:-999em;}
+.abs_clip{position:absolute; clip:rect(0 0 0 0);}
 /* 按钮禁用 */
 .disabled{color:#acacac!important; border-color:#acacac!important; text-shadow:1px 1px #fff!important; outline:0!important; cursor:default!important; pointer-events:none;}
 .disabled:hover{text-decoration:none!important;}
 /*inline-block与float等宽列表*/
-.inline_box{font-size:1px; letter-spacing:-3px; font-family:Arial;}
-.inline_two, .inline_three, .inline_four, .inline_five, .inline_six, .inline_any{display:inline-block; *display:inline; font-size:12px; letter-spacing:0; vertical-align:top; *zoom:1;}
-.float_two, .float_three, .float_four, .float_five, .float_six,.float_seven{float:left;}
+.inline_box{font-size:1em; letter-spacing:-.25em; font-family:Arial;}
+.inline_two, .inline_three, .inline_four, .inline_five, .inline_six, .inline_any{display:inline-block; *display:inline; letter-spacing:0; vertical-align:top; *zoom:1;}
+.float_two, .float_three, .float_four, .float_five, .float_six{float:left;}
 .inline_two, .float_two{width:49.9%;}
 .inline_three, .float_three{width:33.3%;}
 .inline_four, .float_four{width:24.9%;}

@@ -17,6 +17,7 @@ p > a { color: green; }
     <a href="javascript:" data-rel="back">返回</a>
     <h1>首页</h1>
 </div>
+
 <div id="pageHome" class="page out">
     <div class="content">
         <p>首页内容...本页可垂直滚动...</p>
@@ -24,17 +25,27 @@ p > a { color: green; }
         <div style="height: 800px;"></div>
     </div>
 </div>
+
 <div id="page1" class="page out" data-title="页面1"><div class="content">页面1内容...</div></div>
 <div id="page2" class="page out" data-title="页面2"><div class="content">页面2内容...</div></div>
 <div id="page3" class="page out" data-title="页面3"><div class="content">页面3内容...</div></div>
+<!--<div id="container"></div>-->
 <div class="footer">
     <h4><a href="#pageHome" data-rel="auto">首页</a></h4>
+    <!--<h4><a href="1.html" data-rel="auto" data-container="container">页面1</a></h4>
+    <h4><a href="2.html" data-rel="auto" data-container="container">页面2</a></h4>-->
     <h4><a href="#page1" data-rel="auto">页面1</a></h4>
     <h4><a href="#page2" data-rel="auto">页面2</a></h4>
     <h4><a href="#page3" data-rel="auto">页面3</a></h4>
 </div>
 
+
+
 <script src="../../src/mobilebone.js"></script>
+<script src="../complex/js/fastclick.js"></script>
+<script>
+FastClick.attach(document.body);
+</script>
 <script>
 Mobilebone.callback = function(page_in, page_out) {
 	var id_in = page_in.id, id_out = "";
