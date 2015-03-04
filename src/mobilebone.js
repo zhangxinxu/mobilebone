@@ -282,7 +282,7 @@
 			
 			// delete page with same id when options.remove !== false
 			var pageid = options.id || pageInto.id;
-
+			
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
@@ -1080,6 +1080,7 @@
 		// hash ↔ id													
 		if (page_in) {
 			Mobilebone.transition(page_in, page_out, Mobilebone.isBack(page_in, page_out), {
+				id: hash,  // fix issue #83
 				history: false,
 				remove: false
 			});
