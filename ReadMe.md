@@ -72,7 +72,7 @@ MIT许可
 
 捐赠
 ------------------
-<img src="http://www.zhangxinxu.com/alipay.png" width="256" height="256" alt="支付鼓励">
+<div class="alipay_img"><img src="http://www.zhangxinxu.com/alipay.png" style="padding:2px;border:1px solid #ccc; border-radius:4px;" width="176" height="176"> <img src="http://www.zhangxinxu.com/wxpay.png" style="padding:2px;border:1px solid #ccc; border-radius:4px;" width="176" height="176"></div>
 
 mobilebone.js
 =============
