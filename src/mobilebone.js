@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.3.3';
+	Mobilebone.VERSION = '2.3.4';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -269,7 +269,7 @@
 			}
 			// Fastclick may cause slide bug in iOS8, any innerHTML change can fix it!
 			// issues #80
-			if (typeof FastClick != "undefined") {
+			//if (typeof FastClick != "undefined") {
 				var mobilebone = document.querySelector("mobilebone");
 				if (mobilebone == null) {
 					mobilebone = document.createElement("mobilebone");
@@ -278,7 +278,7 @@
 					document.body.appendChild(mobilebone);
 				}
 				mobilebone.innerHTML = mobilebone.innerHTML.replace('11', '') + '1';
-			}			
+			//}			
 			
 			// delete page with same id when options.remove !== false
 			var pageid = options.id || pageInto.id;
@@ -339,12 +339,16 @@
 			});
 			
 			// history
-			var url_push = pageid;
+			var url_push = pageid, url_push_replaced = '';
 			if (url_push && /^#/.test(url_push) == false) {
 				url_push = "#" + url_push;
 			}
-
-			if (supportHistory && this.pushStateEnabled && options.history !== false && url_push) {
+			url_push_replaced = url_push.replace(/^#/, "#&");
+			
+			if (supportHistory && this.pushStateEnabled && options.history !== false && url_push 
+				// hash should be different
+				&& url_push_replaced != location.hash
+			) {
 				// don't trigger 'popstate' events
 				history.popstate = false;
 				// if only pageIn, use 'replaceState'
