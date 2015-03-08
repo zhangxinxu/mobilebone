@@ -72,7 +72,8 @@ MIT许可
 
 捐赠
 ------------------
-<img src="http://www.zhangxinxu.com/alipay.png?v=1" width="176" height="176" alt="支付宝"> <img src="http://www.zhangxinxu.com/wxpay.png" width="176" height="176" alt="微信">
+左支付宝，右微信
+<img src="http://www.zhangxinxu.com/alipay.png?v=1" width="176" height="176" alt="支付宝">&nbsp;&nbsp;<img src="http://www.zhangxinxu.com/wxpay.png" width="176" height="176" alt="微信">
 
 mobilebone.js
 =============
