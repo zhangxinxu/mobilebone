@@ -238,18 +238,22 @@
 		if (pageOut != null && pageOut.classList) {
 			// do transition if there are no 'prevent'
 			if (isPreventOut != true) {
-				pageOut.style.display = "block";
 				pageOut.classList.add("out");
-				pageOut.classList.add(params_out.form);
+				//if (options.animate !== false) {
+					pageOut.classList.add(params_out.form);
+				//}
 				pageOut.classList.remove("in");
 				// if reverse direction
 				pageOut.classList[back? "add": "remove"]("reverse");
+				pageOut.style.display = "block";
+				
 				// do fallback every time
 				var fallback = params_out.fallback;
 				if (typeof fallback == "string") fallback = params_out.root[fallback];
 				if (typeof fallback == "function") fallback.call(params_out.root, pageInto, pageOut, options);
 			}
 		}
+		
 		if (pageInto != null && pageInto.classList) {				
 			// for title change
 			var title = params_in.title, 
@@ -267,19 +271,7 @@
 				// set data-title for first visibie page
 				pageInto.setAttribute("data-title", document.title);
 			}
-			// Fastclick may cause slide bug in iOS8, any innerHTML change can fix it!
-			// issues #80
-			//if (typeof FastClick != "undefined") {
-				var mobilebone = document.querySelector("mobilebone");
-				if (mobilebone == null) {
-					mobilebone = document.createElement("mobilebone");
-					mobilebone.style.position = "absolute";
-					mobilebone.style.clip = "rect(0 0 0 0)";
-					document.body.appendChild(mobilebone);
-				}
-				mobilebone.innerHTML = mobilebone.innerHTML.replace('11', '') + '1';
-			//}			
-			
+						
 			// delete page with same id when options.remove !== false
 			var pageid = options.id || pageInto.id;
 			
@@ -287,14 +279,22 @@
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
 			}
-	
+			
 			// do transition
-			pageInto.style.display = "block";
+			if (pageOut)  pageInto.classList.add(params_in.form);
+			// iOS bug 
+			// reflow for fixing issues #80, #86
+			pageInto.offsetWidth = pageInto.offsetWidth;
+			// go~ as normal
 			pageInto.classList.remove("out");
 			pageInto.classList.add("in");
-			pageOut && pageInto.classList.add(params_in.form);
+						
 			// if reverse direction
 			pageInto.classList[back? "add": "remove"]("reverse");
+			pageInto.style.display = "block";
+		
+			
+			//console.log(pageInto.className);
 			
 			// do callback when come in first time
 			var onpagefirstinto = params_in.onpagefirstinto;
@@ -347,6 +347,7 @@
 			
 			if (supportHistory && this.pushStateEnabled && options.history !== false && url_push 
 				// hash should be different
+				// can fix issues #79, #87 maybe
 				&& url_push_replaced != location.hash
 			) {
 				// don't trigger 'popstate' events
@@ -354,9 +355,7 @@
 				// if only pageIn, use 'replaceState'
 				history[pageOut? "pushState": "replaceState"](null, document.title, url_push.replace(/^#/, "#&"));
 			}
-			// reset to popable state
-			history.popstate = true;
-
+			
 			// store page-id, just once
 			if (!store[pageid]) {
 				store[pageid] = pageInto;
@@ -367,6 +366,13 @@
 			
 			if (typeof callback == "string") callback = params_in.root[callback];
 			if (typeof callback == "function") callback.call(params_in.root, pageInto, pageOut, options);
+			
+			// Safari do 'popstate' after 'pushState/replaceState'
+			// So, we neet setTimeout to avoid excuting 'Mobilebone.transition()' twice
+			setTimeout(function() {
+				// reset to popable state
+				history.popstate = true;	
+			}, 17);
 		}
 	};
 	
@@ -861,7 +867,19 @@
 				});		
 			}
 		}
-				
+		// Important: 
+		// In ios7+, swipe the edge of page will navigate Safari
+		// that will trigger 'popstate' events and the page will transition twice
+		var isSafari7 = !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.hidden !== "undefined" && !window.chrome;
+		if ('ontouchstart' in window == true) {
+			document.addEventListener("touchmove", function() {
+				history.popstateswipe = true;	
+			});	
+			document.addEventListener("touchend", function() {
+				history.popstateswipe = false;	
+			});
+		}
+		
 		// change flag-var for avoiding repeat init
 		hasInited = true;
 	};
@@ -869,7 +887,7 @@
 	/**
 	 * If 'a' element has href, slide auto when tapping~
 	**/
-	Mobilebone.handleTapEvent = function(event) {
+	Mobilebone.handleTapEvent = function(event) {		
 		/**
 		// iscroll(set tap: true) may cause twice tap problem 
 		// which is none of Mobilebone's business
@@ -896,7 +914,7 @@
 		var self_page = document.querySelector(".in." + Mobilebone.classPage);
 		
 		if (self_page == null || !target) return;
-		
+
 		// optional params for Mobilebone.transition
 		var options = {
 			target: target	
@@ -949,6 +967,8 @@
 		// 2. javascript: (except data-rel="back")
 		// 3. cros, or not capture (except data-ajax="true")
 		if (!href) return;
+		
+		href = href.replace("#&", "#");
 		
 		if (target.getAttribute("href").replace(/#/g, "") === "") {
 			event.preventDefault();
@@ -1049,7 +1069,11 @@
 	 * page change when history change
 	**/
 	window.addEventListener("popstate", function() {
-		
+		if (history.popstateswipe == true) {
+			location.reload();
+			history.popstateswipe = false;
+			return;
+		}
 		if (history.popstate == false) {
 			history.popstate = true;
 			return;
@@ -1090,6 +1114,7 @@
 			});
 		}
 	});
-	
+		
 	return Mobilebone;
 });
+
