@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.3.4';
+	Mobilebone.VERSION = '2.4.0';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -868,7 +868,7 @@
 		// In ios7+, swipe the edge of page will navigate Safari
 		// that will trigger 'popstate' events and the page will transition twice
 		var isSafari7 = !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.hidden !== "undefined" && !window.chrome;
-		if ('ontouchstart' in window == true) {
+		if ('ontouchstart' in window == true && isSafari7) {
 			document.addEventListener("touchmove", function() {
 				history.popstateswipe = true;	
 			});	
