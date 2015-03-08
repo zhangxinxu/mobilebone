@@ -238,14 +238,15 @@
 		if (pageOut != null && pageOut.classList) {
 			// do transition if there are no 'prevent'
 			if (isPreventOut != true) {
+				pageOut.classList.add(params_out.form);
+				// reflow
+				pageOut.offsetWidth = pageOut.offsetWidth;
+				// go, go, go
+				pageOut.style.display = "block";
 				pageOut.classList.add("out");
-				//if (options.animate !== false) {
-					pageOut.classList.add(params_out.form);
-				//}
 				pageOut.classList.remove("in");
 				// if reverse direction
 				pageOut.classList[back? "add": "remove"]("reverse");
-				pageOut.style.display = "block";
 				
 				// do fallback every time
 				var fallback = params_out.fallback;
@@ -286,16 +287,12 @@
 			// reflow for fixing issues #80, #86
 			pageInto.offsetWidth = pageInto.offsetWidth;
 			// go~ as normal
+			pageInto.style.display = "block";
 			pageInto.classList.remove("out");
 			pageInto.classList.add("in");
-						
 			// if reverse direction
 			pageInto.classList[back? "add": "remove"]("reverse");
-			pageInto.style.display = "block";
-		
-			
-			//console.log(pageInto.className);
-			
+
 			// do callback when come in first time
 			var onpagefirstinto = params_in.onpagefirstinto;
 			if (!store[pageid]) {
