@@ -10,7 +10,9 @@ mobilebone.js
 </ul>
 
 <ul>
-	<li>测试页面：<a href="http://rawgit.com/zhangxinxu/mobilebone/develop/test/index.html">test/index.html</a></li>
+	<li>测试页面：<a href="http://rawgit.com/zhangxinxu/mobilebone/develop/test/index.html">test/index.html</a>
+		<p><img src="http://image.zhangxinxu.com/image/blog/201410/2014-10-28_174538.png" width="176" height="178"></p>
+	</li>
 </ul>
 
 <ul>
@@ -50,7 +52,7 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 
 所有ajax请求默认是缓存的，如果你想根据url地址不缓存，可以设置<code>data-reload</code>或者<code>data-reload="true"</code>；如果你想根据url根地址不缓存，需要设置<code>data-reload="root"</code>。
 
-你可以控制切换的方向，可以被seajs, requiejs模块化加载(<code>require('mobilebone')</code>)，可以和Backbone组合使用等。
+你可以控制切换的方向，任意扩展动画类型，可以被seajs, requiejs模块化加载(<code>require('mobilebone')</code>)，可以和Backbone组合使用等。
 
 当然，上面介绍的，只是强大功能的冰山一角，更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=4381). 
 
@@ -62,7 +64,7 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 
 优势？
 ------------------
-mobilebone.js只做了一件事情，切换。所以，JS文件很小，gzip后3~4K, 而且很灵活，几乎没有任何UI的限制，适用于各个项目各个场景。同时，巧妙提供各类缓存管理、事件管理的接口，就像是个完整健全的骨架体系，就等你来加血添肉了！<img src="http://mat1.gtimg.com/www/mb/images/face/4.gif" align="absmiddle">
+mobilebone.js只做了一件事情，切换。所以，JS文件很小，gzip后4~5K, 而且很灵活，几乎没有任何UI的限制，适用于各个项目各个场景。同时，巧妙提供各类缓存管理、事件管理的接口，就像是个完整健全的骨架体系，就等你来加血添肉了！<img src="http://mat1.gtimg.com/www/mb/images/face/4.gif" align="absmiddle">
 
 许可
 -------------------
@@ -70,7 +72,8 @@ MIT许可
 
 捐赠
 ------------------
-<img src="http://www.zhangxinxu.com/alipay.png" width="256" height="256" alt="支付鼓励">
+左支付宝，右微信<br>
+<img src="http://www.zhangxinxu.com/alipay.png?v=1" width="176" height="176" alt="支付宝"> &nbsp; &nbsp; <img src="http://www.zhangxinxu.com/wxpay.png" width="176" height="176" alt="微信">
 
 mobilebone.js
 =============
