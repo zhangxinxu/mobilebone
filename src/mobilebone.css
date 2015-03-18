@@ -65,8 +65,8 @@ html, body, .page {
                 7px -7px 0 1.5px currentColor,        /* right-top, 1.5px expand */
                 7px 7px currentColor,                 /* right-bottom */
                 -7px 7px currentColor;                /* left-bottom */
-	-webkit-animation: loading 1s step-start infinite;
-	animation: loading 1s step-start infinite;
+	-webkit-animation: spin 1s steps(8) infinite;
+	animation: spin 1s steps(8) infinite;
 	/*center*/
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;
@@ -127,25 +127,11 @@ html, body, .page {
 }
 
 /* chrysanthemum loading effect */
-@-webkit-keyframes loading {
+@-webkit-keyframes spin {
      0% { -webkit-transform: rotate(0deg); }
-    12% { -webkit-transform: rotate(45deg); }
-    25% { -webkit-transform: rotate(90deg); }
-    37% { -webkit-transform: rotate(135deg); }
-    50% { -webkit-transform: rotate(180deg); }
-    63% { -webkit-transform: rotate(225deg); }
-    75% { -webkit-transform: rotate(270deg); }
-    87% { -webkit-transform: rotate(315deg); }
-   90% { -webkit-transform: rotate(360deg); }
+   100% { -webkit-transform: rotate(360deg); }
 }
-@keyframes loading {
+@keyframes spin {
      0% { transform: rotate(0deg); }
-    12% { transform: rotate(45deg); }
-    25% { transform: rotate(90deg); }
-    37% { transform: rotate(135deg); }
-    50% { transform: rotate(180deg); }
-    63% { transform: rotate(225deg); }
-    75% { transform: rotate(270deg); }
-    87% { transform: rotate(315deg); }
-    90% { transform: rotate(360deg); }
+    100% { transform: rotate(360deg); }
 }
