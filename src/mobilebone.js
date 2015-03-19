@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.4.1';
+	Mobilebone.VERSION = '2.4.2';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -274,7 +274,10 @@
 			}
 						
 			// delete page with same id when options.remove !== false
-			var pageid = options.id || pageInto.id;
+			var pageid = options.id || pageInto.id, hashid = options.id || pageInto.id;
+			if (options.id && options.reload == "root") {
+				pageid = pageid.split("?")[0];
+			}
 			
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
@@ -336,7 +339,10 @@
 			});
 			
 			// history
-			var url_push = pageid, url_push_replaced = '';
+			// hashid should a full url address
+			// different with pageid
+			// add on 2.4.2
+			var url_push = hashid, url_push_replaced = '';
 			if (url_push && /^#/.test(url_push) == false) {
 				url_push = "#" + url_push;
 			}
@@ -383,6 +389,7 @@
 			    params:  string|object. ajax params.        - Optional
 	 * @returns string
 	 * @example Mobilebone.getCleanUrl(elementOfA);
+	            Mobilebone.getCleanUrl(elementOfForm);
 	            Mobilebone.getCleanUrl(elementOfA, '', "a=1&b=2");
 		        Mobilebone.getCleanUrl(null, "xxx.html");
 		        Mobilebone.getCleanUrl(null, "xxx.html?a=1&b=2");
@@ -393,10 +400,39 @@
 		if (trigger) {
 			 if (trigger.nodeType == 1) {
 				 // form element
-				 if (trigger.action) return trigger.getAttribute("action");
-				// a element
-				href = trigger.getAttribute("href");
-				formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data");
+				 if (trigger.action) {
+					 href = trigger.getAttribute("action");
+					 // add on v2.4.1
+					 if (trigger.method && trigger.method.toUpperCase() == "POST") {
+						 return href;
+					 } else if (window.$ && $.fn && $.fn.serialize) {
+						// use jquery serialize()
+						formdata = $(trigger).serialize();
+					 } else {
+						formdata = {};
+						// simple serialize from Mobilebone
+						slice.call(trigger.querySelectorAll("input,select,textarea")).forEach(function(control) {
+							if (control.name && !control.disabled) {
+								var val = control.value.trim(), name = control.name;
+								if (/^radio|checkbox/i.test(control.type)) {
+									if (control.checked) {
+										if (formdata[name]) {
+											formdata[name].push(val);
+										} else {
+											formdata[name] = [val];
+										}
+									}
+								} else {
+									formdata[name] = [val];
+								}
+							}
+						});
+					 }
+				 } else {
+					// a element
+					href = trigger.getAttribute("href");
+					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data");
+				 }
 			 } else if (trigger.url) {
 				 href = trigger.url;
 				 formdata = trigger.data;
@@ -407,11 +443,17 @@
 		
 		// get formdata
 		formdata = formdata || params || "";
-		
+
 		if (typeof formdata == "object") {
 			var arr_data = [];
-			for (key in params) {
-				arr_data.push(key + "=" + encodeURIComponent(params[key]));	
+			for (key in formdata) {
+				if (!formdata[key].forEach) {
+					formdata[key] = [formdata[key]];					
+				}
+				formdata[key].forEach(function(keyValue) {
+					arr_data.push(key + "=" + encodeURIComponent(keyValue));		
+				});
+				
 			}
 			if (arr_data.length > 0) {
 				formdata = arr_data.join("&");
@@ -526,8 +568,9 @@
 		// do transition
 		optionsTransition.response = response || dom_or_html;
 		optionsTransition.id = this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now());
+		
 		if (is_root == true) {
-			optionsTransition.id = optionsTransition.id.split("?")[0];
+			optionsTransition.reload = "root";
 		}
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") { 
@@ -622,7 +665,8 @@
 					}
 				}
 			}
-
+			
+			// ajax的url地址
 			params.url = this.getCleanUrl(trigger_or_options, params.url);	
 			params.target = trigger_or_options;
 			
@@ -672,7 +716,7 @@
 		ele_mask.style.visibility = "visible";
 		
 		// ajax request
-		var xhr = new XMLHttpRequest();		
+		var xhr = new XMLHttpRequest();			
 		xhr.open(params.type || "GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
 		xhr.timeout = params.timeout;
 		
@@ -755,6 +799,11 @@
 		if (!form || typeof form.action != "string") return; 
 		var ajax = form.getAttribute("data-ajax");
 		if (ajax == "false" || (this.captureForm == false && ajax != "true")) return;
+		
+		// All form no cache
+		if (form.getAttribute("data-reload") === null) {
+			form.setAttribute("data-reload", "root");
+		}
 		
 		form.addEventListener("submit", function(event) {
 			// prevent detect
