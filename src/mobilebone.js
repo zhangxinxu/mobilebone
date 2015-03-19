@@ -443,7 +443,7 @@
 		
 		// get formdata
 		formdata = formdata || params || "";
-		console.dir(formdata);
+
 		if (typeof formdata == "object") {
 			var arr_data = [];
 			for (key in formdata) {
