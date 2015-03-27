@@ -27,7 +27,8 @@
         <li><a href="root-reload.php?id=2" data-reload="root">根地址不缓存2</a></li>
     </ul>
     <ul>
-        <li><a href="b.html">连续加载测试-加载b页面</a></li>
+        <li><a href="b.html" data-reload="root">连续加载测试-加载b页面</a></li>
+        <li><a href="b.html?a=1" data-reload="true">连续加载测试-加载b页面</a></li>
     </ul>
     <ul>
         <li><a href="http://www.zhangxinxu.com/sp/char.html" target="_blank">外部地址测试，应该直接跳转</a></li>
@@ -38,6 +39,7 @@
 </div>
 
 <script src="../../src/mobilebone.js"></script>
+<script src="../complex/js/zepto-docs.js"></script>
 <script>
 var optionsTest = function(elein, eleout, options) {
 	// ajax过场回调options参数测试
@@ -60,7 +62,10 @@ var root_reload = function() {
 };
 
 var page_b_first = function() {
-	// console.log("first?");
+	console.log("first?");
+};
+var page_root_first = function() {
+	console.log("root?");
 };
 </script>
 </body>
