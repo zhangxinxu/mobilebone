@@ -38,7 +38,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.4.2';
+	Mobilebone.VERSION = '2.4.3';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -285,7 +285,7 @@
 			}
 			
 			// do transition
-			if (pageOut)  pageInto.classList.add(params_in.form);
+			if (pageOut) pageInto.classList.add(params_in.form);
 			// iOS bug 
 			// reflow for fixing issues #80, #86
 			pageInto.offsetWidth = pageInto.offsetWidth;
@@ -298,7 +298,7 @@
 
 			// do callback when come in first time
 			var onpagefirstinto = params_in.onpagefirstinto;
-			if (!store[pageid]) {
+			if (!store[pageid] && !store[hashid]) {
 				if (typeof onpagefirstinto == "string" && params_in.root[onpagefirstinto]) {
 					params_in.root[onpagefirstinto](pageInto, pageOut, options);
 				} else if (typeof onpagefirstinto == "function") {
@@ -362,6 +362,10 @@
 			// store page-id, just once
 			if (!store[pageid]) {
 				store[pageid] = pageInto;
+				// when we back/prev, we need to get true 
+				if (hashid !== pageid) {
+					store[hashid] = pageInto;
+				}
 			}
 			
 			// do callback every time
