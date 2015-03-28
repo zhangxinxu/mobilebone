@@ -16,6 +16,10 @@
 		root.Mobilebone = factory(root, {});
 	}
 })(this, function(root, Mobilebone) {
+	if (document.MBLOADED) {
+		return 'Don\'t repeat load Mobilebone!';
+	}
+	
 	// Avoid repeated callbacks
 	var store = {};
 	
@@ -30,7 +34,7 @@
 	var supportHistory = "pushState" in history && "replaceState" in history;
 		
 	Mobilebone.support = supportHistory;
-
+	
 	var hasInited = false;
 	
 	/**
@@ -1164,6 +1168,8 @@
 			});
 		}
 	});
+	
+	document.MBLOADED = true;
 		
 	return Mobilebone;
 });
