@@ -42,7 +42,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.4.3';
+	Mobilebone.VERSION = '2.4.4';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -279,13 +279,21 @@
 						
 			// delete page with same id when options.remove !== false
 			var pageid = options.id || pageInto.id, hashid = options.id || pageInto.id;
-			if (options.id && options.reload == "root") {
+			
+			if (options.id) {
 				pageid = pageid.split("?")[0];
 			}
-			
+			var relid = store["_" + pageid];
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
+				// hashid may store the same page, we should delete also
+				// when data-reload not 'false' or null
+				// v2.4.4+
+				if (relid && store[relid] && options.reload == true) {
+					delete store[relid];
+					delete store["_" + pageid];
+				}
 			}
 			
 			// do transition
@@ -369,6 +377,7 @@
 				// when we back/prev, we need to get true 
 				if (hashid !== pageid) {
 					store[hashid] = pageInto;
+					store["_" + pageid] = hashid;
 				}
 			}
 			
@@ -384,6 +393,7 @@
 				// reset to popable state
 				history.popstate = true;	
 			}, 17);
+			console.log(store);
 		}
 	};
 	
@@ -486,15 +496,14 @@
 				clean_url = clean_url + "?" + formdata;
 			}
 		}
-		
 		return clean_url;
 	};
 	
 	/**
 	 * Create page according to given Dom-element or HTML string. And, notice!!!!! will do transition auto.
 	 
-	 * @params  dom_or_html:        dom-object|string. Create this to dom element as a role of into-page.               - Necessary
-	            element_or_options: dom-object|object. '.page element', or 'a element', or 'options' for get out-page   - Optional
+	 * @params  domHtml:        dom-object|string. Create this to dom element as a role of into-page.               - Necessary
+	            eleOrObj: dom-object|object. '.page element', or 'a element', or 'options' for get out-page   - Optional
 				options:            object.            basically, options = ajax options, of course, u can custom it!   - Optional
 	 * @returns undefined
 	 * @example Mobilebone.createPage(pageDom);
@@ -506,38 +515,41 @@
 		        Mobilebone.createPage(pageDom, triggerLink, { response: '<div...>' });
 	 *
 	**/
-	Mobilebone.createPage = function(dom_or_html, element_or_options, options) {
-		var response = null, container = null, classPage = this.classPage, is_root = false;
-		// 'element_or_options' can '.page element', or 'a element', or 'options'
+	Mobilebone.createPage = function(domHtml, eleOrObj, options) {
+		var response = null, container = null, classPage = this.classPage, isreload = null;
+		// 'eleOrObj' can '.page element', or 'a element', or 'options'
 		// basically, options = ajax options, of course, u can custom it!		
-		if (!dom_or_html) return;
+		if (!domHtml) return;
 		options = options || {};
 		
 		// 'options' that 'Mobilebone.transition()' needs
 		var optionsTransition = {};
 		
-		// get page-title from element_or_options or options
+		// get page-title from eleOrObj or options
 		var page_title, id_container, classPageInside;
-		if (element_or_options) {
-			if (element_or_options.nodeType == 1) {
+		if (eleOrObj) {
+			if (eleOrObj.nodeType == 1) {
 				// legal elements
-				if (element_or_options.href || element_or_options.action) {
-					page_title = element_or_options.getAttribute("data-title") || options.title;
+				if (eleOrObj.href || eleOrObj.action) {
+					page_title = eleOrObj.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
-				id_container = element_or_options.getAttribute("data-container");
+				id_container = eleOrObj.getAttribute("data-container");
 				container = document.getElementById(id_container);
-				classPageInside = element_or_options.getAttribute("data-classpage");
+				classPageInside = eleOrObj.getAttribute("data-classpage");
 				// pass element as target params, add on v2.3.0
-				optionsTransition.target = element_or_options;
-				// weather is root reload
-				is_root = element_or_options.getAttribute("data-reload") == "root";
+				optionsTransition.target = eleOrObj;
+				// v2.4.4 is_root → isreload
+				isreload = eleOrObj.getAttribute("data-reload");
+				if (eleOrObj.tagName.toLowerCase() == "form" || (isreload !== null && isreload != "false")) {
+					optionsTransition.reload = true;
+				}
 			} else {
-				response = element_or_options.response || options.response;	
-				page_title = element_or_options.title || options.title;
-				container = element_or_options.container || options.container;
-				classPageInside = element_or_options.classPage || options.classPage;
-				optionsTransition.target = element_or_options.target;
+				response = eleOrObj.response || options.response;	
+				page_title = eleOrObj.title || options.title;
+				container = eleOrObj.container || options.container;
+				classPageInside = eleOrObj.classPage || options.classPage;
+				optionsTransition.target = eleOrObj.target;
 			}
 			if (container && classPageInside) classPage = classPageInside;	
 		}
@@ -545,14 +557,14 @@
 		// get current page(will be out) according to 'page_or_child'
 		var current_page = (classPage == classPageInside? container : document).querySelector(".in." + classPage);
 
-		// get create page (will be into) according to 'dom_or_html'
+		// get create page (will be into) according to 'domHtml'
 		var create_page = null;
 		
 		var create = document.createElement("div");
-		if (typeof dom_or_html == "string") {
-			create.innerHTML = dom_or_html;
+		if (typeof domHtml == "string") {
+			create.innerHTML = domHtml;
 		} else {
-			create.appendChild(dom_or_html);
+			create.appendChild(domHtml);
 		}
 		var create_title = create.getElementsByTagName("title")[0];
 		// get the page element
@@ -574,12 +586,9 @@
 		create = null;
 		
 		// do transition
-		optionsTransition.response = response || dom_or_html;
-		optionsTransition.id = this.getCleanUrl(element_or_options) || create_page.id || ("unique" + Date.now());
+		optionsTransition.response = response || domHtml;
+		optionsTransition.id = this.getCleanUrl(eleOrObj) || create_page.id || ("unique" + Date.now());
 		
-		if (is_root == true) {
-			optionsTransition.reload = "root";
-		}
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") { 
 			if (typeof options.history != "undefined") {
@@ -807,11 +816,6 @@
 		if (!form || typeof form.action != "string") return; 
 		var ajax = form.getAttribute("data-ajax");
 		if (ajax == "false" || (this.captureForm == false && ajax != "true")) return;
-		
-		// All form no cache
-		if (form.getAttribute("data-reload") === null) {
-			form.setAttribute("data-reload", "root");
-		}
 		
 		form.addEventListener("submit", function(event) {
 			// prevent detect
@@ -1058,16 +1062,20 @@
 			
 			// if has loaded and the value of 'data-reload' is not 'true'
 			var attr_reload = target.getAttribute("data-reload"), id = target.getAttribute("href");
+			
 			if ((attr_reload == null || attr_reload == "false") && store[clean_url]) {
 				if (back == false && rel == "auto") {
 					back = Mobilebone.isBack(store[clean_url], self_page);
 				}
 				options.id = clean_url;
+				if (document.body.contains(store[clean_url]) == false) {
+					document.body.appendChild(store[clean_url]);
+				}
 				Mobilebone.transition(store[clean_url], self_page, back, options);
 			} else {
 				Mobilebone.ajax(target);
 			}
-			event.preventDefault();	
+			event.preventDefault();
 		}
 	};
 	
