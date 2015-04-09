@@ -1,6 +1,6 @@
 mobilebone.js
 =============
-单页切换骨架。适用于移动web APP, Hybird混合APP, Phonegap开发, 无兼容要求单页PC应用等。
+单页切换骨架。适用于移动web APP, Hybird混合APP, Phonegap开发, 无兼容要求单页PC应用等。官方网站：<a href="http://www.mobilebone.org">http://www.mobilebone.org</a>
 
 实例、测试和文档
 ------------------
