@@ -1,21 +1,26 @@
 {
-  "name" : "mobilebone",
-  "version" : "2.4.3",
-  "main" : "src/mobilebone.js",
-  "license" : "MIT",
-  "dependencies" : {},
-  "ignore" : [
-    "docs", 
-    "examples", 
-    "test", 
-    "*.map", 
-    "*.html", 
-    "*.md", 
-    "package.json"
+  "name": "mobilebone",
+  "version": "2.4.3",
+  "homepage": "https://github.com/zhangxinxu/mobilebone",
+  "authors": [
+    "zhangxinxu <zhangxinxu@zhangxinxu.com>"
+  ],
+  "description": "Bone main for mobile web APP with a sigle page mode.",
+  "main": "src/mobilebone.js",
+  "moduleType": [
+    "amd"
   ],
   "keywords": [
     "Mobilebone",
     "mobilebone.js",
     "javascript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
   ]
 }
