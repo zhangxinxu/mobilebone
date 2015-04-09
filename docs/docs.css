@@ -1,4 +1,4 @@
-body { font-size: 14px; font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; background-color: #f5f5fa;
+body { line-height: 1.5; font-size: 14px; font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; background-color: #f5f5fa;
 	-webkit-user-select: auto;
 	user-select: auto;
 	-ms-touch-action: auto;
@@ -11,6 +11,7 @@ aside a { display: block; padding: 5px 10px; color: #fff; position: relative; }
 .nav-a[href*=transition], .nav-a[href*=data-title], .nav-a[href*=otherAnonymousAPIs] { margin-top: 20px; }
 .nav-a[href*=autoInit], .nav-a[href*=getPage] { text-decoration: line-through; display: none; }
 .nav-a[href*=getCleanUrl], .nav-a[href*=getFunction] { opacity: .6; }
+.nav-a[href*=reload]:after { position: absolute; content: '更新'; font-size: 12px; transform: scale(0.8); color: pink; }
 .nav-a > .mask { display: inline; width: 26px; height: 26px; top: 0; right: 8px; background-color: transparent; -webkit-transform: scale(.8,.8); -ms-transform: scale(.75,.75); transform: scale(.75,.75); }
 .nav-a.active { background-color: rgba(0,0,0,.2); box-shadow: inset 0 -1px rgba(255,255,255, .1), inset 0 1px #000; }
 
@@ -53,6 +54,8 @@ pre .comment { color: green; }
 .button:focus { outline: 0 none; background-color: #E3E8F2; }
 .content .supplement { margin-left: 20px; color: #999; }
 .content img { max-width: 100%; }
+
+del { display: inline-block; opacity: .6; }
 
 /* slide up */
 .slideup.out {
