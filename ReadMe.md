@@ -1,6 +1,6 @@
 mobilebone.js
 =============
-单页切换骨架。适用于移动web APP, Hybird混合APP, Phonegap开发, 无兼容要求单页PC应用等。官方网站：<a href="http://www.mobilebone.org">http://www.mobilebone.org</a>
+单页切换骨架。适用于移动web APP, Hybrid混合APP, Phonegap开发, 无兼容要求单页PC应用等。官方网站：<a href="http://www.mobilebone.org">http://www.mobilebone.org</a>
 
 实例、测试和文档
 ------------------
@@ -23,7 +23,7 @@ mobilebone.js
 -------------
 类原生APP的过场体验，适用于这些场景：<br>
 1. Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。<br>
-2. Hybird app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。<br>
+2. Hybrid app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。<br>
 3. 就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选型策略。<br>
 4. 对兼容性没有要求的单页PC应用，如类PowerPoint web文档，单页翻屏web站点等。
 
@@ -77,7 +77,7 @@ MIT许可
 
 mobilebone.js
 =============
-Single Page Switching bone for mobile web APP, Hybird APP, Phonegap, ...
+Single Page Switching bone for mobile web APP, Hybrid APP, Phonegap, ...
 
 <pre>git clone git://github.com/zhangxinxu/mobilebone.git</pre>
 
@@ -103,7 +103,7 @@ Why need this?
 -----------------
 Interaction experience is good enough to compare with the native APP. <br>
 1. Phonegap that to native APP is a single index.html, We need the same switch effects as native.<br>
-2. Hybird app, as you know, mixed web-app and native-app. So, it' better that they have some switching experience.<br>
+2. Hybrid app, as you know, mixed web-app and native-app. So, it' better that they have some switching experience.<br>
 3. Even no refresh interaction is not something bad for mobile APP.
 
 How to use?

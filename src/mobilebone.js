@@ -27,8 +27,8 @@
 	var array = [];
 	var slice = array.slice;
 	
-	// Is it a simple selector, from jQuery
-	var isSimple = /^.[^:#\[\.,]*$/
+	// Is it a id selector
+	var isSimple = /^#?\w+(?:[\-_]\w+)*$/i;
 	
 	// Is it suppory history API
 	var supportHistory = "pushState" in history && "replaceState" in history;
@@ -42,7 +42,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.4.4';
+	Mobilebone.VERSION = '2.4.5';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -393,7 +393,6 @@
 				// reset to popable state
 				history.popstate = true;	
 			}, 17);
-			console.log(store);
 		}
 	};
 	
@@ -876,7 +875,7 @@
 	Mobilebone.jsonHandle = function(json) {
 		return '<p style="text-align:center;">Dear master, if you see me, show that JSON parsing function is undefined!</p>';
 	},
-	
+		
 	/**
 	 * Initialization. Load page according to location.hash. And bind link-catch events.
 	**/
@@ -884,6 +883,9 @@
 		if (hasInited == true) return 'Don\'t repeat initialization!';
 
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
+		
+		console.log(hash);
+		
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
 		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
@@ -1152,7 +1154,7 @@
 		}
 		
 		if (!page_in) {
-			if(isSimple.test(hash) == false || (/&/.test(hash) == true)) {
+			if(isSimple.test(hash) == false) {
 				// as a url
 				Mobilebone.ajax({
 					url: hash,
