@@ -6,6 +6,7 @@
 **/
 
 (function(root, factory) {
+	if (document.MBLOADED) { return; }
 	// Set up Mobilebone appropriately for the environment.
 	if (typeof define === 'function' && (define.amd || define.cmd)) {
 		define('mobilebone', function(exports) {
@@ -42,7 +43,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.4.5';
+	Mobilebone.VERSION = '2.5.0';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -114,6 +115,14 @@
 	 * @type boolean
 	**/
 	Mobilebone.pushStateEnabled = true;
+	/**
+	 * Whether excute JavaScript when ajax HTML loaded
+	 * If this value is true, the script will excute.
+	 *
+	 * @type boolean
+	**/
+	Mobilebone.evalScript = false;
+	
 	
 	if (// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false' 
 		(window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window)
@@ -562,6 +571,22 @@
 		var create = document.createElement("div");
 		if (typeof domHtml == "string") {
 			create.innerHTML = domHtml;
+			
+			if (Mobilebone.evalScript == true) {
+				slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
+					var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
+					if (scriptContent.trim() == "" || originScript.src) return;
+					var head = document.getElementsByTagName("head")[0] || document.documentElement,
+					script = document.createElement("script");
+					if (type) script.type = type;
+					script.appendChild(document.createTextNode(scriptContent));
+					setTimeout(function() {
+						head.insertBefore(script, head.firstChild);
+						head.removeChild(script);
+					}, 16);
+					originScript = null;
+				});	
+			}
 		} else {
 			create.appendChild(domHtml);
 		}
@@ -884,8 +909,6 @@
 
 		var hash = location.hash.replace("#&", "#"), ele_in = null;
 		
-		console.log(hash);
-		
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
 		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
@@ -1183,4 +1206,3 @@
 		
 	return Mobilebone;
 });
-
