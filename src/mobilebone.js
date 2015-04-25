@@ -43,7 +43,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.0';
+	Mobilebone.VERSION = '2.5.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -930,7 +930,12 @@
 		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) eventName = "tap"; 
 	
 		if (this.captureLink == true) {
-			document.addEventListener(eventName, this.handleTapEvent);	
+			if ($.fn.on) {
+				// for some unknown 'tap' plugin
+				$(document).on(eventName, this.handleTapEvent);
+			} else {
+				document.addEventListener(eventName, this.handleTapEvent);	
+			}
 			if (eventName == "tap") {
 				// zepto tap event.preventDefault can't prevent default click-events
 				document.addEventListener("click", function(event) {
@@ -986,7 +991,7 @@
 		}
 		store.timerTap = Date.now();
 		*/
-		
+		console.log(event);
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
