@@ -43,7 +43,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.1';
+	Mobilebone.VERSION = '2.5.2';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -159,8 +159,9 @@
 		if (arguments.length == 0 || pageInto == pageOut) return;
 		if (arguments.length == 3 && isNaN(back * 1) == true) {
 			options = back;
-			back = false;
+			back = options.back;
 		};
+
 		//if those parameters is missing
 		pageOut = pageOut || null, back = back || false, options = options || {};
 		
@@ -535,6 +536,7 @@
 		
 		// get page-title from eleOrObj or options
 		var page_title, id_container, classPageInside;
+		
 		if (eleOrObj) {
 			if (eleOrObj.nodeType == 1) {
 				// legal elements
@@ -552,12 +554,18 @@
 				if (eleOrObj.tagName.toLowerCase() == "form" || (isreload !== null && isreload != "false")) {
 					optionsTransition.reload = true;
 				}
+				// v2.5.2
+				// is back? for issues #128
+				optionsTransition.back = eleOrObj.getAttribute("data-rel") == "back";	
 			} else {
 				response = eleOrObj.response || options.response;	
 				page_title = eleOrObj.title || options.title;
 				container = eleOrObj.container || options.container;
 				classPageInside = eleOrObj.classPage || options.classPage;
 				optionsTransition.target = eleOrObj.target;
+				// v2.5.2
+				// is back? for issues #128
+				optionsTransition.back = eleOrObj.back || options.back;		
 			}
 			if (container && classPageInside) classPage = classPageInside;	
 		}
@@ -659,7 +667,7 @@
 	/**
 	 * For ajax request to get HTML or JSON. 
 	 
-	 * @params  trigger_or_options        - Necessary  
+	 * @params  aOrFormOrObj        - Necessary  
 	            1. dom-object:<a>|<form>.
 				2. object.  
 	 * @returns undefined
@@ -670,8 +678,8 @@
 		    	});
 	 *
 	**/
-	Mobilebone.ajax = function(trigger_or_options) {
-		if (!trigger_or_options) return;
+	Mobilebone.ajax = function(aOrFormOrObj) {
+		if (!aOrFormOrObj) return;
 		
 		// default params
 		var defaults = {
@@ -690,14 +698,14 @@
 		
 		var params = {}, ele_mask = null, formData = null;
 		
-		// if 'trigger_or_options' is a element, we should turn it to options-object
+		// if 'aOrFormOrObj' is a element, we should turn it to options-object
 		var params_from_trigger = {}, attr_mask;
-		if (trigger_or_options.nodeType == 1) {
-			params_from_trigger = _queryToObject(trigger_or_options.getAttribute("data-params") || "");
+		if (aOrFormOrObj.nodeType == 1) {
+			params_from_trigger = _queryToObject(aOrFormOrObj.getAttribute("data-params") || "");
 			// get params
 			for (key in defaults) {
 				// data-* > data-params > defaults
-				params[key] = trigger_or_options.getAttribute("data-" + key) || params_from_trigger[key] || defaults[key];
+				params[key] = aOrFormOrObj.getAttribute("data-" + key) || params_from_trigger[key] || defaults[key];
 				if (typeof defaults[key] == "function" && typeof params[key] == "string") {
 					// eg. globalObject.functionName
 					params[key] = this.getFunction(params[key]);
@@ -707,33 +715,40 @@
 				}
 			}
 			
-			// ajax的url地址
-			params.url = this.getCleanUrl(trigger_or_options, params.url);	
-			params.target = trigger_or_options;
+			// address of ajax url
+			params.url = this.getCleanUrl(aOrFormOrObj, params.url);	
+			params.target = aOrFormOrObj;
+			// v2.5.2
+			// is back? for issues #128
+			params.back = aOrFormOrObj.getAttribute("data-rel") == "back";	
 			
-			var tagName = trigger_or_options.tagName.toLowerCase();
+			var tagName = aOrFormOrObj.tagName.toLowerCase();
 			if (tagName == "form") {
-				params.type = trigger_or_options.method;
+				params.type = aOrFormOrObj.method;
 				
-				formData = new FormData(trigger_or_options);
+				formData = new FormData(aOrFormOrObj);
 			}	
 			
 			// get mask element
-			attr_mask = trigger_or_options.getAttribute("data-mask");
+			attr_mask = aOrFormOrObj.getAttribute("data-mask");
 			if (attr_mask == "true" || attr_mask == "") {
-				ele_mask = trigger_or_options.querySelector("." + this.classMask);
+				ele_mask = aOrFormOrObj.querySelector("." + this.classMask);
 			}
 		}
-		// if 'trigger_or_options' is a object
-		else if (trigger_or_options.url) {
+		// if 'aOrFormOrObj' is a object
+		else if (aOrFormOrObj.url) {
 			// get params
 			for (key2 in defaults) {
-				params[key2] = trigger_or_options[key2] || defaults[key2];
+				params[key2] = aOrFormOrObj[key2] || defaults[key2];
 			}
 			// get url
 			params.url = this.getCleanUrl(null, params.url, params.data);
 			// here params.title will become page title;
-			params.title = trigger_or_options.title;
+			params.title = aOrFormOrObj.title;
+			// v2.5.2
+			// is back? for issues #128
+			// when history.back()
+			params.back = aOrFormOrObj.back;
 		} else {
 			return;	
 		}
@@ -748,7 +763,7 @@
 			ele_mask.className = this.classMask;
 			ele_mask.innerHTML = '<i class="loading"></i>';
 			if (typeof attr_mask == "string") {
-				trigger_or_options.appendChild(ele_mask);
+				aOrFormOrObj.appendChild(ele_mask);
 			} else {
 				document.body.appendChild(ele_mask);
 			}
@@ -770,7 +785,7 @@
 					try {
 						response = JSON.parse(xhr.response);
 						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response), trigger_or_options, params);
+						Mobilebone.createPage(Mobilebone.jsonHandle(response), aOrFormOrObj, params);
 					} catch (e) {
 						params.message = "JSON parse error：" + e.message;
 						params.error.call(params, xhr, xhr.status);
@@ -785,16 +800,16 @@
 						// as json
 						response = JSON.parse(xhr.response);
 						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response), trigger_or_options, params);
+						Mobilebone.createPage(Mobilebone.jsonHandle(response), aOrFormOrObj, params);
 					} catch (e) {
 						// as html
 						response = xhr.response;
-						Mobilebone.createPage(response, trigger_or_options, params);
+						Mobilebone.createPage(response, aOrFormOrObj, params);
 					}
 				} else {
 					response = xhr.response;
 					// 'response' is string
-					Mobilebone.createPage(response, trigger_or_options, params);
+					Mobilebone.createPage(response, aOrFormOrObj, params);
 				}
 				params.success.call(params, response, xhr.status);
 			} else {
@@ -949,10 +964,9 @@
 					if (target.getAttribute("data-rel") == "external" 
 						|| ajax == "false"
 						|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
-						|| (Mobilebone.captureLink == false && ajax != "true")
 					) return;
 					event.preventDefault();
-				});		
+				});
 			}
 		}
 		// Important: 
@@ -1185,7 +1199,8 @@
 				// as a url
 				Mobilebone.ajax({
 					url: hash,
-					dataType: "unknown"
+					dataType: "unknown",
+					back: Mobilebone.isBack()
 				});	
 				return;
 			}
