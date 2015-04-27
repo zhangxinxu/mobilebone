@@ -930,7 +930,7 @@
 		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) eventName = "tap"; 
 	
 		if (this.captureLink == true) {
-			if ($.fn.on) {
+			if ($ && $.fn && $.fn.on) {
 				// for some unknown 'tap' plugin
 				$(document).on(eventName, this.handleTapEvent);
 			} else {
@@ -991,7 +991,6 @@
 		}
 		store.timerTap = Date.now();
 		*/
-		console.log(event);
 		// get target and href
 		var target = event.target || event.touches[0], href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
