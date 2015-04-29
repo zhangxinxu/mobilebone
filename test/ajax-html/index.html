@@ -23,7 +23,7 @@
         <li><a href="ajax-without-page.html" data-title="纯a标签元素返回页面">点击加载-返回不含page, 自动创建page</a></li>
     </ul>
     <ul>
-    	<li><a href="root-reload.php?id=1">根地址不缓存1</a></li>
+    	<li><a href="root-reload.php?id=1" data-ajax="true">根地址不缓存1</a></li>
         <li><a href="root-reload.php?id=2">根地址不缓存2</a></li>
         <li><a href="root-reload.php?id=3">根地址不缓存3</a></li>
         <li><a href="root-reload.php?id=4">根地址不缓存4</a></li>
@@ -43,8 +43,8 @@
 <script src="../../src/mobilebone.js"></script>
 <script src="../../src/mobilebone.js"></script>
 <!-- 厂子的frozenjs兼容测试 -->
-<!--<script src="../base-slide/zepto.js"></script>
-<script src="../base-slide/frozen.js"></script>-->
+<script src="../base-slide/zepto.js"></script>
+<script src="../base-slide/frozen.js"></script>
 <script>
 var optionsTest = function(elein, eleout, options) {
 	// ajax过场回调options参数测试
@@ -67,13 +67,23 @@ var root_reload = function() {
 };
 
 var page_b_first = function() {
-	console.log("first?");
+	// console.log("first?");
+	$("#link").on("tap", function() {
+		location.href = this.href;
+	});
 };
 var page_root_first = function() {
 	// console.log("root?");
 };
 
 Mobilebone.evalScript = true;
+
+// 此为captureLink测试
+// Mobilebone.captureLink = false;
+
+/*$("a").tap(function() {
+	console.log("taped");	
+});*/
 </script>
 </body>
 </html>

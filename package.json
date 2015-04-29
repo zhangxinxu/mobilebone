@@ -1,6 +1,6 @@
 {
   "name": "mobilebone",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "Bone main for mobile web APP with a sigle page mode.",
   "main": "src/mobilebone.js",
   "directories": {
