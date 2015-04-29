@@ -43,7 +43,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.2';
+	Mobilebone.VERSION = '2.5.3';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -944,30 +944,30 @@
 		var eventName = "click", $ = root.$ || root.jQuery || root.Zepto;
 		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) eventName = "tap"; 
 	
-		if (this.captureLink == true) {
-			if ($ && $.fn && $.fn.on) {
-				// for some unknown 'tap' plugin
-				$(document).on(eventName, this.handleTapEvent);
-			} else {
-				document.addEventListener(eventName, this.handleTapEvent);	
-			}
-			if (eventName == "tap") {
-				// zepto tap event.preventDefault can't prevent default click-events
-				document.addEventListener("click", function(event) {
-					var target = event.target;
-					if (!target) return;
-					if (target.tagName.toLowerCase() != "a" && !(target = target.getParentElementByTag("a"))) {
-						return;
-					}
-					var ajax = target.getAttribute("data-ajax"), href = target.href;
-					// if not ajax request
-					if (target.getAttribute("data-rel") == "external" 
-						|| ajax == "false"
-						|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
-					) return;
-					event.preventDefault();
-				});
-			}
+		if ($ && $.fn && $.fn.on) {
+			// for some unknown 'tap' plugin
+			$(document).on(eventName, this.handleTapEvent);
+		} else {
+			document.addEventListener(eventName, this.handleTapEvent);	
+		}
+		
+		if (eventName == "tap") {
+			// zepto tap event.preventDefault can't prevent default click-events
+			document.addEventListener("click", function(event) {
+				var target = event.target;
+				if (!target) return;
+				if (target.tagName.toLowerCase() != "a" && !(target = target.getParentElementByTag("a"))) {
+					return;
+				}
+				var ajax = target.getAttribute("data-ajax"), href = target.href;
+				// if not ajax request
+				if (target.getAttribute("data-rel") == "external" 
+					|| ajax == "false"
+					|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
+					|| (this.captureLink == false && ajax != "true")
+				) return;
+				event.preventDefault();
+			});
 		}
 		// Important: 
 		// In ios7+, swipe the edge of page will navigate Safari
@@ -1010,7 +1010,6 @@
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
-
 		// the page that current touched or actived
 		var self_page = document.querySelector(".in." + Mobilebone.classPage);
 		
@@ -1075,14 +1074,13 @@
 			event.preventDefault();
 			return;
 		}
-
 		if (/^javascript/.test(href)) {
 			if (back == false) return;	
 		} else {
 			external = external || (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0]);
 			if ((external == true || capture == false) && target.getAttribute("data-ajax") != "true") return;
 		}
-	
+		
 		// judge that if it's a ajax request
 		if (/^#/.test(target.getAttribute("href")) == true) {
 			// hash slide
