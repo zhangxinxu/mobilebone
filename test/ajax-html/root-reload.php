@@ -9,6 +9,7 @@
 	<p>document.getElementById("idShow").innerHTML是：<strong id="idShow">&nbsp;</strong>，应该结果是<strong id="idShould"><?php echo $_GET['id']; ?></strong>.</p>
 	<ul>
         <li><a href="#pageHome" id="scriptTest" data-rel="back" data-ajax="true">返回</a></li>
+        <li><a href="root-reload.php?id=8" data-ajax="true">id不一样的页面</a></li>
     </ul>
     <script>
 	document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);

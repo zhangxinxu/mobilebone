@@ -22,7 +22,9 @@
 	}
 	
 	// Avoid repeated callbacks
-	var store = {};
+	var store = {
+		history: []	
+	};
 	
 	// Create local references to array methods we'll want to use later.
 	var array = [];
@@ -43,7 +45,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.3';
+	Mobilebone.VERSION = '2.5.4';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -294,18 +296,19 @@
 				pageid = pageid.split("?")[0];
 			}
 			var relid = store["_" + pageid];
+			
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
 				// hashid may store the same page, we should delete also
 				// when data-reload not 'false' or null
 				// v2.4.4+
-				if (relid && store[relid] && options.reload == true) {
+				if (relid && store[relid] && options.reload !== false) {
 					delete store[relid];
 					delete store["_" + pageid];
 				}
 			}
-			
+						
 			// do transition
 			if (pageOut) pageInto.classList.add(params_in.form);
 			// iOS bug 
@@ -379,6 +382,7 @@
 				history.popstate = false;
 				// if only pageIn, use 'replaceState'
 				history[pageOut? "pushState": "replaceState"](null, document.title, url_push.replace(/^#/, "#&"));
+				store.history.push(url_push);
 			}
 			
 			// store page-id, just once
@@ -525,7 +529,7 @@
 	 *
 	**/
 	Mobilebone.createPage = function(domHtml, eleOrObj, options) {
-		var response = null, container = null, classPage = this.classPage, isreload = null;
+		var response = null, container = null, classPage = this.classPage;
 		// 'eleOrObj' can '.page element', or 'a element', or 'options'
 		// basically, options = ajax options, of course, u can custom it!		
 		if (!domHtml) return;
@@ -550,10 +554,8 @@
 				// pass element as target params, add on v2.3.0
 				optionsTransition.target = eleOrObj;
 				// v2.4.4 is_root → isreload
-				isreload = eleOrObj.getAttribute("data-reload");
-				if (eleOrObj.tagName.toLowerCase() == "form" || (isreload !== null && isreload != "false")) {
-					optionsTransition.reload = true;
-				}
+				// v2.5.4 default value of reload is true
+				optionsTransition.reload = eleOrObj.getAttribute("data-reload") != "false";
 				// v2.5.2
 				// is back? for issues #128
 				optionsTransition.back = eleOrObj.getAttribute("data-rel") == "back";	
@@ -563,6 +565,7 @@
 				container = eleOrObj.container || options.container;
 				classPageInside = eleOrObj.classPage || options.classPage;
 				optionsTransition.target = eleOrObj.target;
+				optionsTransition.reload = eleOrObj.reload || options.reload;
 				// v2.5.2
 				// is back? for issues #128
 				optionsTransition.back = eleOrObj.back || options.back;		
@@ -795,7 +798,8 @@
 					// no history hush
 					// no element remove
 					params.history = false;
-					params.remove = false;
+					// v2.5.4 remove
+					// params.remove = false;
 					try {
 						// as json
 						response = JSON.parse(xhr.response);
@@ -889,6 +893,9 @@
 			// backwords
 			history.tempBack = null;
 			return true;
+		}
+		if (typeof page_in == "undefined") {
+			return false;	
 		}
 		return page_in.compareDocumentPosition(page_out) == 4;
 	};
@@ -1183,7 +1190,7 @@
 		}
 		
 		var hash = location.hash.replace("#&", "").replace(/^#/, ""), page_in = null;
-		
+
 		if (hash == "") {
 			// if no hash, get first page as 'page_in'
 			page_in = document.querySelector("." + Mobilebone.classPage);
@@ -1191,7 +1198,7 @@
 		} else {
 			page_in = store[hash];
 		}
-		
+				
 		if (!page_in) {
 			if(isSimple.test(hash) == false) {
 				// as a url
