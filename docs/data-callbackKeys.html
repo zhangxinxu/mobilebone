@@ -16,12 +16,12 @@
         <p>这里的<code>callbackKeys</code>只是一种统称，实际没有这个自定义属性的，指的是一系列回调写法，因为除了长相不一样，其他都类似，所以合在一起讲了。</p>
         <p>其家庭成员包括：</p>
         <ul>
-        	<li>data-onpagefirstinto</li>
-        	<li>data-callback</li>
-            <li>data-fallback</li>
-            <li>data-animationstart</li>
-            <li>data-animationend</li>
-            <li>data-preventdefault</li>
+        	<li><code>data-onpagefirstinto</code> 页面第一次载入执行，过场刚开始即执行。</li>
+        	<li><code>data-callback</code> 页面每次进入都会执行，过场刚开始即执行。</li>
+            <li><code>data-fallback</code> 页面每次离开都会执行，过场刚开始即执行。</li>
+            <li><code>data-animationstart</code> 页面动画即将开始执行的回调，离开页面，进入页面均会触发。</li>
+            <li><code>data-animationend</code> 页面动画结束之后执行的回调，离开页面，进入页面均会触发。</li>
+            <li><code>data-preventdefault</code> 介入回调，可以用来中断Mobilebone的一些默认行为，再过场等行为触发之前实现一些自定义行为。</li>
         </ul>
         <p>每个回调的作用于使用场景可参见博文说明：<a href="http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/" class="link">点击这里</a>。</p>
         <p>其中，<code>data-preventdefault</code>并非<code>page</code>元素专有，<code>a</code>元素，<code>form</code>元素也支持此回调，具体可<a href="data-preventDefault.html" class="link">点击这里</a>。</p>

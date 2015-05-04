@@ -4,6 +4,7 @@ body { line-height: 1.5; font-size: 14px; font-family: "Helvetica Neue", Helveti
 	-ms-touch-action: auto;
 }
 a { text-decoration: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
+time { opacity: .75; }
 aside { position: absolute; left: 0; top: 0; bottom: 0; width: 250px; background-color: #0C121A; box-shadow: 2px 0 1px rgba(0,0,0,.3); color: #fff; overflow: auto; z-index: 1; }
 aside > h2 { font-size: 1.2em; }
 aside a { display: block; padding: 5px 10px; color: #fff; position: relative; }
