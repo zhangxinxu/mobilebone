@@ -43,7 +43,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.3';
+	Mobilebone.VERSION = '2.5.4';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -579,25 +579,27 @@
 		var create = document.createElement("div");
 		if (typeof domHtml == "string") {
 			create.innerHTML = domHtml;
-			
-			if (Mobilebone.evalScript == true) {
-				slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
-					var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
-					if (scriptContent.trim() == "" || originScript.src) return;
-					var head = document.getElementsByTagName("head")[0] || document.documentElement,
-					script = document.createElement("script");
-					if (type) script.type = type;
-					script.appendChild(document.createTextNode(scriptContent));
-					setTimeout(function() {
-						head.insertBefore(script, head.firstChild);
-						head.removeChild(script);
-					}, 16);
-					originScript = null;
-				});	
-			}
 		} else {
 			create.appendChild(domHtml);
 		}
+		
+		// excute inline JavaScript
+		if (Mobilebone.evalScript == true) {
+			slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
+				var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
+				if (scriptContent.trim() == "" || originScript.src) return;
+				var head = document.getElementsByTagName("head")[0] || document.documentElement,
+				script = document.createElement("script");
+				if (type) script.type = type;
+				script.appendChild(document.createTextNode(scriptContent));
+				setTimeout(function() {
+					head.insertBefore(script, head.firstChild);
+					head.removeChild(script);
+				}, 16);
+				originScript = null;
+			});	
+		}
+		
 		var create_title = create.getElementsByTagName("title")[0];
 		// get the page element
 		if (!(create_page = create.querySelector("." + classPage))) {
@@ -890,6 +892,8 @@
 			history.tempBack = null;
 			return true;
 		}
+		if (typeof page_in == "undefined") return true;
+		if (!page_out) return false;
 		return page_in.compareDocumentPosition(page_out) == 4;
 	};
 	
@@ -1190,10 +1194,21 @@
 			if (page_in.id) return;			
 		} else {
 			page_in = store[hash];
+			
+			if (isSimple.test(hash) == false) {
+				// ajax store
+				Mobilebone.createPage(page_in, {
+					url: hash,
+					dataType: "unknown",
+					history: false,
+					back: true
+				});
+				return;
+			}
 		}
 		
 		if (!page_in) {
-			if(isSimple.test(hash) == false) {
+			if (isSimple.test(hash) == false) {
 				// as a url
 				Mobilebone.ajax({
 					url: hash,
