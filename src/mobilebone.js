@@ -22,9 +22,7 @@
 	}
 	
 	// Avoid repeated callbacks
-	var store = {
-		history: []	
-	};
+	var store = {};
 	
 	// Create local references to array methods we'll want to use later.
 	var array = [];
@@ -296,19 +294,18 @@
 				pageid = pageid.split("?")[0];
 			}
 			var relid = store["_" + pageid];
-			
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
 				store[pageid].parentElement.removeChild(store[pageid]);
 				delete store[pageid];
 				// hashid may store the same page, we should delete also
 				// when data-reload not 'false' or null
 				// v2.4.4+
-				if (relid && store[relid] && options.reload !== false) {
+				if (relid && store[relid] && options.reload == true) {
 					delete store[relid];
 					delete store["_" + pageid];
 				}
 			}
-						
+			
 			// do transition
 			if (pageOut) pageInto.classList.add(params_in.form);
 			// iOS bug 
@@ -382,7 +379,6 @@
 				history.popstate = false;
 				// if only pageIn, use 'replaceState'
 				history[pageOut? "pushState": "replaceState"](null, document.title, url_push.replace(/^#/, "#&"));
-				store.history.push(url_push);
 			}
 			
 			// store page-id, just once
@@ -529,7 +525,7 @@
 	 *
 	**/
 	Mobilebone.createPage = function(domHtml, eleOrObj, options) {
-		var response = null, container = null, classPage = this.classPage;
+		var response = null, container = null, classPage = this.classPage, isreload = null;
 		// 'eleOrObj' can '.page element', or 'a element', or 'options'
 		// basically, options = ajax options, of course, u can custom it!		
 		if (!domHtml) return;
@@ -554,8 +550,10 @@
 				// pass element as target params, add on v2.3.0
 				optionsTransition.target = eleOrObj;
 				// v2.4.4 is_root → isreload
-				// v2.5.4 default value of reload is true
-				optionsTransition.reload = eleOrObj.getAttribute("data-reload") != "false";
+				isreload = eleOrObj.getAttribute("data-reload");
+				if (eleOrObj.tagName.toLowerCase() == "form" || (isreload !== null && isreload != "false")) {
+					optionsTransition.reload = true;
+				}
 				// v2.5.2
 				// is back? for issues #128
 				optionsTransition.back = eleOrObj.getAttribute("data-rel") == "back";	
@@ -565,7 +563,6 @@
 				container = eleOrObj.container || options.container;
 				classPageInside = eleOrObj.classPage || options.classPage;
 				optionsTransition.target = eleOrObj.target;
-				optionsTransition.reload = eleOrObj.reload || options.reload;
 				// v2.5.2
 				// is back? for issues #128
 				optionsTransition.back = eleOrObj.back || options.back;		
@@ -582,25 +579,27 @@
 		var create = document.createElement("div");
 		if (typeof domHtml == "string") {
 			create.innerHTML = domHtml;
-			
-			if (Mobilebone.evalScript == true) {
-				slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
-					var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
-					if (scriptContent.trim() == "" || originScript.src) return;
-					var head = document.getElementsByTagName("head")[0] || document.documentElement,
-					script = document.createElement("script");
-					if (type) script.type = type;
-					script.appendChild(document.createTextNode(scriptContent));
-					setTimeout(function() {
-						head.insertBefore(script, head.firstChild);
-						head.removeChild(script);
-					}, 16);
-					originScript = null;
-				});	
-			}
 		} else {
 			create.appendChild(domHtml);
 		}
+		
+		// excute inline JavaScript
+		if (Mobilebone.evalScript == true) {
+			slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
+				var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
+				if (scriptContent.trim() == "" || originScript.src) return;
+				var head = document.getElementsByTagName("head")[0] || document.documentElement,
+				script = document.createElement("script");
+				if (type) script.type = type;
+				script.appendChild(document.createTextNode(scriptContent));
+				setTimeout(function() {
+					head.insertBefore(script, head.firstChild);
+					head.removeChild(script);
+				}, 16);
+				originScript = null;
+			});	
+		}
+		
 		var create_title = create.getElementsByTagName("title")[0];
 		// get the page element
 		if (!(create_page = create.querySelector("." + classPage))) {
@@ -798,8 +797,7 @@
 					// no history hush
 					// no element remove
 					params.history = false;
-					// v2.5.4 remove
-					// params.remove = false;
+					params.remove = false;
 					try {
 						// as json
 						response = JSON.parse(xhr.response);
@@ -894,9 +892,8 @@
 			history.tempBack = null;
 			return true;
 		}
-		if (typeof page_in == "undefined") {
-			return false;	
-		}
+		if (typeof page_in == "undefined") return true;
+		if (!page_out) return false;
 		return page_in.compareDocumentPosition(page_out) == 4;
 	};
 	
@@ -1190,17 +1187,28 @@
 		}
 		
 		var hash = location.hash.replace("#&", "").replace(/^#/, ""), page_in = null;
-
+		
 		if (hash == "") {
 			// if no hash, get first page as 'page_in'
 			page_in = document.querySelector("." + Mobilebone.classPage);
 			if (page_in.id) return;			
 		} else {
 			page_in = store[hash];
+			
+			if (isSimple.test(hash) == false) {
+				// ajax store
+				Mobilebone.createPage(page_in, {
+					url: hash,
+					dataType: "unknown",
+					history: false,
+					back: true
+				});
+				return;
+			}
 		}
-				
+		
 		if (!page_in) {
-			if(isSimple.test(hash) == false) {
+			if (isSimple.test(hash) == false) {
 				// as a url
 				Mobilebone.ajax({
 					url: hash,
