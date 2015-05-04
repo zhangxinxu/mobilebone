@@ -31,6 +31,9 @@
 	// Is it a id selector
 	var isSimple = /^#?\w+(?:[\-_]\w+)*$/i;
 	
+	// Is it webkit
+	var isWebkit = 'WebkitAppearance' in document.documentElement.style || typeof document.webkitHidden != "undefined";
+	
 	// Is it suppory history API
 	var supportHistory = "pushState" in history && "replaceState" in history;
 		
@@ -43,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.4';
+	Mobilebone.VERSION = '2.5.5';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -262,6 +265,9 @@
 				// if reverse direction
 				pageOut.classList[back? "add": "remove"]("reverse");
 				
+				// add on v2.5.5
+				pageOut.removeSelf = null;
+				
 				// do fallback every time
 				var fallback = params_out.fallback;
 				if (typeof fallback == "string") fallback = params_out.root[fallback];
@@ -295,8 +301,6 @@
 			}
 			var relid = store["_" + pageid];
 			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
-				store[pageid].parentElement.removeChild(store[pageid]);
-				delete store[pageid];
 				// hashid may store the same page, we should delete also
 				// when data-reload not 'false' or null
 				// v2.4.4+
@@ -304,7 +308,14 @@
 					delete store[relid];
 					delete store["_" + pageid];
 				}
-			}
+				if (store[pageid] != pageOut) {
+					store[pageid].parentElement.removeChild(store[pageid]);					
+				} else {
+					pageOut.removeSelf = true;
+				}
+				delete store[pageid];
+			}	
+			
 			
 			// do transition
 			if (pageOut) pageInto.classList.add(params_in.form);
@@ -320,7 +331,9 @@
 
 			// do callback when come in first time
 			var onpagefirstinto = params_in.onpagefirstinto;
-			if (!store[pageid] && !store[hashid]) {
+			// first judge change to pageInto store
+			// v2.5.5 add for fix issues #138
+			if (!pageInto.firstintoBind) {
 				if (typeof onpagefirstinto == "string" && params_in.root[onpagefirstinto]) {
 					params_in.root[onpagefirstinto](pageInto, pageOut, options);
 				} else if (typeof onpagefirstinto == "function") {
@@ -329,11 +342,12 @@
 				// capture form submit
 				slice.call(pageInto.querySelectorAll("form")).forEach(function(form) {
 					Mobilebone.submit(form);
-				});		
+				});	
+				
+				pageInto.firstintoBind = true;
 			}
 			
 			// do callback when animation start/end
-			var isWebkit = 'WebkitAppearance' in document.documentElement.style || typeof document.webkitHidden != "undefined";
 			["animationstart", "animationend"].forEach(function(animationkey, index) {
 				var animition = params_in[animationkey], webkitkey = "webkit" + animationkey.replace(/^a|s|e/g, function(matchs) {
 					return matchs.toUpperCase();
@@ -346,6 +360,12 @@
 							this.style.display = "none";
 						}
 						this.classList.remove(params(this).form);
+						
+						// add on v2.5.5
+						if (this.removeSelf == true) {
+							this.parentElement.removeChild(this);	
+							this.removeSelf = null;		
+						}
 					});
 					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
@@ -529,6 +549,9 @@
 		// 'eleOrObj' can '.page element', or 'a element', or 'options'
 		// basically, options = ajax options, of course, u can custom it!		
 		if (!domHtml) return;
+		if (typeof options == "undefined" && typeof eleOrObj == "object") {
+			options = eleOrObj;
+		}
 		options = options || {};
 		
 		// 'options' that 'Mobilebone.transition()' needs
@@ -584,7 +607,7 @@
 		}
 		
 		// excute inline JavaScript
-		if (Mobilebone.evalScript == true) {
+		if (Mobilebone.evalScript == true && domHtml.firstintoBind != true) {
 			slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
 				var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
 				if (scriptContent.trim() == "" || originScript.src) return;
@@ -595,9 +618,10 @@
 				setTimeout(function() {
 					head.insertBefore(script, head.firstChild);
 					head.removeChild(script);
-				}, 16);
+					script = null;
+				}, 17);
 				originScript = null;
-			});	
+			});
 		}
 		
 		var create_title = create.getElementsByTagName("title")[0];
@@ -639,6 +663,7 @@
 			optionsTransition.history = false;
 			optionsTransition.classPage = classPage;
 		}
+		
 		// do transition
 		this.transition(create_page, current_page, optionsTransition);
 	};
@@ -1195,7 +1220,7 @@
 		} else {
 			page_in = store[hash];
 			
-			if (isSimple.test(hash) == false) {
+			if (page_in && isSimple.test(hash) == false) {
 				// ajax store
 				Mobilebone.createPage(page_in, {
 					url: hash,
