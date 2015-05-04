@@ -13,9 +13,7 @@
 <div class="page out">
 	<div class="content">
     	<h2>data-reload</h2>
-        <p>对于Ajax请求，只要<code>data-reload</code>的值不是<code>false</code>，默认都认为是重新加载的。此API后期可能替换。</p>
-        <div><strong>(以下v2.5.4移除，向前兼容)</strong></div>
-        <del datetime="2015-05-04 00:52"><p><strong>(v2.4.4+)</strong>主要针对Ajax请求。默认情况下，Mobilebone会缓存所有的Ajax请求（内存中），也就是第二次点击同样地址的时候，不是去重新拉数据，而是直接显示之前已经加载的页面。但是，如果你希望请求的页面不被缓存（每次都重新加载页面），则就需要使用这里的<code>data-reload</code>参数。</p>
+        <p><strong>(v2.4.4+)</strong>主要针对Ajax请求。默认情况下，Mobilebone会缓存所有的Ajax请求（内存中），也就是第二次点击同样地址的时候，不是去重新拉数据，而是直接显示之前已经加载的页面。但是，如果你希望请求的页面不被缓存（每次都重新加载页面），则就需要使用这里的<code>data-reload</code>参数。</p>
         <p>你可以当作布尔属性使用，例如：<code>data-reload</code>或者跟随不为<code>"false"</code>的属性值，例如：<code>data-reload="true"</code>.</p>
         <p>Mobilebone会对Ajax请求的url地址做智能判断，页面上，永远只会有一个同根页面。例如，页面上有两个请求：</p>
         <pre>&lt;a href="detail.php?id=1">请求详情页1&lt;/a></pre>
@@ -23,7 +21,7 @@
         <p>当点击“请求详情页1”的时候，Mobilebone会Ajax请求该页面内容，并载入；此时我们返回，再次点击该页面，则不会有请求，页面直接载入(因为没有没有设置<code>data-reload</code>)；此时，或者之前，我们我们返回，点击“请求详情页2”，由于这两个页面的查询字符串之前的根地址是一样的，都是<code>detail.php</code>，因此，Mobilebone会删除第一个页面，Ajax请求第2个页面；此时，再点击第1个页面，注意，Mobilebone会从内存中载入第1个页面，不会有额外的请求。</p>
         <p>有多位同行提出关于内存的问题。如果是一般的偏展示的页面，所占用内存非常有限，因此，可以尽量不使用<code>data-reload</code>, 以获得更流畅的体验。但是，如果是功能性比较强的页面，比方说商品列表，50条，每条都指向一个动态页面，则由于Mobilebone默认会把页面HTML存在内存中，虽然每个页面占用内存很小（纯字符串），但如果也页面很多，一定的累积还是会有影响的，此时，可以添加<code>data-reload</code>，每次都动态载入，Mobilebone会及时清理上一个页面在内存中的存储，有效降低资源占用。总而言之，言而总之，还是要根据实际项目和个人喜好做判断，实际上，一般内存占用的瓶颈肯定不是字符串占用，更多的是糟糕脚本带来的巨大开销。</p>
         <p>另外，所有的form表单提交都不会缓存页面内容，天生外挂<code>data-reload</code>。</p>
-        <p>最后，v2.3.2新增的<code>data-reload="root"</code>已经没有存在价值，是个有些多余的设计，之前有这么使用的朋友不要担心，不会有影响，无需改动。</p></del>
+        <p>最后，v2.3.2新增的<code>data-reload="root"</code>已经没有存在价值，是个有些多余的设计，之前有这么使用的朋友不要担心，不会有影响，无需改动。</p>
         <p>&nbsp;</p>
         <div><strong>(以下v2.4.4移除，向前兼容)</strong></div>
         <del datetime="2015-04-09 23:37">

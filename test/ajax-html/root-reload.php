@@ -13,6 +13,9 @@
     </ul>
     <script>
 	document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);
+	document.getElementById("idShow").parentNode.addEventListener("touchstart", function() {
+		document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);	
+	});
 	console.log("script excuted!");
 	</script>
     <script type="text/template">
