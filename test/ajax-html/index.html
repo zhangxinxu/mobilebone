@@ -72,8 +72,12 @@ var page_b_first = function() {
 		location.href = this.href;
 	});
 };
-var page_root_first = function() {
-	// console.log("root?");
+var page_root_first = function(pageinto) {
+	console.log("firstinto excuted!");
+	pageinto.querySelector("#ajaxFirstInto").addEventListener("click", function() {
+		console.log("should console only once!");
+		this.style.color = "#" + (Math.random() + "").slice(-6)	;
+	});
 };
 
 Mobilebone.evalScript = true;
