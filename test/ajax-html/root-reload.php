@@ -7,16 +7,21 @@
 <body>
 <div class="page out" data-callback="root_reload" data-onpagefirstinto="page_root_first">
 	<p>document.getElementById("idShow").innerHTML是：<strong id="idShow">&nbsp;</strong>，应该结果是<strong id="idShould"><?php echo $_GET['id']; ?></strong>.</p>
+    <p><button id="ajaxFirstInto">pagefirstinto与Ajax载入测试</button></p>
 	<ul>
-        <li><a href="#pageHome" id="scriptTest" data-rel="back" data-ajax="true">返回</a></li>
+        <li><a href="#pageHome" id="scriptTest<?php echo $_GET['id']; ?>" data-rel="back" data-ajax="true">返回</a></li>
         <li><a href="root-reload.php?id=8" data-ajax="true">id不一样的页面</a></li>
     </ul>
     <script>
-	document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);
-	document.getElementById("idShow").parentNode.addEventListener("touchstart", function() {
-		document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);	
-	});
-	console.log("script excuted!");
+	document.getElementById("scriptTest<?php echo $_GET['id']; ?>").style.backgroundColor = "#" + (Math.random() + "").slice(-6);
+	setTimeout(function() {
+		
+		document.getElementById("idShow").parentNode.addEventListener("touchstart", function() {
+			console.log("inline script should once!");
+			document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);	
+		});	
+	}, 350);
+	console.log("<?php echo $_GET['id']; ?>: script excuted!");
 	</script>
     <script type="text/template">
 	console.log("should not excute!");
