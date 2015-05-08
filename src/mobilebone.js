@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.5';
+	Mobilebone.VERSION = '2.5.6';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -625,18 +625,20 @@
 		}
 		
 		var create_title = create.getElementsByTagName("title")[0];
+		
 		// get the page element
 		if (!(create_page = create.querySelector("." + classPage))) {
+			// if there no .page, create as create_page
 			create.className = classPage + " out";
-			if (typeof page_title == "string") create.setAttribute("data-title", page_title);
 			create_page = create;
-		} else {
-			if (create_title) {
-				create_page.setAttribute("data-title", create_title.innerText);
-			} else if (typeof page_title == "string") {
-				create_page.setAttribute("data-title", page_title);
-			}
 		}
+		// set and store title
+		if (typeof page_title == "string") {
+			create_page.setAttribute("data-title", page_title);
+		} else if (create_title && create_title.innerText) { // the judge behind '&&' for issues #144 
+			create_page.setAttribute("data-title", create_title.innerText);
+		}
+		
 		// insert create page as a last-child
 		(container || document.body).appendChild(create_page);
 		
@@ -881,7 +883,7 @@
 	Mobilebone.submit = function(form) {
 		if (!form || typeof form.action != "string") return; 
 		var ajax = form.getAttribute("data-ajax");
-		if (ajax == "false" || (this.captureForm == false && ajax != "true")) return;
+		if (ajax == "false" || (Mobilebone.captureForm == false && ajax != "true")) return;
 		
 		form.addEventListener("submit", function(event) {
 			// prevent detect
@@ -970,17 +972,11 @@
 		}
 		
 		// Initialization link-catch events.
-		var eventName = "click", $ = root.$ || root.jQuery || root.Zepto;
-		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) eventName = "tap"; 
-	
-		if ($ && $.fn && $.fn.on) {
+		var $ = root.$ || root.jQuery || root.Zepto;
+		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) {
 			// for some unknown 'tap' plugin
-			$(document).on(eventName, this.handleTapEvent);
-		} else {
-			document.addEventListener(eventName, this.handleTapEvent);	
-		}
-		
-		if (eventName == "tap") {
+			$(document).tap(this.handleTapEvent);
+			
 			// zepto tap event.preventDefault can't prevent default click-events
 			document.addEventListener("click", function(event) {
 				var target = event.target;
@@ -993,11 +989,14 @@
 				if (target.getAttribute("data-rel") == "external" 
 					|| ajax == "false"
 					|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
-					|| (this.captureLink == false && ajax != "true")
+					|| (Mobilebone.captureLink == false && ajax != "true")
 				) return;
 				event.preventDefault();
 			});
+		} else {
+			document.addEventListener("click", this.handleTapEvent);	
 		}
+
 		// Important: 
 		// In ios7+, swipe the edge of page will navigate Safari
 		// that will trigger 'popstate' events and the page will transition twice
