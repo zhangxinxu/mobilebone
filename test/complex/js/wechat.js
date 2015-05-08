@@ -13,7 +13,7 @@ Mobilebone.onpagefirstinto = function(pageinto) {
 	var weChatScroll = new IScroll(pageinto.querySelector(".content"), {
 		tap: true
 	});
-	/Android/i.test(navigator.userAgent) && pageinto.addEventListener('tap', Mobilebone.handleTapEvent, false);
+	// /Android/i.test(navigator.userAgent) && pageinto.addEventListener('tap', Mobilebone.handleTapEvent, false);
 };
 
 Mobilebone.callback = function(pageinto, pageout) {
