@@ -75,10 +75,17 @@ Mobilebone.callback = function() {
 	// 2. page2因为root=window, 因此上下文为window
 	// 3. 页面3则是 callback_page.test_obj
 	// 需要注意的是，如果存在回调合并的情况，其公用同一个上下文this, 值同上规则
-	console.log("全局回调上下文this: ");
+	console.log("全局回调上下文this: " + this.time);
 	console.log(this);
 };
 
+Mobilebone.onpagefirstinto = function(pageinto) {
+	console.log("global: onpagefirstinto");
+};
+
+Mobilebone.animationstart = function(page) {
+	console.log("global: animationstart");
+};
 
 window.callback_page = function(page) {
 	// 按钮居中

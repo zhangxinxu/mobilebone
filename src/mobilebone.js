@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.5.6';
+	Mobilebone.VERSION = '2.5.7';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -335,9 +335,9 @@
 			// v2.5.5 add for fix issues #138
 			if (!pageInto.firstintoBind) {
 				if (typeof onpagefirstinto == "string" && params_in.root[onpagefirstinto]) {
-					params_in.root[onpagefirstinto](pageInto, pageOut, options);
+					params_in.root[onpagefirstinto].call(params_in.root, pageInto, pageOut, options);
 				} else if (typeof onpagefirstinto == "function") {
-					onpagefirstinto(pageInto, pageOut, options);
+					onpagefirstinto.call(params_in.root, pageInto, pageOut, options);
 				}
 				// capture form submit
 				slice.call(pageInto.querySelectorAll("form")).forEach(function(form) {
@@ -370,11 +370,11 @@
 					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
 						pageInto.addEventListener(animateEventName, function() {
-							params_in.root[animition](this, this.classList.contains("in")? "into": "out", options);
+							params_in.root[animition].call(params_in.root, this, this.classList.contains("in")? "into": "out", options);
 						});
 					} else if (typeof animition == "function") {
 						pageInto.addEventListener(animateEventName, function() {
-							animition(this, this.classList.contains("in")? "into": "out", options);	
+							animition.call(params_in.root, this, this.classList.contains("in")? "into": "out", options);	
 						});
 					}	
 				} 
