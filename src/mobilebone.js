@@ -957,66 +957,66 @@
 		Mobilebone.init = function() {
 			if (hasInited == true) return 'Don\'t repeat initialization!';
 
-		var hash = location.hash.replace("#&", "#"), ele_in = null;
-		
-		if (hash == "" || hash == "#") {
-			this.transition(document.querySelector("." + this.classPage));
-		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
-			this.transition(ele_in);	
-		} else {
-			// as a ajax
-			this.ajax({
-				url: hash.replace("#", ""),
-				dataType: "unknown",
-				error: function() {
-					ele_in = document.querySelector("." + Mobilebone.classPage);	
-					Mobilebone.transition(ele_in);
-				}
-			});	
-		}
-		
-		// Initialization link-catch events.
-		var $ = root.$ || root.jQuery || root.Zepto;
-		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) {
-			// for some unknown 'tap' plugin
-			$(document).tap(this.handleTapEvent);
-			
-			// zepto tap event.preventDefault can't prevent default click-events
-			document.addEventListener("click", function(event) {
-				var target = event.target;
-				if (!target) return;
-				if (target.tagName.toLowerCase() != "a" && !(target = target.getParentElementByTag("a"))) {
-					return;
-				}
-				var ajax = target.getAttribute("data-ajax"), href = target.href;
-				// if not ajax request
-				if (target.getAttribute("data-rel") == "external" 
-					|| ajax == "false"
-					|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
-					|| (Mobilebone.captureLink == false && ajax != "true")
-				) return;
-				event.preventDefault();
-			});
-		} else {
-			document.addEventListener("click", this.handleTapEvent);	
-		}
+			var hash = location.hash.replace("#&", "#").replace(/\?.*/,""), ele_in = null;
 
-		// Important: 
-		// In ios7+, swipe the edge of page will navigate Safari
-		// that will trigger 'popstate' events and the page will transition twice
-		var isSafari7 = !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.hidden !== "undefined" && !window.chrome;
-		if ('ontouchstart' in window == true && isSafari7) {
-			document.addEventListener("touchmove", function() {
-				history.popstateswipe = true;	
-			});	
-			document.addEventListener("touchend", function() {
-				history.popstateswipe = false;	
-			});
-		}
-		
-		// change flag-var for avoiding repeat init
-		hasInited = true;
-	};
+			if (hash == "" || hash == "#") {
+				this.transition(document.querySelector("." + this.classPage));
+			} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
+				this.transition(ele_in);
+			} else {
+				// as a ajax
+				this.ajax({
+					url: hash.replace("#", ""),
+					dataType: "unknown",
+					error: function() {
+						ele_in = document.querySelector("." + Mobilebone.classPage);
+						Mobilebone.transition(ele_in);
+					}
+				});
+			}
+
+			// Initialization link-catch events.
+			var $ = root.$ || root.jQuery || root.Zepto;
+			if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) {
+				// for some unknown 'tap' plugin
+				$(document).tap(this.handleTapEvent);
+
+				// zepto tap event.preventDefault can't prevent default click-events
+				document.addEventListener("click", function(event) {
+					var target = event.target;
+					if (!target) return;
+					if (target.tagName.toLowerCase() != "a" && !(target = target.getParentElementByTag("a"))) {
+						return;
+					}
+					var ajax = target.getAttribute("data-ajax"), href = target.href;
+					// if not ajax request
+					if (target.getAttribute("data-rel") == "external"
+						|| ajax == "false"
+						|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
+						|| (Mobilebone.captureLink == false && ajax != "true")
+					) return;
+					event.preventDefault();
+				});
+			} else {
+				document.addEventListener("click", this.handleTapEvent);
+			}
+
+			// Important:
+			// In ios7+, swipe the edge of page will navigate Safari
+			// that will trigger 'popstate' events and the page will transition twice
+			var isSafari7 = !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.hidden !== "undefined" && !window.chrome;
+			if ('ontouchstart' in window == true && isSafari7) {
+				document.addEventListener("touchmove", function() {
+					history.popstateswipe = true;
+				});
+				document.addEventListener("touchend", function() {
+					history.popstateswipe = false;
+				});
+			}
+
+			// change flag-var for avoiding repeat init
+			hasInited = true;
+		};
 	
 	/**
 	 * If 'a' element has href, slide auto when tapping~
