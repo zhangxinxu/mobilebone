@@ -1004,7 +1004,8 @@
 
 		// optional params for Mobilebone.transition
 		var options = {
-			target: target
+			target: target,
+			title : target.getAttribute("data-title")
 		};
 
 		// prevent detect
