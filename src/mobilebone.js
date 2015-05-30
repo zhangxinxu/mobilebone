@@ -819,7 +819,7 @@
 			}
 		}
 		// show loading
-		ele_mask.style.visibility = "visible";
+		ele_mask.style.display = "block";
 		
 		// ajax request
 		var xhr = new XMLHttpRequest();			
@@ -872,21 +872,21 @@
 			params.complete.call(params, xhr, xhr.status);
 			
 			// hide loading
-			ele_mask.style.visibility = "hidden";
+			ele_mask.style.display = "none";
 		}
 		
 		xhr.onerror = function(e) {
 			params.message = "Illegal request address or an unexpected network error!";
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
-			ele_mask.style.visibility = "hidden";
+			ele_mask.style.display = "none";
 		}
 		
 		xhr.ontimeout = function() {
 			params.message = "The request timeout!";
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
-			ele_mask.style.visibility = "hidden";
+			ele_mask.style.display = "none";
 		};
 		
 		// set request header for server
@@ -1084,7 +1084,7 @@
 		
 		// if mask element exist and displaying, prevent double trigger
 		var ele_mask = target.getElementsByClassName(Mobilebone.classMask)[0];
-		if (ele_mask && ele_mask.style.visibility != "hidden") {
+		if (ele_mask && ele_mask.style.display != "none") {
 			event.preventDefault();
 			return false;
 		}
