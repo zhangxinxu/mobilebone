@@ -18,3 +18,8 @@ a:not(.follow) > .mask { left: 0; top: 0; }
 .footer a { display: block; line-height: 40px; -webkit-transition: color .35s; transition: color .35s; }
 .footer a.active { color: green; }
 .content { padding: 10px; position: absolute; top: 36px; bottom: 40px; overflow: auto; -webkit-overflow-scrolling: touch; }
+
+.btn { display: inline-block; padding: .5em 1em; border: 0 none; border: 1px solid rgba(0,0,0,.25); border-radius: 0.3em; background-image: none; box-shadow: 0 1px rgba(0,0,0,.15), inset 0 1px rgba(255,255,255,.15); color: #fff; text-align: center; text-decoration: none; text-shadow: 1px 1px rgba(0,0,0,.1); font-size: 100%; font-family: inherit; font-weight: inherit; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; user-select: none; overflow: visible; cursor: pointer; }
+.btn:hover, .btn:focus { text-decoration: none; background-image: linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.1)); }
+.btn:focus { outline: thin dotted; outline: 5px auto -webkit-focus-ring-color; outline-offset: -2px; }
+.btn:active { box-shadow: 0 1px rgba(0,0,0,.2), inset 0 1px rgba(0,0,0,.05); outline: none; }

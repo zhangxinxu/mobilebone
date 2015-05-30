@@ -326,7 +326,7 @@
 			    first_page = document.querySelector("." + this.classPage);	
 				
 			// do title change	
-			if (title) {
+			if (title && options.title !== false) {
 				document.title = title;
 				if (header) {
 					header.innerHTML = title;
@@ -681,6 +681,9 @@
 			if (typeof options.target != "undefined") {
 				optionsTransition.target = options.target;
 			}
+			if (typeof options.title != "undefined") {
+				optionsTransition.title = options.title;
+			}
 		}
 		if (classPage == classPageInside) {
 			optionsTransition.history = false;
@@ -777,7 +780,18 @@
 				params.type = aOrFormOrObj.method;
 				
 				formData = new FormData(aOrFormOrObj);
-			}	
+			} else if (tagName == "a") {
+				// v2.5.8 for issues #157
+				var idContainer = aOrFormOrObj.getAttribute("data-container"),
+					classPageInside = aOrFormOrObj.getAttribute("data-classpage"),
+					container = idContainer && document.getElementById(idContainer);
+				if (container && classPageInside && classPageInside != Mobilebone.classPage) {
+					// inner ajax no history change
+					params.history = false;
+					// title do not change
+					params.title = false;
+				}
+			}
 			
 			// get mask element
 			attr_mask = aOrFormOrObj.getAttribute("data-mask");
@@ -805,8 +819,9 @@
 		
 		// do ajax
 		// get mask and loading element
+		var body = container || document.body;
 		if (typeof attr_mask != "string") {
-			ele_mask = document.querySelector("body > ." + this.classMask);
+			ele_mask = body.querySelector("." + this.classMask);
 		}
 		if (ele_mask == null) {
 			ele_mask = document.createElement("div");
@@ -815,7 +830,7 @@
 			if (typeof attr_mask == "string") {
 				aOrFormOrObj.appendChild(ele_mask);
 			} else {
-				document.body.appendChild(ele_mask);
+				body.appendChild(ele_mask);
 			}
 		}
 		// show loading
@@ -1040,7 +1055,7 @@
 	/**
 	 * If 'a' element has href, slide auto when tapping~
 	**/
-	Mobilebone.handleTapEvent = function(event) {		
+	Mobilebone.handleTapEvent = function(event) {
 		/**
 		// iscroll(set tap: true) may cause twice tap problem 
 		// which is none of Mobilebone's business
@@ -1056,8 +1071,14 @@
 		}
 		store.timerTap = Date.now();
 		*/
+		var target = null;
+		// you can pass target as params directly
+		if (event && event.nodeType == 1) { 
+			target = event;
+			target.preventDefault = function() {};
+		}
 		// get target and href
-		var target = event.target || event.touches[0], href = target.href;
+		target = target || event.target || event.touches[0], href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
@@ -1094,8 +1115,9 @@
 			container = idContainer && document.getElementById(idContainer);
 		if (container && classPageInside && classPageInside != Mobilebone.classPage) {
 			self_page = container.querySelector(".in." + classPageInside) || container.querySelector(classPageInside);
-			if (self_page == null) return false;
+			// if (self_page == null) return false;
 			options.history = false;
+			options.title = false;
 			options.classPage = classPageInside;
 		}
 		
@@ -1160,8 +1182,11 @@
 					back = Mobilebone.isBack(store[clean_url], self_page);
 				}
 				options.id = clean_url;
-				if (document.body.contains(store[clean_url]) == false) {
-					document.body.appendChild(store[clean_url]);
+				
+				var body = container || document.body;
+				
+				if (body.contains(store[clean_url]) == false) {
+					body.appendChild(store[clean_url]);
 				}
 				Mobilebone.transition(store[clean_url], self_page, back, options);
 			} else {
