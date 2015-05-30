@@ -74,6 +74,12 @@ html, body, .page {
 }
 
 /* Default animation - slide, you can visit 'src/mobilebone.aniamte.css' to get more styles of animation */
+.slide.out, .slide.in {
+	-webkit-animation-timing-function: ease-out;
+	-webkit-animation-duration: 250ms;
+	animation-timing-function: ease-out;
+	animation-duration: 250ms;
+}
 .slide.in {
 	-webkit-animation-name: slideinfromright;
 	animation-name: slideinfromright;

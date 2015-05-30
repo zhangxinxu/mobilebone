@@ -10,11 +10,11 @@
 
 <body>
 <div id="container"></div>
-<div id="pageHome" class="page out">
+<div id="pageHome" class="page out" style="overflow:auto;">
     <ul>
         <li><a href="ajax-page.html" data-container="container">点击加载(缓存，若后2项已请求，则无请求)</a></li>
         <li><a href="ajax-page.html#a=1#b=1&c=1#" data-reload>点击加载(每次都请求， 返回含page结构)</a></li>
-        <li><a href="ajax-page.html?&&" data-formdata="?a=1">点击加载(缓存, url过滤测试)</a></li>
+        <li><a href="ajax-page.html?&&" data-formdata="?a=1" data-history="false">点击加载(缓存, url过滤测试,历史无变化)</a></li>
         <li><a href="ajax-page.html?debug=zhangrui.songyi#&/index.php/Home/Mall/index/sid/251 " data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
         <li><a href="ajax-page.html?a=1&#tt_fo#nt=m&tt_#daymode=1" data-reload data-formdata="&c=1" data-mask="true">点击加载(data-formdata测试)-内覆盖loading</a></li>
         <li><a href="ajax-page.html?a=1&b=" class="follow" data-reload data-formdata="c=1&d=1" data-mask="true">点击加载(data-formdata测试)-跟随loading</a></li>
@@ -24,7 +24,7 @@
         <li><a href="ajax-without-page.html" data-reload>svg中title测试</a></li>
     </ul>
     <ul>
-    	<li><a href="root-reload.php?id=1" data-ajax="true">根地址不缓存1</a></li>
+    	<li><a href="root-reload.php?id=1" data-reload data-ajax="true">根地址不缓存1</a></li>
         <li><a href="root-reload.php?id=2">根地址不缓存2</a></li>
         <li><a href="root-reload.php?id=3">根地址不缓存3</a></li>
         <li><a href="root-reload.php?id=4">根地址不缓存4</a></li>
@@ -63,8 +63,8 @@ var init = function(ele) {
 	ele.querySelector(".result").innerHTML += 'inited! ';
 };
 
-var root_reload = function() {
-	var show = document.getElementById("idShow"), should = document.getElementById("idShould");
+var root_reload = function(pagein) {
+	var show = pagein.querySelector("#idShow"), should = pagein.querySelector("#idShould");
 	if (show && should) {
 		show.innerHTML = should.innerHTML;
 	}
@@ -72,7 +72,7 @@ var root_reload = function() {
 
 var page_b_first = function() {
 	// console.log("first?");
-	$("#link").on("tap", function() {
+	if (window.$) $("#link").on("tap", function() {
 		location.href = this.href;
 	});
 };

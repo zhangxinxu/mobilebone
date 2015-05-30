@@ -10,12 +10,11 @@
     <p><button id="ajaxFirstInto">pagefirstinto与Ajax载入测试</button></p>
 	<ul>
         <li><a href="#pageHome" id="scriptTest<?php echo $_GET['id']; ?>" data-rel="back" data-ajax="true">返回</a></li>
-        <li><a href="root-reload.php?id=8" data-ajax="true">id不一样的页面</a></li>
+        <li><a href="root-reload.php?id=8" data-ajax="true" data-reload>id不一样的页面</a></li>
     </ul>
     <script>
 	document.getElementById("scriptTest<?php echo $_GET['id']; ?>").style.backgroundColor = "#" + (Math.random() + "").slice(-6);
-	setTimeout(function() {
-		
+	setTimeout(function() {		
 		document.getElementById("idShow").parentNode.addEventListener("touchstart", function() {
 			console.log("inline script should once!");
 			document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);	
