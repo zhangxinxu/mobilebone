@@ -1044,9 +1044,13 @@
 					|| ajax == "false"
 					|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
 					|| (Mobilebone.captureLink == false && ajax != "true")
-				) return;
+				) {
+					// issues #123 #137 #142
+					if (/^http/i.test(href)) location.href = href;
+					return;
+				}
 				event.preventDefault();
-			});
+			});			
 		} else {
 			document.addEventListener("click", this.handleTapEvent);	
 		}
