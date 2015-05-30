@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.6.0';
+	Mobilebone.VERSION = '2.6.1';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -496,7 +496,14 @@
 				 } else {
 					// a element
 					href = trigger.getAttribute("href");
-					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data");
+					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data") || "";
+					// v2.6.1 for #107
+					// remember container when refresh
+					var str_container = "container", attr_container = trigger.getAttribute("data-" + str_container);
+					if (formdata.indexOf(str_container) == -1 && attr_container) {
+						var query_container = str_container + "=" + attr_container;
+						formdata = formdata? formdata + "&" + query_container: query_container;
+					}
 				 }
 			 } else if (trigger.url) {
 				 href = trigger.url;
@@ -815,6 +822,8 @@
 			// is back? for issues #128
 			// when history.back()
 			params.back = aOrFormOrObj.back;
+			// v2.6.1
+			params.container = aOrFormOrObj.container;
 		} else {
 			return;	
 		}
@@ -993,17 +1002,22 @@
 	Mobilebone.init = function() {	
 		if (hasInited == true) return 'Don\'t repeat initialization!';
 
-		var hash = location.hash.replace("#&", "#"), ele_in = null;
+		var hash = location.hash.replace("#&", "#"), ele_in = null, container = null;
 		
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
 		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
 			this.transition(ele_in);	
 		} else {
+			// add on v2.6.1
+			if (hash.split("container=").length == 2) {
+				container = document.getElementById(hash.split("container=")[1].split("&")[0]);
+			}
 			// as a ajax
 			this.ajax({
 				url: hash.replace("#", ""),
 				dataType: "unknown",
+				container: container,
 				error: function() {
 					ele_in = document.querySelector("." + Mobilebone.classPage);	
 					Mobilebone.transition(ele_in);
@@ -1260,7 +1274,9 @@
 			return;
 		}
 		
-		var hash = location.hash.replace("#&", "").replace(/^#/, ""), page_in = null;
+		var hash = location.hash.replace("#&", "").replace(/^#/, ""), page_in = null
+			// add on v2.6.1
+			, container = null;
 		
 		if (hash == "") {
 			// if no hash, get first page as 'page_in'
@@ -1269,13 +1285,19 @@
 		} else {
 			page_in = store[hash];
 			
+			// add on v2.6.1
+			if (hash.split("container=").length == 2) {
+				container = document.getElementById(hash.split("container=")[1].split("&")[0]);
+			}
+
 			if (page_in && isSimple.test(hash) == false) {
 				// ajax store
 				Mobilebone.createPage(page_in, {
 					url: hash,
 					dataType: "unknown",
 					history: false,
-					back: true
+					back: true,
+					container: container
 				});
 				return;
 			}
@@ -1287,7 +1309,8 @@
 				Mobilebone.ajax({
 					url: hash,
 					dataType: "unknown",
-					back: Mobilebone.isBack()
+					back: Mobilebone.isBack(),
+					container: container
 				});	
 				return;
 			}
