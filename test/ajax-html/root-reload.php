@@ -14,8 +14,7 @@
     </ul>
     <script>
 	document.getElementById("scriptTest<?php echo $_GET['id']; ?>").style.backgroundColor = "#" + (Math.random() + "").slice(-6);
-	setTimeout(function() {
-		
+	setTimeout(function() {		
 		document.getElementById("idShow").parentNode.addEventListener("touchstart", function() {
 			console.log("inline script should once!");
 			document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);	

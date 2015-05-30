@@ -63,8 +63,8 @@ var init = function(ele) {
 	ele.querySelector(".result").innerHTML += 'inited! ';
 };
 
-var root_reload = function() {
-	var show = document.getElementById("idShow"), should = document.getElementById("idShould");
+var root_reload = function(pagein) {
+	var show = pagein.querySelector("#idShow"), should = pagein.querySelector("#idShould");
 	if (show && should) {
 		show.innerHTML = should.innerHTML;
 	}

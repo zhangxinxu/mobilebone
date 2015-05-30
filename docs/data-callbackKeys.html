@@ -33,6 +33,13 @@
         <pre>&lt;a href="load.html?id=111">页面111&lt;/a></pre>
         <p>111可能是你想传递的参数，然后，就可以通过下面一行脚本获得：</p>
         <pre>var id = options.target.href.replace(/\D/g, "");</pre>
+        <h3>补充于2015-05-30(v2.5.8)</h3>
+        <p>尤其当使用<code>data-callback</code>和<code>data-fallback</code>处理一些回调的时候，有可能前后两个页面结构一致，数据不一样，就很有可能出现<code>id</code>一致的情况，如果单纯使用<code>$("#ID")</code>或<code>document.querySelector("#ID")</code>, 则得到的元素并不是新页面你希望选择的元素。怎么办，请使用回调方法中的页面参数作为容器去获取对应的元素，例如：</p>
+        <pre>Mobilebone.callback = function(<span style="color:#cd0000;">pagein</span>) {
+    <del style="color:green;">// NOT: var element = document.querySelector("#ID");</del>
+    var element = <span style="color:#cd0000;">pagein</span>.querySelector("#ID");
+    <span style="color:green;">// do sth by using elememt...</span>
+};</pre>
     </div>
 </div>
 
