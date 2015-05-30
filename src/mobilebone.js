@@ -266,8 +266,7 @@
 				pageOut.classList[back? "add": "remove"]("reverse");
 				
 				// add on v2.5.5
-				pageOut.removeSelf = null;
-				
+				pageOut.removeSelf = pageOut.removeSelf || null;
 				// do fallback every time
 				var fallback = params_out.fallback;
 				if (typeof fallback == "string") fallback = params_out.root[fallback];
@@ -300,7 +299,8 @@
 				pageid = pageid.split("?")[0];
 			}
 			var relid = store["_" + pageid];
-			if (options.remove !== false && store[pageid] && store[pageid] != pageInto && store[pageid].parentElement) {
+			
+			if (options.remove !== false && store[pageid] && store[pageid] != pageInto) {
 				// hashid may store the same page, we should delete also
 				// when data-reload not 'false' or null
 				// v2.4.4+
@@ -308,8 +308,14 @@
 					delete store[relid];
 					delete store["_" + pageid];
 				}
+								
+				if (options.reload == true) {
+					// v2.5.8 for issues #147
+					pageInto.removeSelf = true;
+				}
+				
 				if (store[pageid] != pageOut) {
-					store[pageid].parentElement.removeChild(store[pageid]);					
+					store[pageid].parentElement && store[pageid].parentElement.removeChild(store[pageid]);					
 				} else {
 					pageOut.removeSelf = true;
 				}
@@ -358,14 +364,14 @@
 					index && pageInto.addEventListener(animateEventName, function() {
 						if (this.classList.contains("in") == false) {
 							this.style.display = "none";
+							// add on v2.5.5
+							// move here on v2.5.8
+							if (this.removeSelf == true) {
+								this.parentElement.removeChild(this);	
+								this.removeSelf = null;		
+							}
 						}
 						this.classList.remove(params(this).form);
-						
-						// add on v2.5.5
-						if (this.removeSelf == true) {
-							this.parentElement.removeChild(this);	
-							this.removeSelf = null;		
-						}
 					});
 					// bind animation events
 					if (typeof animition == "string" && params_in.root[animition]) {
@@ -821,10 +827,12 @@
 					}
 				} else if (params.dataType == "unknown") {
 					// ajax send by url
-					// no history hush
-					// no element remove
+					// no history hush					
 					params.history = false;
-					params.remove = false;
+					// I don't remember why add 'params.remove = false' here, 
+					// but it seems that this will cause issues #147
+					// no element remove
+					// del → v2.5.8 // params.remove = false;
 					try {
 						// as json
 						response = JSON.parse(xhr.response);

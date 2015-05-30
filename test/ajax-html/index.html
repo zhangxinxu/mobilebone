@@ -24,7 +24,7 @@
         <li><a href="ajax-without-page.html" data-reload>svg中title测试</a></li>
     </ul>
     <ul>
-    	<li><a href="root-reload.php?id=1" data-ajax="true">根地址不缓存1</a></li>
+    	<li><a href="root-reload.php?id=1" data-reload data-ajax="true">根地址不缓存1</a></li>
         <li><a href="root-reload.php?id=2">根地址不缓存2</a></li>
         <li><a href="root-reload.php?id=3">根地址不缓存3</a></li>
         <li><a href="root-reload.php?id=4">根地址不缓存4</a></li>
@@ -72,7 +72,7 @@ var root_reload = function(pagein) {
 
 var page_b_first = function() {
 	// console.log("first?");
-	$("#link").on("tap", function() {
+	if (window.$) $("#link").on("tap", function() {
 		location.href = this.href;
 	});
 };
