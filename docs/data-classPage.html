@@ -13,7 +13,7 @@
 <div class="page out">
 	<div class="content">
     	<h2>data-classPage (v2.3.0+)</h2>
-        <p>内部过场（局部过场）效果的关键类名，性质等同于全局的<code>Mobilebone.classPage</code>.</p>
+        <p>内部过场（局部过场）效果的关键类名，性质等同于全局的<code>Mobilebone.classPage</code>，v2.6.0+支持ajax局部过场.</p>
         <h3>使用</h3>
         <p>此参数若想要生效，必须和<a href="data-container.html" data-rel="auto" class="link">data-container</a>配合使用。</p>
         <p>例如，下面这个选项卡效果：</p>
@@ -66,11 +66,7 @@
     if (eleAcive) eleAcive.classList.remove("active");
     if (target) target.classList.add("active");
 };</pre>
-		<p>非<code>page</code>页面的过场效果是不会触发<code>history</code>变化的，其他规则跟主<code>page</code>切换一致，包括各种回调接口的使用等等。</p>
-        
-        
-        
-       
+		<p>非<code>page</code>页面的过场效果是不会触发<code>history</code>变化的，也不会改变页面的<code>title</code>(v2.6.0+), 其他规则跟主<code>page</code>切换一致，包括各种回调接口的使用等等。</p> 
     </div>
 </div>
 
