@@ -1097,7 +1097,6 @@
 			target = event;
 			target.preventDefault = function() {};
 		}
-		console.log(target);
 		// get target and href
 		target = target || event.target || event.touches[0], href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {

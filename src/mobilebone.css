@@ -24,26 +24,13 @@ html, body, .page {
 	position: absolute; left: 0; top: 0;
 }
 
-.out {
+.page.out {
 	display: none;
 }
 
 .in, .out {
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
-}
-
-.in {
-	-webkit-animation-timing-function: ease-out;
-	-webkit-animation-duration: 350ms;
-	animation-timing-function: ease-out;
-	animation-duration: 350ms;
-}
-.out {
-	-webkit-animation-timing-function: ease-in;
-	-webkit-animation-duration: 225ms;
-	animation-timing-function: ease-in;
-	animation-duration: 225ms;
 }
 
 /* mask layer when ajax sending... */
@@ -76,9 +63,9 @@ html, body, .page {
 /* Default animation - slide, you can visit 'src/mobilebone.aniamte.css' to get more styles of animation */
 .slide.out, .slide.in {
 	-webkit-animation-timing-function: ease-out;
-	-webkit-animation-duration: 250ms;
+	-webkit-animation-duration: 225ms;
 	animation-timing-function: ease-out;
-	animation-duration: 250ms;
+	animation-duration: 225ms;
 }
 .slide.in {
 	-webkit-animation-name: slideinfromright;

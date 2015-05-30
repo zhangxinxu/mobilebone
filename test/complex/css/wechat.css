@@ -1,5 +1,5 @@
 /* wechat.css */
-body { background-color: #ebebeb; font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; }
+body { background-color: #ebebeb; font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; background-color:#cd0000; }
 a { text-decoration: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
 h1,h2,h3,h4,h5,h6{ margin: 0; font-weight: 400; }
 ul,ol{ margin: 0; list-style-type: none; }
@@ -61,7 +61,7 @@ ul,ol{ margin: 0; list-style-type: none; }
 .contact-list:last-child { border-bottom: 0; }
 .contact-list > img { width: 36px; height: 36px; position: absolute; }
 .contact-list > nickname { display: block; line-height: 36px; margin-left: 44px; }
-.contact-h { line-height: 23px; padding-left: 10px; font-size: 12px; color: #868686; }
+.contact-h { line-height: 23px; padding-left: 10px; font-size: 12px; color: #868686; background-color: #eee; }
 
 .find-group { padding-left: 12px; padding-right: 12px; margin-top: 20px; margin-bottom: 20px; background-color: #fff; }
 .find-list { height: 30px; line-height: 30px; padding-top: 9px; padding-bottom: 9px; border-bottom: 1px solid #d7d7d7; text-indent: 52px; position: relative; }
