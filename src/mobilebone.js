@@ -289,9 +289,6 @@
 			});
 		};
 		
-		
-		
-		
 		if (pageOut != null && pageOut.classList) {
 			// do transition if there are no 'prevent'
 			if (isPreventOut != true) {
@@ -601,6 +598,11 @@
 				// v2.5.2
 				// is back? for issues #128
 				optionsTransition.back = eleOrObj.getAttribute("data-rel") == "back";	
+				
+				// v2.6.0 history
+				if (eleOrObj.getAttribute("data-history") == "false") {
+					optionsTransition.history = false;
+				}
 			} else {
 				response = eleOrObj.response || options.response;	
 				page_title = eleOrObj.title || options.title;
