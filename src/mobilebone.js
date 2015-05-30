@@ -252,6 +252,46 @@
 			return false;	
 		}
 		
+		// set animation callback as a method
+		var fun_animationCall = function(page, data) {
+			if (page.flagAniBind == true) return;
+			// do callback when animation start/end
+			["animationstart", "animationend"].forEach(function(animationkey, index) {
+				var animition = params_in[animationkey], webkitkey = "webkit" + animationkey.replace(/^a|s|e/g, function(matchs) {
+					return matchs.toUpperCase();
+				});
+				var animateEventName = isWebkit? webkitkey: animationkey;
+				// if it's the out element, hide it when 'animationend'
+				index && page.addEventListener(animateEventName, function() {
+					if (this.classList.contains("in") == false) {
+						this.style.display = "none";
+						// add on v2.5.5
+						// move here on v2.5.8
+						if (this.removeSelf == true) {
+							this.parentElement.removeChild(this);	
+							this.removeSelf = null;		
+						}
+					}
+					this.classList.remove(params(this).form);
+				});
+				// bind animation events
+				if (typeof animition == "string" && params_in.root[animition]) {
+					page.addEventListener(animateEventName, function() {
+						data.root[animition].call(data.root, this, this.classList.contains("in")? "into": "out", options);
+					});
+				} else if (typeof animition == "function") {
+					page.addEventListener(animateEventName, function() {
+						animition.call(data.root, this, this.classList.contains("in")? "into": "out", options);	
+					});
+				}
+				// set a flag
+				page.flagAniBind = true;
+			});
+		};
+		
+		
+		
+		
 		if (pageOut != null && pageOut.classList) {
 			// do transition if there are no 'prevent'
 			if (isPreventOut != true) {
@@ -267,6 +307,11 @@
 				
 				// add on v2.5.5
 				pageOut.removeSelf = pageOut.removeSelf || null;
+				
+				// set animation callback for 'pageInto'
+				// for issues #153
+				fun_animationCall(pageOut, params_out);
+				
 				// do fallback every time
 				var fallback = params_out.fallback;
 				if (typeof fallback == "string") fallback = params_out.root[fallback];
@@ -353,38 +398,8 @@
 				pageInto.firstintoBind = true;
 			}
 			
-			// do callback when animation start/end
-			["animationstart", "animationend"].forEach(function(animationkey, index) {
-				var animition = params_in[animationkey], webkitkey = "webkit" + animationkey.replace(/^a|s|e/g, function(matchs) {
-					return matchs.toUpperCase();
-				});
-				if (!store[pageid]) {
-					var animateEventName = isWebkit? webkitkey: animationkey;
-					// if it's the out element, hide it when 'animationend'
-					index && pageInto.addEventListener(animateEventName, function() {
-						if (this.classList.contains("in") == false) {
-							this.style.display = "none";
-							// add on v2.5.5
-							// move here on v2.5.8
-							if (this.removeSelf == true) {
-								this.parentElement.removeChild(this);	
-								this.removeSelf = null;		
-							}
-						}
-						this.classList.remove(params(this).form);
-					});
-					// bind animation events
-					if (typeof animition == "string" && params_in.root[animition]) {
-						pageInto.addEventListener(animateEventName, function() {
-							params_in.root[animition].call(params_in.root, this, this.classList.contains("in")? "into": "out", options);
-						});
-					} else if (typeof animition == "function") {
-						pageInto.addEventListener(animateEventName, function() {
-							animition.call(params_in.root, this, this.classList.contains("in")? "into": "out", options);	
-						});
-					}	
-				} 
-			});
+			// set animation callback for 'pageInto'
+			fun_animationCall(pageInto, params_in);
 			
 			// history
 			// hashid should a full url address
