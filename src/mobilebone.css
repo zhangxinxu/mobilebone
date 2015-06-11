@@ -37,7 +37,7 @@ html, body, .page {
 .mask {
 	height: 100%; width: 100%;
 	background-color: rgba(255,255,255,.35);
-	position: absolute;
+	position: absolute; left: 0; top: 0;
 	z-index: 9;
 }
 .loading { /* more info: http://www.zhangxinxu.com/wordpress/?p=3357 */
