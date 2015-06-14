@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.6.1';
+	Mobilebone.VERSION = '2.6.2';
 	
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -262,18 +262,21 @@
 				});
 				var animateEventName = isWebkit? webkitkey: animationkey;
 				// if it's the out element, hide it when 'animationend'
-				index && page.addEventListener(animateEventName, function() {
-					if (this.classList.contains("in") == false) {
-						this.style.display = "none";
-						// add on v2.5.5
-						// move here on v2.5.8
-						if (this.removeSelf == true) {
-							this.parentElement.removeChild(this);	
-							this.removeSelf = null;		
+				if (index) {
+					page.addEventListener(animateEventName, function() {
+						if (this.classList.contains("in") == false) {
+							this.style.display = "none";
+							// add on v2.5.5
+							// move here on v2.5.8
+							// main for remove page is just current page
+							if (this.removeSelf == true) {
+								this.parentElement.removeChild(this);	
+								this.removeSelf = null;		
+							}
 						}
-					}
-					this.classList.remove(params(this).form);
-				});
+						this.classList.remove(params(this).form);
+					});
+				}
 				// bind animation events
 				if (typeof animition == "string" && params_in.root[animition]) {
 					page.addEventListener(animateEventName, function() {
@@ -338,6 +341,7 @@
 			var pageid = options.id || pageInto.id, hashid = options.id || pageInto.id;
 			
 			if (options.id) {
+				// eg. get 'ajax.php' from 'ajax.php?xx=1'
 				pageid = pageid.split("?")[0];
 			}
 			var relid = store["_" + pageid];
@@ -350,15 +354,18 @@
 					delete store[relid];
 					delete store["_" + pageid];
 				}
-								
-				if (options.reload == true) {
+				
+				// below commented on v2.6.2	
+				//if (options.reload == true) {
 					// v2.5.8 for issues #147
-					pageInto.removeSelf = true;
-				}
+					//pageInto.removeSelf = true;
+				//}
 				
 				if (store[pageid] != pageOut) {
 					store[pageid].parentElement && store[pageid].parentElement.removeChild(store[pageid]);					
 				} else {
+					// if the page element same as store
+					// remove when animationend
 					pageOut.removeSelf = true;
 				}
 				delete store[pageid];
@@ -669,12 +676,6 @@
 			create_page.setAttribute("data-title", create_title.innerText);
 		}
 		
-		// insert create page as a last-child
-		(container || document.body).appendChild(create_page);
-		
-		// release memory
-		create = null;
-		
 		// do transition
 		optionsTransition.response = response || domHtml;
 		optionsTransition.id = this.getCleanUrl(eleOrObj) || create_page.id || ("unique" + Date.now());
@@ -699,6 +700,20 @@
 			optionsTransition.classPage = classPage;
 		}
 		
+		// append to a accurate position
+		container = container || document.body;
+		// 1. if new page, that insert create page as a last-child
+		// 2. if replace a page, that insert before replaced page
+		var pageid = optionsTransition.id.split("?")[0];
+		if (pageid && store[pageid] && container.contains(store[pageid])) {
+			container.insertBefore(create_page, store[pageid]);
+		} else {
+			container.appendChild(create_page);
+		}
+		
+		// release memory
+		create = null;
+
 		// do transition
 		this.transition(create_page, current_page, optionsTransition);
 	};
@@ -1288,23 +1303,20 @@
 			if (page_in.id) return;			
 		} else {
 			page_in = store[hash];
-			
 			// add on v2.6.1
 			if (hash.split("container=").length == 2) {
 				container = document.getElementById(hash.split("container=")[1].split("&")[0]);
 			}
 
 			if (page_in && isSimple.test(hash) == false) {
-				// ajax store
-				Mobilebone.createPage(page_in, {
-					url: hash,
-					dataType: "unknown",
+				// just transition
+				Mobilebone.transition(page_in, ((container || document).querySelector(".in." + Mobilebone.classPage)), true, {
+					id: hash,  // fix issue #83
 					history: false,
-					back: true,
 					container: container
 				});
 				return;
-			}
+			}			
 		}
 		
 		if (!page_in) {
@@ -1318,7 +1330,7 @@
 				});	
 				return;
 			}
-			page_in =  document.querySelector("#" + hash)
+			page_in = document.querySelector("#" + hash);
 		}
 		
 		var page_out = document.querySelector(".in." + Mobilebone.classPage);
