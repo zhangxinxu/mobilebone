@@ -64,6 +64,10 @@ var init = function(ele) {
 		console.log("clicked!");	
 	});
 	ele.querySelector(".result").innerHTML += 'inited! ';
+	
+	ele.querySelector("#createPage").addEventListener("click", function() {
+		Mobilebone.createPage('<p>点击浏览器的后退看看DOM顺序有没有变化？</p>');
+	});
 };
 
 var root_reload = function(pagein) {
