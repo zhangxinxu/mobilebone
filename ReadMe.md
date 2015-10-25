@@ -7,6 +7,7 @@ mobilebone.js
 <ul>
 	<li>实例1-仿QQ界面：http://iancj.github.io/qq/</li>
 	<li>实例2-暴走漫画制作器：http://baozoumanhua.com/mobile_makers/</li>
+	<li>实例3-太湖金谷：http://wap.neeqsz.com</li>
 </ul>
 
 <ul>
@@ -89,6 +90,7 @@ Examples and Tests and Documents
 <ol>
 	<li>Example1: http://iancj.github.io/qq/</li>
 	<li>Example2: http://baozoumanhua.com/mobile_makers/</li>
+	<li>Example3: http://wap.neeqsz.com</li>
 </ol>
 
 <ul>
