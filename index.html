@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="description" content="移动端，桌面端页面无刷新过场切换骨架-mobilebone.js官网" />
+<meta name="description" content="移动端，桌面端页面无刷新过场切换骨架-mobilebone.js官网" />
+<meta name="keywords" content="mobilebone, mobilebone.js, 官网" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<title>mobilebone.js官网</title>
+<style>
+html, body, .page {
+	height: 100%; width: 100%;
+	overflow: hidden;
+}
+body {
+	font: 14px/1.42857 'microsoft yahei';
+}
+h1,h2,h3,h4,h5,h6,p,body {
+	margin: 0;
+}
+.constr {
+	width: 1240px;
+	max-width: 100%;
+	min-width: 1024px;
+	margin: 0 auto;
+}
+.content {
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 0 5px rgba(0,0,0,.2), 0 0 10px rgba(0,0,0,.3);
+}
+
+.home-page {
+	background: #181831 url(http://ww2.sinaimg.cn/large/4b4d632fgw1f4wbnmeu2zj21ha0ustb7.jpg) no-repeat center top fixed;
+	background-size: cover;
+}
+
+.home-page > div {
+	position: absolute; left: 0; right: 0;
+}
+
+.home-body {
+	top: 0; bottom: 64px;	
+}
+.home-body-const {
+	height: 100%;
+	position: relative;	
+}
+.home-header {
+	top: 0; z-index: 1;
+	border-top: 1px solid rgba(255,255,255,.1);
+	background: inherit;
+	box-shadow: 0 2px 5px rgba(0,0,0,.3);
+	-webkit-filter: grayscale(0.3); filter: grayscale(0.3);
+}
+.home-footer {
+	bottom: 0;
+}
+.home-nav {
+	height: 64px;
+	border-left: 1px solid rgba(255,255,255,.1);
+	overflow: hidden;
+}
+.home-nav-list {
+	width: 140px; height: 100%; float: left;
+	font-weight: normal;
+}
+.home-nav-a {
+	display: block; line-height: 64px;
+	border-right: 1px solid rgba(255,255,255,.1);
+	text-align: center; color: #fff; font-size: 20px;
+	-webkit-transition: all .25s; transition: all .25s;
+}
+.home-nav-a:hover, .active .home-nav-a {
+	background-color: rgba(255,255,255,.1);
+	text-decoration: none;
+}
+.home-nav-github {
+	float: right;
+	border-left: 1px solid rgba(255,255,255,.1);
+}
+
+.home-slam {
+	width: inherit; margin: auto;
+	position: absolute; left: 0; right: 0; top: 50%;
+	text-align: center; color: #fff;
+	-webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%);
+	text-shadow: 1px 1px 1px rgba(0,0,0,.35);
+}
+.home-slam > h1 {
+	font-size: 140px; 
+}
+.home-slam > h2 {
+	font-size: 40px; font-weight: 400;
+}
+.home-slam .btn {
+	font-size: 220%; width: 200px;
+}
+</style>
+<link rel="stylesheet" href="http://www.zhangxinxu.com/GitHub/quickLayout/quick-layout-min.css">
+</head>
+
+<body>
+<div id="homePage" class="page home-page" data-title="Mobilebone">
+	<div class="home-header">
+    	<div class="constr">
+        	<div class="home-nav">
+            	<h3 class="home-nav-list active"><a href="/" class="home-nav-a">首页</a></h3>
+                <h3 class="home-nav-list"><a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html#&indexPage" class="home-nav-a" target="_blank">文档</a></h3>
+                <h3 class="home-nav-list"><a href="https://github.com/zhangxinxu/mobilebone/releases" class="home-nav-a" target="_blank">下载</a></h3>
+                <h3 class="home-nav-list"><a href="http://www.zhangxinxu.com/wordpress/?p=4381
+" class="home-nav-a" target="_blank">博客</a></h3>                  
+                <h3 class="home-nav-list home-nav-github"><a href="https://github.com/zhangxinxu/mobilebone" class="home-nav-a" target="_blank">共同建设</a></h3>
+            </div>
+        </div>
+    </div>
+	<div class="home-body">
+    	<div class="constr home-body-constr">
+            <div class="home-slam">
+                <h1>Mobilebone</h1>
+                <h2>mobile移动端，PC桌面端页面无刷新过场JS骨架，简单、专注！</h2>
+                <div class="mt30 pt30 pb30">
+                    <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html#&indexPage" target="_blank" class="btn btn-blue">API中文文档</a> <a href="https://github.com/zhangxinxu/mobilebone/archive/master.zip" target="_blank" class="btn btn-blue ml20">下载(.zip)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="home-footer">
+    	<p class="tr p10 white f12">沪ICP备15007743号<span class="ml10 mr10">|</span>by zhangxinxu(.com)</p>
+    </div>
+</div>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=42998249" charset="UTF-8"></script>
+</body>
+</html>
