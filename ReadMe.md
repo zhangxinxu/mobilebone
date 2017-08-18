@@ -2,6 +2,8 @@ mobilebone.js
 =============
 单页切换骨架。适用于移动web APP, Hybrid混合APP, Phonegap开发, 无兼容要求单页PC应用等。官方网站：<a href="http://www.mobilebone.org">http://www.mobilebone.org</a>
 
+GitHub Pages: <a href="http://zhangxinxu.github.io/mobilebone/">http://zhangxinxu.github.io/mobilebone/</a>
+
 设计理念
 ------------------
 mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebone.js，我们的项目依然是可以运作的，只是形式上是传统的页面跳转。明白这一点，就应该可以理解为何请求页面中的src地址的script不执行了。
@@ -18,13 +20,13 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 </ul>
 
 <ul>
-	<li>测试页面：<a href="http://rawgit.com/zhangxinxu/mobilebone/develop/test/index.html">test/index.html</a>
-		<p><img src="http://image.zhangxinxu.com/image/blog/201410/2014-10-28_174538.png" width="176" height="178"></p>
+	<li>测试页面：<a href="http://htmlpreview.github.io/?https://github.com/zhangxinxu/mobilebone/blob/master/test/index.html">test/index.html</a>
+		<p><img src="http://image.zhangxinxu.com/image/blog/201708/qr.png" width="180" height="180"></p>
 	</li>
 </ul>
 
 <ul>
-	<li>中文文档：<a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html">docs/index.html</a></li>
+	<li>中文文档：<a href="http://htmlpreview.github.io/?https://github.com/zhangxinxu/mobilebone/blob/master/docs/index.html">docs/index.html</a></li>
 </ul>
 
 为何需要？
