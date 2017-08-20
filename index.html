@@ -69,7 +69,8 @@ h1,h2,h3,h4,h5,h6,p,body {
 	display: block; line-height: 64px;
 	border-right: 1px solid rgba(255,255,255,.1);
 	text-align: center; color: #fff; font-size: 20px;
-	-webkit-transition: all .25s; transition: all .25s;
+	-webkit-transition: all .25s;
+	transition: all .25s;
 }
 .home-nav-a:hover, .active .home-nav-a {
 	background-color: rgba(255,255,255,.1);
@@ -84,7 +85,8 @@ h1,h2,h3,h4,h5,h6,p,body {
 	width: inherit; margin: auto;
 	position: absolute; left: 0; right: 0; top: 50%;
 	text-align: center; color: #fff;
-	-webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
 	text-shadow: 1px 1px 1px rgba(0,0,0,.35);
 }
 .home-slam > h1 {
@@ -106,7 +108,7 @@ h1,h2,h3,h4,h5,h6,p,body {
     	<div class="constr">
         	<div class="home-nav">
             	<h3 class="home-nav-list active"><a href="/" class="home-nav-a">首页</a></h3>
-                <h3 class="home-nav-list"><a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html#&indexPage" class="home-nav-a" target="_blank">文档</a></h3>
+                <h3 class="home-nav-list"><a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html#&amp;indexPage" class="home-nav-a" target="_blank">文档</a></h3>
                 <h3 class="home-nav-list"><a href="https://github.com/zhangxinxu/mobilebone/releases" class="home-nav-a" target="_blank">下载</a></h3>
                 <h3 class="home-nav-list"><a href="http://www.zhangxinxu.com/wordpress/?p=4381
 " class="home-nav-a" target="_blank">博客</a></h3>                  
@@ -120,13 +122,13 @@ h1,h2,h3,h4,h5,h6,p,body {
                 <h1>Mobilebone</h1>
                 <h2>mobile移动端，PC桌面端页面无刷新过场JS骨架，简单、专注！</h2>
                 <div class="mt30 pt30 pb30">
-                    <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html#&indexPage" target="_blank" class="btn btn-blue">API中文文档</a> <a href="https://github.com/zhangxinxu/mobilebone/archive/master.zip" target="_blank" class="btn btn-blue ml20">下载(.zip)</a>
+                    <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html#&amp;indexPage" target="_blank" class="btn btn-blue">API中文文档</a> <a href="https://github.com/zhangxinxu/mobilebone/archive/master.zip" target="_blank" class="btn btn-blue ml20">下载(.zip)</a>
                 </div>
             </div>
         </div>
     </div>
 	<div class="home-footer">
-    	<p class="tr p10 white f12">沪ICP备15007743号<span class="ml10 mr10">|</span>by zhangxinxu(.com)</p>
+    	<p class="tr p10 white f12"><a href="//www.miitbeian.gov.cn" target="_blank">沪ICP备15007743-1号</a><span class="ml10 mr10">|</span>by <a href="//www.zhangxinxu.com/" target="_blank">zhangxinxu(.com)</a></p>
     </div>
 </div>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=42998249" charset="UTF-8"></script>
