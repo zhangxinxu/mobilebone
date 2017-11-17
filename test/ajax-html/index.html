@@ -61,10 +61,10 @@ var optionsTest = function(elein, eleout, options) {
 var init = function(ele) {
 	var button = document.querySelector(".ajaxButton");
 	button.addEventListener("click", function() {
-		console.log("clicked!");	
+		console.log("clicked!");
 	});
 	ele.querySelector(".result").innerHTML += 'inited! ';
-	
+
 	ele.querySelector("#createPage").addEventListener("click", function() {
 		Mobilebone.createPage('<p>点击浏览器的后退看看DOM顺序有没有变化？</p>');
 	});
@@ -97,7 +97,7 @@ Mobilebone.evalScript = true;
 // Mobilebone.captureLink = false;
 
 /*$("a").tap(function() {
-	console.log("taped");	
+	console.log("taped");
 });*/
 </script>
 </body>
