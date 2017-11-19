@@ -4,7 +4,7 @@ define(function(require, exports, module) {
 	Fun.page2 = require("test/modular-load/2");
 	Fun.page3 = require("test/modular-load/3");
 	// 通过 exports 对外提供接口
-	document.addEventListener("touchend", function(event) {
+	document.addEventListener("ontouchstart" in document ? "touchend" : "click", function(event) {
 	 	var target = event.target;
 	  	if (target && target.tagName && target.tagName.toLowerCase() == "input") {
 			target.parentElement.insertAdjacentHTML("afterend", '<p>2秒后回首页...</p>'); 

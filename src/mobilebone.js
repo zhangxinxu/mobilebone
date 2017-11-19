@@ -357,17 +357,6 @@
 			var pageid = options.id || pageInto.id;
 			var hashid = options.id || pageInto.id;
 
-			// // #209 can use <a> link data-pageid as pageid
-			// if (options.target) {
-			// 	options.pageid = options.target.getAttribute("data-pageid");
-			// 	if (options.pageid) {
-			// 		pageid = options.pageid;
-			// 		pageInto.setAttribute("data-pageid", pageid);
-			// 	}
-			// } else {
-			// 	pageid = pageInto.getAttribute("data-pageid") || pageid;
-			// }
-
 			// v2.7.0 change rule -> don't auto delete pages
 			//                    -> delete by using Mobilebone.remove();
 			// Reason Two:
@@ -466,6 +455,7 @@
 			// different with pageid
 			// add on 2.4.2
 			var urlPush = hashid, urlPushReplace = '';
+
 			if (urlPush && /^#/.test(urlPush) == false) {
 				urlPush = "#" + urlPush;
 			}
@@ -486,10 +476,11 @@
 			if (!store[pageid]) {
 				store[pageid] = pageInto;
 				// when we back/prev, we need to get true
-				if (hashid !== pageid) {
-					store[hashid] = pageInto;
-					store["_" + pageid] = hashid;
-				}
+				// comment on v2.7.0
+				// if (hashid !== pageid) {
+				// 	store[hashid] = pageInto;
+				// 	store["_" + pageid] = hashid;
+				// }
 			}
 
 			// do callback every time
@@ -512,7 +503,7 @@
 	};
 
 	/**
-	 * Remove page DOM
+	 * Remove page DOM add on v2.7.0
 	 * @param  domOrId: dom-object|string   page DOM or page id.
 	 * @return {[type]}         [description]
 	 */
@@ -522,12 +513,19 @@
 		}
 
 		var elePage = domOrId;
-		if (typeof domOrId == 'string') {
-			elePage = store[elePage];
+		var pageid = domOrId;
+		if (typeof pageid == 'string') {
+			elePage = store[pageid];
 		}
+
 		if (elePage && elePage.parentElement) {
 			elePage.parentElement.removeChild(elePage);
-			store[elePage] = null;
+			// remove store
+			for (var key in store) {
+				if (store[key] == elePage) {
+					delete store[key];
+				}
+			}
 		}
 	};
 
@@ -586,9 +584,9 @@
 					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data") || "";
 					// v2.6.1 for #107
 					// remember container when refresh
-					var str_container = "container", attr_container = trigger.getAttribute("data-" + str_container);
-					if (formdata.indexOf(str_container) == -1 && attr_container) {
-						var queryContainer = str_container + "=" + attr_container;
+					var strContainer = "container", attrContainer = trigger.getAttribute("data-" + strContainer);
+					if (formdata.indexOf(strContainer) == -1 && attrContainer) {
+						var queryContainer = strContainer + "=" + attrContainer;
 						formdata = formdata ? formdata + "&" + queryContainer : queryContainer;
 					}
 				 }
@@ -670,17 +668,17 @@
 		var optionsTransition = {};
 
 		// get page-title from eleOrObj or options
-		var page_title, id_container, classPageInside;
+		var titlePage, idContainer, classPageInside;
 
 		if (eleOrObj) {
 			if (eleOrObj.nodeType == 1) {
 				// legal elements
 				if (eleOrObj.href || eleOrObj.action) {
-					page_title = eleOrObj.getAttribute("data-title") || options.title;
+					titlePage = eleOrObj.getAttribute("data-title") || options.title;
 				}
 				response = options.response;
-				id_container = eleOrObj.getAttribute("data-container");
-				container = document.getElementById(id_container);
+				idContainer = eleOrObj.getAttribute("data-container");
+				container = document.getElementById(idContainer);
 				classPageInside = eleOrObj.getAttribute("data-classpage");
 				// pass element as target params, add on v2.3.0
 				optionsTransition.target = eleOrObj;
@@ -699,7 +697,7 @@
 				}
 			} else {
 				response = eleOrObj.response || options.response;
-				page_title = eleOrObj.title || options.title;
+				titlePage = eleOrObj.title || options.title;
 				container = eleOrObj.container || options.container;
 				classPageInside = eleOrObj.classPage || options.classPage;
 				optionsTransition.target = eleOrObj.target;
@@ -707,7 +705,9 @@
 				// is back? for issues #128
 				optionsTransition.back = eleOrObj.back || options.back;
 			}
-			if (container && classPageInside) classPage = classPageInside;
+			if (container && classPageInside) {
+				classPage = classPageInside;
+			}
 		}
 
 		// get current page(will be out) according to 'page_or_child'
@@ -750,15 +750,15 @@
 			eleCreatePage = create;
 		}
 		// set and store title
-		if (typeof page_title == "string") {
-			eleCreatePage.setAttribute("data-title", page_title);
+		if (typeof titlePage == "string") {
+			eleCreatePage.setAttribute("data-title", titlePage);
 		} else if (eleCreateTitle && eleCreateTitle.innerText) { // the judge behind '&&' for issues #144
 			eleCreatePage.setAttribute("data-title", eleCreateTitle.innerText);
 		}
 
 		// do transition
 		optionsTransition.response = response || domHtml;
-		optionsTransition.id = this.getCleanUrl(eleOrObj) || eleCreatePage.id || ("unique" + Date.now());
+		optionsTransition.id = this.getCleanUrl(eleOrObj) || eleCreatePage.id || options.url || ("unique" + Date.now());
 
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") {
@@ -853,16 +853,19 @@
 			complete: function() {}
 		};
 
-		var params = {}, ele_mask = null, formData = null;
+		var params = {}, eleMask = null, formData = null;
+
+		// classname of mask
+		var classMask = this.classMask;
 
 		// if 'aOrFormOrObj' is a element, we should turn it to options-object
-		var params_from_trigger = {}, attr_mask;
+		var paramsFromTrigger = {}, attrMask;
 		if (aOrFormOrObj.nodeType == 1) {
-			params_from_trigger = _queryToObject(aOrFormOrObj.getAttribute("data-params") || "");
+			paramsFromTrigger = _queryToObject(aOrFormOrObj.getAttribute("data-params") || "");
 			// get params
 			for (key in defaults) {
 				// data-* > data-params > defaults
-				params[key] = aOrFormOrObj.getAttribute("data-" + key) || params_from_trigger[key] || defaults[key];
+				params[key] = aOrFormOrObj.getAttribute("data-" + key) || paramsFromTrigger[key] || defaults[key];
 				if (typeof defaults[key] == "function" && typeof params[key] == "string") {
 					// eg. globalObject.functionName
 					params[key] = this.getFunction(params[key]);
@@ -898,9 +901,9 @@
 			}
 
 			// get mask element
-			attr_mask = aOrFormOrObj.getAttribute("data-mask");
-			if (attr_mask == "true" || attr_mask == "") {
-				ele_mask = aOrFormOrObj.querySelector("." + this.classMask);
+			attrMask = aOrFormOrObj.getAttribute("data-mask");
+			if (attrMask == "true" || attrMask == "") {
+				eleMask = aOrFormOrObj.querySelector("." + classMask);
 			}
 		}
 		// if 'aOrFormOrObj' is a object
@@ -926,21 +929,24 @@
 		// do ajax
 		// get mask and loading element
 		var body = container || document.body;
-		if (typeof attr_mask != "string") {
-			ele_mask = body.querySelector("." + this.classMask);
+		if (typeof attrMask != "string") {
+			eleMask = [].slice.call(body.children).filter(function (element) {
+				return element.classList.contains(classMask);
+			})[0];
 		}
-		if (ele_mask == null) {
-			ele_mask = document.createElement("div");
-			ele_mask.className = this.classMask;
-			ele_mask.innerHTML = '<i class="loading"></i>';
-			if (typeof attr_mask == "string") {
-				aOrFormOrObj.appendChild(ele_mask);
+
+		if (eleMask == null) {
+			eleMask = document.createElement("div");
+			eleMask.className = classMask;
+			eleMask.innerHTML = '<i class="loading"></i>';
+			if (typeof attrMask == "string") {
+				aOrFormOrObj.appendChild(eleMask);
 			} else {
-				body.appendChild(ele_mask);
+				body.appendChild(eleMask);
 			}
 		}
 		// show loading
-		ele_mask.style.display = "block";
+		eleMask.style.display = "inline";
 
 		// ajax request
 		var xhr = new XMLHttpRequest();
@@ -993,21 +999,21 @@
 			params.complete.call(params, xhr, xhr.status);
 
 			// hide loading
-			ele_mask.style.display = "none";
+			eleMask.style.display = "none";
 		}
 
 		xhr.onerror = function(e) {
 			params.message = "Illegal request address or an unexpected network error!";
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
-			ele_mask.style.display = "none";
+			eleMask.style.display = "none";
 		}
 
 		xhr.ontimeout = function() {
 			params.message = "The request timeout!";
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
-			ele_mask.style.display = "none";
+			eleMask.style.display = "none";
 		};
 
 		// set request header for server
@@ -1025,7 +1031,9 @@
 	 *
 	**/
 	Mobilebone.submit = function(form) {
-		if (!form || typeof form.action != "string") return;
+		if (!form || typeof form.action != "string") {
+			return;
+		}
 		var ajax = form.getAttribute("data-ajax");
 		if (ajax == "false" || (Mobilebone.captureForm == false && ajax != "true")) return;
 
@@ -1097,12 +1105,12 @@
 	Mobilebone.init = function() {
 		if (hasInited == true) return 'Don\'t repeat initialization!';
 
-		var hash = location.hash.replace("#&", "#"), ele_in = null, container = null;
+		var hash = location.hash.replace("#&", "#"), eleIn = null, container = null;
 
 		if (hash == "" || hash == "#") {
 			this.transition(document.querySelector("." + this.classPage));
-		} else if (isSimple.test(hash) == true && (ele_in = document.querySelector(hash)) && ele_in.classList.contains(this.classPage)) { // 'ele_in' must be a page element
-			this.transition(ele_in);
+		} else if (isSimple.test(hash) == true && (eleIn = document.querySelector(hash)) && eleIn.classList.contains(this.classPage)) { // 'eleIn' must be a page element
+			this.transition(eleIn);
 		} else {
 			// add on v2.6.1
 			if (hash.split("container=").length == 2) {
@@ -1114,8 +1122,8 @@
 				dataType: "unknown",
 				container: container,
 				error: function() {
-					ele_in = document.querySelector("." + Mobilebone.classPage);
-					Mobilebone.transition(ele_in);
+					eleIn = document.querySelector("." + Mobilebone.classPage);
+					Mobilebone.transition(eleIn);
 				}
 			});
 		}
@@ -1219,21 +1227,26 @@
 		}
 
 		// if mask element exist and displaying, prevent double trigger
-		var ele_mask = target.getElementsByClassName(Mobilebone.classMask)[0];
-		if (ele_mask && ele_mask.style.display != "none") {
+		var eleMask = target.getElementsByClassName(Mobilebone.classMask)[0];
+		if (eleMask && eleMask.style.display != "none") {
 			event.preventDefault();
 			return false;
 		}
 
 		var idContainer = target.getAttribute("data-container"),
-			classPageInside = target.getAttribute("data-classpage"),
-			container = idContainer && document.getElementById(idContainer);
+			classPageInside = target.getAttribute("data-classpage");
+		var container = idContainer && document.getElementById(idContainer);
 		if (container && classPageInside && classPageInside != Mobilebone.classPage) {
 			selfPage = container.querySelector(".in." + classPageInside) || container.querySelector(classPageInside);
 			// if (selfPage == null) return false;
 			options.history = false;
 			options.title = false;
 			options.classPage = classPageInside;
+		}
+
+		// history
+		if (target.getAttribute('data-history') == 'false') {
+			options.history = false;
 		}
 
 		// if captureLink
@@ -1305,6 +1318,7 @@
 				}
 				Mobilebone.transition(store[cleanUrl], selfPage, back, options);
 			} else {
+				// v2.7.0 move to here
 				if (typeof attrReload == "string" && attrReload != "false") {
 					// remove page
 					Mobilebone.remove(store[cleanUrl]);
@@ -1388,6 +1402,7 @@
 			if (pageIn.id) return;
 		} else {
 			pageIn = store[hash];
+
 			// add on v2.6.1
 			if (hash.split("container=").length == 2) {
 				container = document.getElementById(hash.split("container=")[1].split("&")[0]);
@@ -1395,7 +1410,7 @@
 
 			if (pageIn && isSimple.test(hash) == false) {
 				// just transition
-				Mobilebone.transition(pageIn, ((container || document).querySelector(".in." + Mobilebone.classPage)), true, {
+				Mobilebone.transition(pageIn, document.querySelector(".in." + Mobilebone.classPage), true, {
 					id: hash,  // fix issue #83
 					history: false,
 					container: container
@@ -1426,8 +1441,7 @@
 		if (pageIn) {
 			Mobilebone.transition(pageIn, pageOut, Mobilebone.isBack(pageIn, pageOut), {
 				id: hash,  // fix issue #83
-				history: false,
-				remove: false
+				history: false
 			});
 		}
 	});
