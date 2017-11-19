@@ -66,8 +66,14 @@ var init = function(ele) {
 	ele.querySelector(".result").innerHTML += 'inited! ';
 
 	ele.querySelector("#createPage").addEventListener("click", function() {
-		Mobilebone.createPage('<p>点击浏览器的后退看看DOM顺序有没有变化？</p>');
+		Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为不停创建。</p>');
 	});
+    ele.querySelector("#createPage2").addEventListener("click", function() {
+        Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为之前创建会删除，因为指定了id以及remove: true。</p>', {
+            remove: true,
+            id: 'idJustUnique'
+        });
+    });
 };
 
 var root_reload = function(pagein) {

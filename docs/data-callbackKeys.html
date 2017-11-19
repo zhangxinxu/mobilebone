@@ -16,12 +16,23 @@
         <p>这里的<code>callbackKeys</code>只是一种统称，实际没有这个自定义属性的，指的是一系列回调写法，因为除了长相不一样，其他都类似，所以合在一起讲了。</p>
         <p>其家庭成员包括：</p>
         <ul>
-        	<li><code>data-onpagefirstinto</code> 页面第一次载入执行，过场刚开始即执行。</li>
-        	<li><code>data-callback</code> 页面每次进入都会执行，过场刚开始即执行。</li>
-            <li><code>data-fallback</code> 页面每次离开都会执行，过场刚开始即执行。</li>
-            <li><code>data-animationstart</code> 页面动画即将开始执行的回调，离开页面，进入页面均会触发。</li>
-            <li><code>data-animationend</code> 页面动画结束之后执行的回调，离开页面，进入页面均会触发。</li>
-            <li><code>data-preventdefault</code> 介入回调，可以用来中断Mobilebone的一些默认行为，再过场等行为触发之前实现一些自定义行为。</li>
+        	<li><code>data-onpagefirstinto</code> 页面第一次载入执行，过场刚开始即执行。
+                <p>语法：</p>
+                <pre>onpagefirstinto(pageInto, pageOut, options)</pre>
+                <p>其中<code>pageInto</code>表示进入的页面的DOM，<code>pageOut</code>表示离开的页面的DOM，<code>options</code>为可选参数，具体：</p>
+                <ul>
+                    <li><strong>options.response</strong> 返回的数据。这个参数多半应用在Ajax请求时候。</li>
+                    <li><strong>options.target</strong> （触发过场）点击的页面元素。</li>
+                    <li><strong>options.id</strong> 页面标示<code>id</code>, 一般仅在<code>url</code>请求时候存在。</li>
+                    <li><strong>options.history</strong> 是否在浏览历史中添加一条记录。此属性大可不必关心。</li>
+                    <li><strong>options.remove</strong> 是否删除同<code>id</code>的页面。此属性大可不必关心。</li>
+                </ul>
+            </li>
+        	<li><code>data-callback</code> 页面每次进入都会执行，过场刚开始即执行。<p>语法：</p><pre>callback(pageInto, pageOut, options)</pre></li>
+            <li><code>data-fallback</code> 页面每次离开都会执行，过场刚开始即执行。<p>语法：</p><pre>fallback(pageInto, pageOut, options)</pre></li>
+            <li><code>data-animationstart</code> 页面动画即将开始执行的回调，离开页面，进入页面均会触发。<p>语法：</p><pre>animationstart(page, intoOrOut, options)</pre></li>
+            <li><code>data-animationend</code> 页面动画结束之后执行的回调，离开页面，进入页面均会触发。<p>语法：</p><pre>animationend(page, intoOrOut, options)</pre></li>
+            <li><code>data-preventdefault</code> 介入回调，可以用来中断Mobilebone的一些默认行为，可以过场等行为触发之前实现一些自定义行为。<p>语法：</p><pre>preventdefault(aOrForm)</pre><p>当返回值为<code>true</code>的时候会阻断Mobilebone的一些默认行为。</p></li>
         </ul>
         <p>每个回调的作用于使用场景可参见博文说明：<a href="http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/" class="link">点击这里</a>。</p>
         <p>其中，<code>data-preventdefault</code>并非<code>page</code>元素专有，<code>a</code>元素，<code>form</code>元素也支持此回调，具体可<a href="data-preventDefault.html" class="link">点击这里</a>。</p>

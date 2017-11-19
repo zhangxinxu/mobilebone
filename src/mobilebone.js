@@ -758,7 +758,7 @@
 
 		// do transition
 		optionsTransition.response = response || domHtml;
-		optionsTransition.id = this.getCleanUrl(eleOrObj) || eleCreatePage.id || options.url || ("unique" + Date.now());
+		optionsTransition.id = this.getCleanUrl(eleOrObj) || eleCreatePage.id || options.id || options.url || ("unique" + Date.now());
 
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") {
@@ -782,6 +782,11 @@
 
 		// append to a accurate position
 		container = container || document.body;
+
+		// remove page if have same id when optionsTransition.remove == true
+		if (optionsTransition.remove == true && optionsTransition.id) {
+			this.remove(optionsTransition.id);
+		}
 		// 1. if new page, that insert create page as a last-child
 		// 2. if replace a page, that insert before replaced page
 		var pageid = optionsTransition.id.split("?")[0];
