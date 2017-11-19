@@ -1,11 +1,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>根地址无缓存加载测试<?php echo $_GET['id']; ?></title>
+<title>类似列表详情页的加载测试<?php echo $_GET['id']; ?></title>
 </head>
 
 <body>
-<div class="page out" data-callback="root_reload" data-onpagefirstinto="page_root_first">
+<div class="page out pageRootReload" data-callback="root_reload" data-onpagefirstinto="page_root_first">
 	<p>document.getElementById("idShow").innerHTML是：<strong id="idShow">&nbsp;</strong>，应该结果是<strong id="idShould"><?php echo $_GET['id']; ?></strong>.</p>
     <p><button id="ajaxFirstInto">pagefirstinto与Ajax载入测试</button></p>
 	<ul>

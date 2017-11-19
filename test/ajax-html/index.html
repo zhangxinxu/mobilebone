@@ -12,22 +12,22 @@
 <div id="container"></div>
 <div id="pageHome" class="page out" style="overflow:auto;">
     <ul>
-        <li><a href="ajax-page.html" data-container="container">点击加载(缓存，若后2项已请求，则无请求)</a></li>
-        <li><a href="ajax-page.html#a=1#b=1&c=1#" data-reload>点击加载(每次都请求， 返回含page结构)</a></li>
-        <li><a href="ajax-page.html?&&" data-formdata="?a=1" data-history="false">点击加载(缓存, url过滤测试,历史无变化)</a></li>
-        <li><a href="ajax-page.html?debug=zhangrui.songyi#&/index.php/Home/Mall/index/sid/251 " data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
-        <li><a href="ajax-page.html?a=1&#tt_fo#nt=m&tt_#daymode=1" data-reload data-formdata="&c=1" data-mask="true">点击加载(data-formdata测试)-内覆盖loading</a></li>
-        <li><a href="ajax-page.html?a=1&b=" class="follow" data-reload data-formdata="c=1&d=1" data-mask="true">点击加载(data-formdata测试)-跟随loading</a></li>
+        <li><a href="ajax-page.html" data-container="container">点击加载(缓存，data-container测试)</a></li>
+        <li><a href="ajax-page.html#a=1#b=1&amp;c=1#" data-reload>点击加载(每次都请求，data-reload测试)</a></li>
+        <li><a href="ajax-page.html?&amp;&amp;" data-formdata="?a=1" data-history="false">点击加载(缓存, url过滤测试,历史无变化)</a></li>
+        <li><a href="ajax-page.html?debug=zhangrui.songyi#&amp;/index.php/Home/Mall/index/sid/251 " data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
+        <li><a href="ajax-page.html?a=1&amp;#tt_fo#nt=m&amp;tt_#daymode=1" data-reload data-formdata="&amp;c=1" data-mask="true">点击加载(data-formdata测试)-内覆盖loading</a></li>
+        <li><a href="ajax-page.html?a=1&amp;b=" class="follow" data-reload data-formdata="c=1&amp;d=1" data-mask="true">点击加载(data-formdata测试)-跟随loading</a></li>
     </ul>
     <ul>
         <li><a href="ajax-without-page.html" data-title="纯a标签元素返回页面" data-reload>点击加载-返回不含page, 自动创建page</a></li>
-        <li><a href="ajax-without-page.html" data-reload>svg中title测试</a></li>
+        <li><a href="ajax-without-page.html" data-reload>svg中title测试（目标效果为不显示）</a></li>
     </ul>
     <ul>
-    	<li><a href="root-reload.php?id=1" data-reload data-ajax="true">根地址不缓存1</a></li>
-        <li><a href="root-reload.php?id=2">根地址不缓存2</a></li>
-        <li><a href="root-reload.php?id=3">根地址不缓存3</a></li>
-        <li><a href="root-reload.php?id=4">根地址不缓存4</a></li>
+    	<li><a href="root-reload.php?id=1">root-reload.php?id=1加载，缓存</a></li>
+        <li><a href="root-reload.php?id=2">root-reload.php?id=2加载，缓存</a></li>
+        <li><a href="root-reload.php?id=3">root-reload.php?id=3加载，缓存</a></li>
+        <li><a href="javascript:" id="removePageRootReload">手动清除上面3个页面存储</a></li>
     </ul>
     <ul>
         <li><a href="nosuffix">地址就是个简单名词</a></li>
@@ -61,13 +61,19 @@ var optionsTest = function(elein, eleout, options) {
 var init = function(ele) {
 	var button = document.querySelector(".ajaxButton");
 	button.addEventListener("click", function() {
-		console.log("clicked!");	
+		console.log("clicked!");
 	});
 	ele.querySelector(".result").innerHTML += 'inited! ';
-	
+
 	ele.querySelector("#createPage").addEventListener("click", function() {
-		Mobilebone.createPage('<p>点击浏览器的后退看看DOM顺序有没有变化？</p>');
+		Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为不停创建。</p>');
 	});
+    ele.querySelector("#createPage2").addEventListener("click", function() {
+        Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为之前创建会删除，因为指定了id以及remove: true。</p>', {
+            remove: true,
+            id: 'idJustUnique'
+        });
+    });
 };
 
 var root_reload = function(pagein) {
@@ -93,11 +99,20 @@ var page_root_first = function(pageinto) {
 
 Mobilebone.evalScript = true;
 
+var btnRemovePage = document.getElementById('removePageRootReload');
+if (btnRemovePage) {
+    btnRemovePage.addEventListener('click', function () {
+        [].slice.call(document.querySelectorAll('.pageRootReload')).forEach(function (page) {
+            Mobilebone.remove(page);
+        });
+    });
+}
+
 // 此为captureLink测试
 // Mobilebone.captureLink = false;
 
 /*$("a").tap(function() {
-	console.log("taped");	
+	console.log("taped");
 });*/
 </script>
 </body>
