@@ -20,13 +20,13 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 </ul>
 
 <ul>
-	<li>测试页面：<a href="http://htmlpreview.github.io/?https://github.com/zhangxinxu/mobilebone/blob/master/test/index.html">test/index.html</a>
-		<p><img src="http://image.zhangxinxu.com/image/blog/201708/qr.png" width="180" height="180"></p>
+	<li>测试页面：<a href="http://www.zhangxinxu.com/GitHub/mobilebone/test/">./test/index.html</a>
+		<p><img src="http://image.zhangxinxu.com/image/blog/201801/qr-test.png" width="150" height="150"></p>
 	</li>
 </ul>
 
 <ul>
-	<li>中文文档：<a href="http://htmlpreview.github.io/?https://github.com/zhangxinxu/mobilebone/blob/master/docs/index.html">docs/index.html</a></li>
+	<li>中文文档：<a href="http://www.zhangxinxu.com/GitHub/mobilebone/docs/">./docs/index.html</a></li>
 </ul>
 
 为何需要？
@@ -49,7 +49,7 @@ HTML结构需要有一定的要求：
   page
   page
   page</pre>
-  
+
 每个page是个满屏元素, 相当于一个独立的页面。
 
 Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，就会触发切换行为。例如：
@@ -64,7 +64,7 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 
 你可以控制切换的方向，任意扩展动画类型，可以被seajs, requiejs模块化加载(<code>require('mobilebone')</code>)，可以和Backbone组合使用等。
 
-当然，上面介绍的，只是强大功能的冰山一角，更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=4381). 
+当然，上面介绍的，只是强大功能的冰山一角，更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=4381).
 
 插件
 ----------------
@@ -123,7 +123,7 @@ Just include mobilebone.css and mobilebone.js, as follow:
 <pre>&lt;link rel="stylesheet" href="mobilebone.css"></pre>
 <pre>&lt;script src="mobilebone.js">&lt;/script></pre>
 
-And, you should use specific HTML structure. 
+And, you should use specific HTML structure.
 <pre>body
   page
   page
@@ -136,7 +136,7 @@ The interface will switch to page whitch's value of <code>id</code> is <code>tar
 
 Of course, you can control the direction of switching, or use a ajax get, or as a modular loaded by seajs, requirejs using <code>require('mobilebone')</code>...
 
-For more detail, you can [visit here](http://www.zhangxinxu.com/wordpress/?p=4381). 
+For more detail, you can [visit here](http://www.zhangxinxu.com/wordpress/?p=4381).
 
 Plugins
 ----------------
