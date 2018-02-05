@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.7.0';
+	Mobilebone.VERSION = '2.7.1';
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -817,7 +817,7 @@
 	Mobilebone.getFunction = function(keys) {
 		if (typeof keys != "string") return;
 		// eg. 'globalObject.functionName'
-		var fun = root, arrKey = keys.split(".");
+		var fun = Mobilebone.rootTransition, arrKey = keys.split(".");
 		for (var index=0; index<arrKey.length; index+=1) {
 			if (!(fun = fun[arrKey[index]])) {
 				break;
