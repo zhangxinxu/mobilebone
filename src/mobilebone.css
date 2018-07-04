@@ -12,7 +12,6 @@ body {
 	margin: 0;
 	-webkit-user-select: none;
 	user-select: none;
-	-ms-touch-action: none;
 }
 
 /* construction */
