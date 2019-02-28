@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.7.2';
+	Mobilebone.VERSION = '2.7.3';
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -958,6 +958,9 @@
 		}
 		// show loading
 		eleMask.style.display = "inline";
+		if (this.showLoading) {
+			this.showLoading();
+		}
 
 		// ajax request
 		var xhr = new XMLHttpRequest();
@@ -1011,6 +1014,9 @@
 
 			// hide loading
 			eleMask.style.display = "none";
+			if (this.hideLoading) {
+				this.hideLoading();
+			}
 		}
 
 		xhr.onerror = function(e) {
@@ -1018,6 +1024,9 @@
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
 			eleMask.style.display = "none";
+			if (this.hideLoading) {
+				this.hideLoading();
+			}
 		}
 
 		xhr.ontimeout = function() {
@@ -1025,6 +1034,9 @@
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
 			eleMask.style.display = "none";
+			if (this.hideLoading) {
+				this.hideLoading();
+			}
 		};
 
 		// set request header for server
