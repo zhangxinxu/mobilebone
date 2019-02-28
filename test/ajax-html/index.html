@@ -23,11 +23,11 @@
         <li><a href="ajax-without-page.html" data-title="纯a标签元素返回页面" data-reload>点击加载-返回不含page, 自动创建page</a></li>
         <li><a href="ajax-without-page.html" data-reload>svg中title测试（目标效果为不显示）</a></li>
     </ul>
-    <ul>
+    <ul id="rootReload">
     	<li><a href="root-reload.php?id=1">root-reload.php?id=1加载，缓存</a></li>
         <li><a href="root-reload.php?id=2">root-reload.php?id=2加载，缓存</a></li>
         <li><a href="root-reload.php?id=3">root-reload.php?id=3加载，缓存</a></li>
-        <li><a href="javascript:" id="removePageRootReload">手动清除上面3个页面存储</a></li>
+        <li><button id="removePage">手动清除上面3个页面存储</button> <small>需打开控制台观察</small></li>
     </ul>
     <ul>
         <li><a href="nosuffix">地址就是个简单名词</a></li>
@@ -35,6 +35,12 @@
     <ul>
         <li><a href="b.html">连续加载测试-加载b页面</a></li>
         <li><a href="b.html?a=1">连续加载测试-加载b页面</a></li>
+    </ul>
+    <ul>
+        <li><a href="ajax-page.html?v=1" data-reload="anyUniqueId">唯一详情页加载测试 <small>data-reload="anyUniqueId"</small></a></li>
+        <li><a href="ajax-page.html?v=2" data-reload="anyUniqueId">唯一详情页加载测试</a></li>
+        <li><a href="ajax-page.html?v=3" data-reload="anyUniqueId">唯一详情页加载测试</a></li>
+        <li><a href="ajax-page.html?v=4" data-reload="anyUniqueId">唯一详情页加载测试</a></li>
     </ul>
     <ul>
         <li><a href="http://www.zhangxinxu.com/sp/char.html" target="_blank">外部地址测试，应该直接跳转</a></li>
@@ -48,7 +54,7 @@
 <script src="../../src/mobilebone.js"></script>
 <!-- 厂子的frozenjs兼容测试 -->
 <script src="../base-slide/zepto.js"></script>
-<script src="../base-slide/frozen.js"></script>
+<!-- <script src="../base-slide/frozen.js"></script> -->
 <script>
 // store title
 document.getElementById("pageHome").setAttribute("data-title", document.title);
@@ -99,11 +105,11 @@ var page_root_first = function(pageinto) {
 
 Mobilebone.evalScript = true;
 
-var btnRemovePage = document.getElementById('removePageRootReload');
+var btnRemovePage = document.getElementById('removePage');
 if (btnRemovePage) {
     btnRemovePage.addEventListener('click', function () {
-        [].slice.call(document.querySelectorAll('.pageRootReload')).forEach(function (page) {
-            Mobilebone.remove(page);
+        [].slice.call(document.querySelectorAll('#rootReload a')).forEach(function (ele) {
+            Mobilebone.remove(ele);
         });
     });
 }

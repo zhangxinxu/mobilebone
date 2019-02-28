@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-history</title>
+<link rel="stylesheet" href="../src/mobilebone.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+
+<body>
+<aside></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-history</h2>
+        <p>当发生页面过场切换的时候是否生成一条新的记录。</p>
+        <ol>
+            <li><strong>a元素</strong>
+                <p>例如：</p>
+                <pre>&lt;a href="ajax.html" data-history="false">&lt;/a></pre>
+                <p>此时，浏览器地址栏中的地址不会发生变化，不会生成新的记录。</p>
+            </li>
+            <li><strong>form元素</strong>
+            	<p>与<code>a</code>元素类似。</p>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<script src="../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-history";
+</script>
+<script src="nav.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

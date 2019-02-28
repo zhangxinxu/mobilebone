@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.7.1';
+	Mobilebone.VERSION = '2.7.2';
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -359,6 +359,7 @@
 
 			// v2.7.0 change rule -> don't auto delete pages
 			//                    -> delete by using Mobilebone.remove();
+			// v2.7.2 add using data-reload="xxxxId" to auto remove pages
 			// Reason Two:
 			// 1. Most websites are so simple that it's not enough to talk about performance;
 			// 2. We can't judge relation by two page's url
@@ -504,7 +505,9 @@
 
 	/**
 	 * Remove page DOM add on v2.7.0
-	 * @param  domOrId: dom-object|string   page DOM or page id.
+	 * @param  domOrId: dom-object|string
+	 *          page DOM or <a> DOM
+	 *          page id or <a> href value
 	 * @return {[type]}         [description]
 	 */
 	Mobilebone.remove = function (domOrId) {
@@ -515,6 +518,9 @@
 		var elePage = domOrId;
 		var pageid = domOrId;
 		if (typeof pageid == 'string') {
+			elePage = store[pageid];
+		} else if (elePage.tagName && elePage.tagName.toLowerCase() == 'a') {
+			pageid = this.getCleanUrl(elePage);
 			elePage = store[pageid];
 		}
 
@@ -1206,14 +1212,17 @@
 			target.preventDefault = function() {};
 		}
 		// get target and href
-		target = target || event.target || event.touches[0], href = target.href;
+		target = target || event.target || event.touches[0];
+		var href = target.href;
 		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
 			href = target.href;
 		}
 		// the page that current touched or actived
 		var selfPage = document.querySelector(".in." + Mobilebone.classPage);
 
-		if (selfPage == null || !target) return;
+		if (selfPage == null || !target) {
+			return;
+		}
 
 		// optional params for Mobilebone.transition
 		var options = {
@@ -1287,8 +1296,10 @@
 			if ((external == true || capture == false) && target.getAttribute("data-ajax") != "true") return;
 		}
 
+		var attrHref = target.getAttribute("href");
+
 		// judge that if it's a ajax request
-		if (/^#/.test(target.getAttribute("href")) == true) {
+		if (/^#/.test(attrHref) == true) {
 			// hash slide
 			var idTargetPage = href.split("#")[1], eleTargetPage = idTargetPage && document.getElementById(idTargetPage);
 			if (back == false && rel == "auto") {
@@ -1308,7 +1319,8 @@
 			var cleanUrl = Mobilebone.getCleanUrl(target);
 
 			// if has loaded and the value of 'data-reload' is not 'true'
-			var attrReload = target.getAttribute("data-reload"), id = target.getAttribute("href");
+			var attrReload = target.getAttribute("data-reload");
+
 
 			if ((attrReload == null || attrReload == "false") && store[cleanUrl]) {
 				if (back == false && rel == "auto") {
@@ -1325,9 +1337,19 @@
 			} else {
 				// v2.7.0 move to here
 				if (typeof attrReload == "string" && attrReload != "false") {
-					// remove page
-					Mobilebone.remove(store[cleanUrl]);
+					if (attrReload != '' && attrReload != 'true') {
+						// v2.7.2 a new method to remove pafe
+						// think 'attrReload' as special ID
+						// remove all page using this ID
+						slice.call(document.querySelectorAll('a[data-reload="'+ attrReload +'"]')).forEach(function (ele) {
+							Mobilebone.remove(ele);
+						});
+					} else {
+						// remove page
+						Mobilebone.remove(store[cleanUrl]);
+					}
 				}
+
 				// as ajax
 				Mobilebone.ajax(target);
 			}

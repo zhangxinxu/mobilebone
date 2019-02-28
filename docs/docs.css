@@ -11,7 +11,7 @@ aside a { display: block; padding: 5px 10px; color: #fff; position: relative; }
 .nav-a:hover { background-color: rgba(255,255,255, .1); }
 .nav-a[href*=transition], .nav-a[href*=data-title], .nav-a[href*=otherAnonymousAPIs] { margin-top: 20px; }
 .nav-a[href*=autoInit], .nav-a[href*=getPage] { text-decoration: line-through; display: none; }
-.nav-a[href*=getCleanUrl], .nav-a[href*=getFunction] { opacity: .6; }
+.nav-a[href*=getFunction] { opacity: .6; }
 .nav-a[href*=reload]:after, .nav-a[href*=remove]:after { position: absolute; content: '更新'; font-size: 12px; transform: scale(0.8); color: pink; }
 .nav-a[href*=remove]:after { content: 'NEW'; }
 .nav-a > .mask { display: inline; width: 26px; height: 31px; top: 0; right: 8px; left: auto; background-color: transparent; -webkit-transform: scale(.8,.8); -ms-transform: scale(.75,.75); transform: scale(.75,.75); }
