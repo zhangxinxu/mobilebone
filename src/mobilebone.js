@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = '2.7.2';
+	Mobilebone.VERSION = '2.7.3';
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -958,6 +958,9 @@
 		}
 		// show loading
 		eleMask.style.display = "inline";
+		if (this.showLoading) {
+			this.showLoading();
+		}
 
 		// ajax request
 		var xhr = new XMLHttpRequest();
@@ -973,7 +976,7 @@
 					try {
 						response = JSON.parse(xhr.response);
 						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response), aOrFormOrObj, params);
+						Mobilebone.createPage(Mobilebone.jsonHandle(response, params), aOrFormOrObj, params);
 					} catch (e) {
 						params.message = "JSON parse error：" + e.message;
 						params.error.call(params, xhr, xhr.status);
@@ -990,7 +993,7 @@
 						// as json
 						response = JSON.parse(xhr.response);
 						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response), aOrFormOrObj, params);
+						Mobilebone.createPage(Mobilebone.jsonHandle(response, params), aOrFormOrObj, params);
 					} catch (e) {
 						// as html
 						response = xhr.response;
@@ -1011,6 +1014,9 @@
 
 			// hide loading
 			eleMask.style.display = "none";
+			if (this.hideLoading) {
+				this.hideLoading();
+			}
 		}
 
 		xhr.onerror = function(e) {
@@ -1018,6 +1024,9 @@
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
 			eleMask.style.display = "none";
+			if (this.hideLoading) {
+				this.hideLoading();
+			}
 		}
 
 		xhr.ontimeout = function() {
@@ -1025,6 +1034,9 @@
 			params.error.call(params, xhr, xhr.status);
 			// hide loading
 			eleMask.style.display = "none";
+			if (this.hideLoading) {
+				this.hideLoading();
+			}
 		};
 
 		// set request header for server
@@ -1106,7 +1118,7 @@
 	 * @returns dom-object|string
 	 *
 	**/
-	Mobilebone.jsonHandle = function(json) {
+	Mobilebone.jsonHandle = function(json, params) {
 		return '<p style="text-align:center;">Dear master, if you see me, show that JSON parsing function is undefined!</p>';
 	},
 

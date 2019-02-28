@@ -21,11 +21,19 @@
             <li>Mobilebone.animationstart</li>
             <li>Mobilebone.animationend</li>
             <li>Mobilebone.preventdefault v2.2.0新增</li>
-            <li><del>Mobilebone.form</del> v2.1.1+此匿名API改成显式<code>Mobilebone.classAnimation</code>. 不过仍兼容。</li>  
+            <li><del>Mobilebone.form</del> v2.1.1+此匿名API改成显式<code>Mobilebone.classAnimation</code>. 不过仍兼容。</li>
         </ol>
         <p>其中，前6个是全局回调（每个回调的作用于使用场景可参见博文说明：<a href="http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/" class="link">点击这里</a>），最后一个是全局的过场动画形式。例如，本文档页面，就是这么设置的：</p>
         <pre>Mobilebone.form = "slideup";</pre>
         <p>于是，你就看到了上下推的效果（有部分CSS自定义）。</p>
+        <p><strong>v2.7.3+</strong> 新增两个匿名API，分别是：</p>
+        <ol>
+            <li>Mobilebone.showLoading</li>
+            <li>Mobilebone.hideLoading</li>
+        </ol>
+        <p>在Ajax加载页面的时候会调用，可以把这两个方法指向你自己的loading方法，例如：</p>
+        <pre>Mobilebone.showLoading = myShowLoadingFunction;
+Mobilebone.hideLoading = myHideLoadingFunction;</pre>
     </div>
 </div>
 
