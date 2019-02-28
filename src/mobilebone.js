@@ -973,7 +973,7 @@
 					try {
 						response = JSON.parse(xhr.response);
 						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response), aOrFormOrObj, params);
+						Mobilebone.createPage(Mobilebone.jsonHandle(response, params), aOrFormOrObj, params);
 					} catch (e) {
 						params.message = "JSON parse error：" + e.message;
 						params.error.call(params, xhr, xhr.status);
@@ -990,7 +990,7 @@
 						// as json
 						response = JSON.parse(xhr.response);
 						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response), aOrFormOrObj, params);
+						Mobilebone.createPage(Mobilebone.jsonHandle(response, params), aOrFormOrObj, params);
 					} catch (e) {
 						// as html
 						response = xhr.response;
@@ -1106,7 +1106,7 @@
 	 * @returns dom-object|string
 	 *
 	**/
-	Mobilebone.jsonHandle = function(json) {
+	Mobilebone.jsonHandle = function(json, params) {
 		return '<p style="text-align:center;">Dear master, if you see me, show that JSON parsing function is undefined!</p>';
 	},
 
