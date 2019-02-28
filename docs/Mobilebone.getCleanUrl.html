@@ -13,7 +13,7 @@
 <div class="page out">
 	<div class="content">
     	<h2>Mobilebone.getClearUrl(trigger[, url][, params]))</h2>
-        <p>获得干净完整的Ajax请求地址。基本上，此函数API内部用得多，大家大可不必关心。</p>
+        <p>获得干净完整的Ajax请求地址。对于Ajax请求的页面，返回的这个地址也是页面的ID，可以用来remove页面。</p>
         <h3>参数</h3>
         <ul>
             <li><code>trigger</code> DOM元素。一般表示<code>&lt;a&gt;</code>元素。可选参数，和<code>url</code>至少一个存在。。</li>
@@ -24,10 +24,10 @@
         <p>字符串。</p>
         <h3>使用示例</h3>
         <pre>Mobilebone.getCleanUrl(elementOfA);
-Mobilebone.getCleanUrl(elementOfA, ”, “a=1&b=2″);
-Mobilebone.getCleanUrl(null, “xxx.html”);
-Mobilebone.getCleanUrl(null, “xxx.html?a=1&b=2″);
-Mobilebone.getCleanUrl(null, “xxx.html”, “a=1&b=2″);</pre>
+Mobilebone.getCleanUrl(elementOfA, "a=1&amp;b=2");
+Mobilebone.getCleanUrl(null, "xxx.html");
+Mobilebone.getCleanUrl(null, "xxx.html?a=1&amp;b=2");
+Mobilebone.getCleanUrl(null, “xxx.html", "a=1&amp;b=2");</pre>
     </div>
 </div>
 

@@ -28,7 +28,17 @@
 //xxx.com/index.php?list=1   列表详情页1
 //xxx.com/index.php?list=2   列表详情页2</pre>
         <p>等等，防不胜防。</p>
-        <p>如果想要对这类页面进行删除，释放内存，可以使用<code>Mobilebone.remove()</code>方法。</p>
+        <p>如果想要对这类页面进行删除，释放内存，可以使用<code><a href="Mobilebone.remove.html">Mobilebone.remove()</a></code>方法。</p>
+        <p><strong>(v2.7.2+)</strong>Mobilebone使用另外一直方法来识别URL地址是否是同一类别地址，就是设置<code>data-reload</code>为同一个ID值即可！</p>
+        <p>这个ID的命名没有要求，只要不是<code>'true'</code>和<code>'false'</code>即可。当触发加载的时候，Mobilebone会自动删除和这个ID一直的页面元素，保证同类型页面的唯一性，例如：</p>
+        <pre>&lt;ul&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=1" data-reload="anyUniqueId"&gt;唯一详情页加载测试&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=2" data-reload="anyUniqueId"&gt;唯一详情页加载测试&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=3" data-reload="anyUniqueId"&gt;唯一详情页加载测试&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=4" data-reload="anyUniqueId"&gt;唯一详情页加载测试&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        <p>当我们点击任意详情页的时候，会自动删除之前已经加载的详情页，保证内容干净不冲突。</p>
+        <p></p>
         <div><strong>(以下v2.7.0移除，不保证完全兼容)</strong></div>
         <del datetime="2017-11-19 19:27">
             <p>Mobilebone会对Ajax请求的url地址做智能判断，页面上，永远只会有一个同根页面。例如，页面上有两个请求：</p>
