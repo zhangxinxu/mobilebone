@@ -781,6 +781,10 @@
 			if (typeof options.title != "undefined") {
 				optionsTransition.title = options.title;
 			}
+			// add on v2.7.4
+			if (typeof options.query != "undefined") {
+				optionsTransition.query = options.query;
+			}
 		}
 		if (classPage == classPageInside) {
 			optionsTransition.history = false;
