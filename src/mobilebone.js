@@ -878,8 +878,6 @@
 		var paramsFromTrigger = {}, attrMask;
 		if (aOrFormOrObj.nodeType == 1) {
 			paramsFromTrigger = _queryToObject(aOrFormOrObj.getAttribute("data-params") || "");
-			// v2.7.4
-			params.query = paramsFromTrigger;
 			// get params
 			for (key in defaults) {
 				// data-* > data-params > defaults
@@ -895,6 +893,18 @@
 
 			// address of ajax url
 			params.url = this.getCleanUrl(aOrFormOrObj, params.url);
+
+			var queryFromUrl = _queryToObject(params.url.split('?')[1]);
+
+			// v2.7.4 fix params may ingore problem
+			for (var key in queryFromUrl) {
+				if (typeof paramsFromTrigger[key] == 'undefined') {
+					paramsFromTrigger[key] = queryFromUrl[key];
+				}
+			}
+			// v2.7.4
+			params.query = paramsFromTrigger;
+			// store target
 			params.target = aOrFormOrObj;
 			// v2.5.2
 			// is back? for issues #128
