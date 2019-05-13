@@ -16,7 +16,7 @@ body { background-color: #cd0000; }
     <ul>
         <li><a href="#&amp;page1" data-reload>页面1-#&amp;page1</a></li>
         <li><a href="#page2" data-reload>页面2-#page2</a></li>
-        <li><a href="#page3">页面3</a></li>
+        <li><a href="#page3?id=1">页面3</a></li>
         <li><a>测试菊花：<div class="mask"><i class="loading"></i></div></a></li>
     </ul>
     <ul>
@@ -30,7 +30,7 @@ body { background-color: #cd0000; }
 
 <script src="../../src/mobilebone.js"></script>
 <!-- 某不知名tap插件兼容测试 -->
-<!-- 
+<!--
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <script src="jquery.tap.js"></script>
 -->
@@ -43,7 +43,7 @@ body { background-color: #cd0000; }
 	document.getElementById("result").innerHTML += '<p>'+ content +'</p>';
 };*/
 $("#back").on("tap", function() {
-	location.href = this.href;	
+	location.href = this.href;
 });
 </script>
 </body>
