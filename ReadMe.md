@@ -1,8 +1,7 @@
 mobilebone.js
 =============
-单页切换骨架。适用于移动web APP, Hybrid混合APP, Phonegap开发, 无兼容要求单页PC应用等。官方网站：<a href="http://www.mobilebone.org">http://www.mobilebone.org</a>
+单页切换骨架。适用于移动web APP, Hybrid混合APP, Phonegap开发, 单页PC应用等。官方网站：<a href="http://www.mobilebone.org/">http://www.mobilebone.org/</a>
 
-GitHub Pages: <a href="http://zhangxinxu.github.io/mobilebone/">http://zhangxinxu.github.io/mobilebone/</a>
 
 设计理念
 ------------------
@@ -10,9 +9,23 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 
 这种无侵入的设计理念使得mobilebone更像是一个外挂，一个精美的外衣，日后不喜欢了，直接拿掉就可以，完全不要担心前端变化太快项目跟不上怎么办。同时，保留了传统页面SEO友好等优点。
 
+文档
+------------------
+
+狠狠地点击这里：<a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/" style="color: #cd0000;"><strong>中文文档</strong></a>
+
 
 实例、测试和文档
 ------------------
+
+**近期项目GIF录屏**
+
+<img src="https://qidian.qpic.cn/qidian_common/349573/60b54a019ccce3709b04af2401caf4a4/0" alt="">
+
+<img src="https://qidian.qpic.cn/qidian_common/349573/f8b6198e5e35b53604be9de6f6a083f4/0" alt="">
+
+**其他案例**
+
 <ul>
 	<li>实例1-仿QQ界面：http://iancj.github.io/qq/</li>
 	<li>实例2-暴走漫画制作器：http://baozoumanhua.com/mobile_makers/</li>
@@ -20,19 +33,15 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 </ul>
 
 <ul>
-	<li>测试页面：<a href="http://www.zhangxinxu.com/GitHub/mobilebone/test/">./test/index.html</a>
-		<p><img src="http://image.zhangxinxu.com/image/blog/201801/qr-test.png" width="150" height="150"></p>
+	<li>测试页面：<a href="https://www.zhangxinxu.com/GitHub/mobilebone/test/">./test/index.html</a>
+		<p><img src="https://qidian.qpic.cn/qidian_common/349573/6b30e1a98239bdd169b16d9570151baf/0" width="150" height="150"></p>
 	</li>
-</ul>
-
-<ul>
-	<li>中文文档：<a href="http://www.zhangxinxu.com/GitHub/mobilebone/docs/">./docs/index.html</a></li>
 </ul>
 
 为何需要？
 -------------
 类原生APP的过场体验，适用于这些场景：<br>
-1. Phonegap等类似跨移动开发平台，其静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。<br>
+1. 跨移动平台开发，静态页面都是index.html, 单页面，因此，需要跟原生一样的过场体验。<br>
 2. Hybrid app开发，原生APP内嵌web APP, 为了两者体验一致，不至于交互太唐突，也需要无刷新过场效果。<br>
 3. 就算是纯粹的移动web APP, 使用无刷新模式也不失为一种不错的选型策略。<br>
 4. 对兼容性没有要求的单页PC应用，如类PowerPoint web文档，单页翻屏web站点等。
@@ -64,26 +73,21 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 
 你可以控制切换的方向，任意扩展动画类型，可以被seajs, requiejs模块化加载(<code>require('mobilebone')</code>)，可以和Backbone组合使用等。
 
-当然，上面介绍的，只是强大功能的冰山一角，更多信息请[参考这里](http://www.zhangxinxu.com/wordpress/?p=4381).
+当然，上面介绍的，只是强大功能的冰山一角，更多信息请[参考这里](https://www.zhangxinxu.com/wordpress/?p=4381).
 
 插件
 ----------------
 <ol>
-	<li><strong>mobilebone.ppt.js</strong>: 可以让web页面表现如幻灯片演示，尺寸自适应。 <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/plugins/ppt/index.html">demo点击这里</a>。</li>
+	<li><strong>mobilebone.ppt.js</strong>: 可以让web页面表现如幻灯片演示，尺寸自适应。 <a href="https://www.zhangxinxu.com/GitHub/mobilebone/plugins/ppt/index.html">demo点击这里</a>。</li>
 </ol>
 
 优势？
 ------------------
-mobilebone.js只做了一件事情，切换。所以，JS文件很小，gzip后4~5K, 而且很灵活，几乎没有任何UI的限制，适用于各个项目各个场景。同时，巧妙提供各类缓存管理、事件管理的接口，就像是个完整健全的骨架体系，就等你来加血添肉了！<img src="http://mat1.gtimg.com/www/mb/images/face/4.gif" align="absmiddle">
+mobilebone.js只做了一件事情，切换。所以，JS文件很小，gzip后4~5K, 而且很灵活，几乎没有任何UI的限制，适用于各个项目各个场景。同时，巧妙提供各类缓存管理、事件管理的接口，就像是个完整健全的骨架体系，就等你来加血添肉了！<img src="https://mat1.gtimg.com/www/mb/images/face/4.gif" align="absmiddle">
 
 许可
 -------------------
 MIT许可
-
-捐赠
-------------------
-左支付宝，右微信<br>
-<img src="http://www.zhangxinxu.com/alipay.png?v=1" width="176" height="176" alt="支付宝"> &nbsp; &nbsp; <img src="http://www.zhangxinxu.com/wxpay.png" width="176" height="176" alt="微信">
 
 mobilebone.js
 =============
@@ -94,7 +98,14 @@ Single Page Switching bone for mobile web APP, Hybrid APP, Phonegap, ...
 use <code>npm</code>:
 <pre>npm install mobilebone</pre>
 
-Examples and Tests and Documents
+Documents
+------------------
+
+<ul>
+    <li>Documents: <a href="https://www.zhangxinxu.com/GitHub/mobilebone/plugins/ppt/index.html">docs/index.html</a></li>
+</ul>
+
+Examples and Tests
 ------------------
 <ol>
 	<li>Example1: http://iancj.github.io/qq/</li>
@@ -103,12 +114,9 @@ Examples and Tests and Documents
 </ol>
 
 <ul>
-	<li>Test page: <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/test/index.html">test/index.html</a></li>
+	<li>Test page: <a href="https://www.zhangxinxu.com/GitHub/mobilebone/develop/test/index.html">test/index.html</a></li>
 </ul>
 
-<ul>
-	<li>Documents: <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/docs/index.html">docs/index.html</a></li>
-</ul>
 
 Why need this?
 -----------------
@@ -141,7 +149,7 @@ For more detail, you can [visit here](http://www.zhangxinxu.com/wordpress/?p=438
 Plugins
 ----------------
 <ol>
-	<li><strong>mobilebone.ppt.js</strong>: make web page to powerpoint presentation. <a href="http://rawgit.com/zhangxinxu/mobilebone/develop/plugins/ppt/index.html">demo here</a>.</li>
+	<li><strong>mobilebone.ppt.js</strong>: make web page to powerpoint presentation. <a href="https://www.zhangxinxu.com/GitHub/mobilebone/plugins/ppt/index.html">demo here</a>.</li>
 </ol>
 
 Advantage?
