@@ -12,6 +12,7 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 文档
 ------------------
 
+狠狠地点击这里：<a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/" style="color: #cd0000;"><strong>中文文档</strong></a>
 
 
 实例、测试和文档
