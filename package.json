@@ -1,6 +1,6 @@
 {
   "name": "mobilebone",
-  "version": "2.6.2",
+  "version": "2.7.4",
   "description": "Bone main for mobile web APP with a sigle page mode.",
   "main": "src/mobilebone.js",
   "directories": {
@@ -16,16 +16,16 @@
   "keywords": [
     "Mobilebone",
     "mobilebone.js",
-	"javascript"
+	  "javascript"
   ],
   "author": "zhangxinxu",
   "license": [{
-	 "type": "MIT",
-     "url": "https://github.com/zhangxinxu/mobilebone/blob/master/LICENSE-MIT" 
+	  "type": "MIT",
+    "url": "https://github.com/zhangxinxu/mobilebone/blob/master/LICENSE-MIT"
   }],
   "bugs": {
     "url": "https://github.com/zhangxinxu/mobilebone/issues",
-	"email" : "zhangxinxu@zhangxinxu.com"
+	  "email" : "zhangxinxu@zhangxinxu.com"
   },
   "dependencies": {},
   "devDependencies": {}
