@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = "2.7.4";
+	Mobilebone.VERSION = "2.7.5";
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -499,6 +499,9 @@
 				// reset to popable state
 				history.popstate = true;
 			}, 17);
+
+			// add on v2.7.5 improve back user experence
+			store.lastShip = [pageInto, pageOut];
 		}
 	};
 
@@ -524,13 +527,13 @@
 		}
 
 		if (elePage && elePage.parentElement) {
-			elePage.parentElement.removeChild(elePage);
 			// remove store
 			for (var key in store) {
 				if (store[key] == elePage) {
 					delete store[key];
 				}
 			}
+			elePage.parentElement.removeChild(elePage);
 		}
 	};
 
@@ -586,7 +589,7 @@
 				 } else {
 					// a element
 					href = trigger.getAttribute("href");
-					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-data") || "";
+					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-params") || "";
 					// v2.6.1 for #107
 					// remember container when refresh
 					var strContainer = "container", attrContainer = trigger.getAttribute("data-" + strContainer);
@@ -733,16 +736,28 @@
 		// excute inline JavaScript
 		if (Mobilebone.evalScript == true && domHtml.firstintoBind != true) {
 			slice.call(create.getElementsByTagName("script")).forEach(function(originScript) {
-				var scriptContent = originScript.innerHTML.trim(), type = originScript.getAttribute("type");
-				if (scriptContent.trim() == "" || originScript.src) return;
+				var scriptContent = originScript.innerHTML.trim();
+				var type = originScript.type || originScript.getAttribute("type");
+
 				var head = document.getElementsByTagName("head")[0] || document.documentElement,
 				script = document.createElement("script");
-				if (type) script.type = type;
-				script.appendChild(document.createTextNode(scriptContent));
+				if (type) {
+					script.type = type;
+				}
+
+				if (scriptContent) {
+					script.appendChild(document.createTextNode(scriptContent));
+				} else if (originScript.src && !document.querySelector('script[src="'+ originScript.src +'"]')) {
+					// issues #199
+                	script.src = originScript.src;
+            	}
+
 				setTimeout(function() {
 					head.insertBefore(script, head.firstChild);
-					head.removeChild(script);
-					script = null;
+					if (scriptContent) {
+						head.removeChild(script);
+						script = null;
+					}
 				}, 17);
 				originScript = null;
 			});
@@ -812,6 +827,15 @@
 
 		// do transition
 		this.transition(eleCreatePage, eleCurrentPage, optionsTransition);
+
+		var objRelationShip = store.backShip || [];
+		objRelationShip.push({
+			pageIn: eleCreatePage,
+			pageOut: eleCurrentPage,
+			isBack: !!optionsTransition.back
+		});
+
+		store.backShip = objRelationShip;
 	};
 
 	/**
@@ -894,11 +918,11 @@
 			// address of ajax url
 			params.url = this.getCleanUrl(aOrFormOrObj, params.url);
 
-			var queryFromUrl = _queryToObject(params.url.split('?')[1]);
+			var queryFromUrl = _queryToObject(params.url.split("?")[1]);
 
 			// v2.7.4 fix params may ingore problem
 			for (var key in queryFromUrl) {
-				if (typeof paramsFromTrigger[key] == 'undefined') {
+				if (typeof paramsFromTrigger[key] == "undefined") {
 					paramsFromTrigger[key] = queryFromUrl[key];
 				}
 			}
@@ -1113,9 +1137,30 @@
 			history.tempBack = null;
 			return true;
 		}
-		if (typeof pageIn == "undefined") return true;
-		if (!pageOut) return false;
-		return pageIn.compareDocumentPosition(pageOut) == 4;
+		// 2.7.5 return true -> false
+		if (typeof pageIn == "undefined") {
+			return false;
+		}
+		if (!pageOut) {
+			return false;
+		}
+
+		// 2.7.5 store pageIn pageOut backward or forward
+		var objRelationShip = store.backShip || [];
+		var isBack = null;
+		objRelationShip.forEach(function (ship) {
+			if (ship.pageIn == pageIn && ship.pageOut == pageOut) {
+				isBack = ship.isBack;
+			} else if (ship.pageIn == pageOut && ship.pageOut == pageIn) {
+				isBack = !ship.isBack;
+			}
+		});
+
+		if (isBack === null) {
+			isBack = !!(pageIn.compareDocumentPosition(pageOut) & Node.DOCUMENT_POSITION_FOLLOWING);
+		}
+
+		return isBack;
 	};
 
 	/**
@@ -1362,7 +1407,15 @@
 			}
 
 			if (eleTargetPage) {
-				Mobilebone.transition(eleTargetPage, selfPage, back, options);
+				var lastShip = store.lastShip;
+
+				if (lastShip && eleTargetPage == lastShip[1] && selfPage == lastShip[0]) {
+					// back
+					history.tempBack = true;
+					history.back();
+				} else {
+					Mobilebone.transition(eleTargetPage, selfPage, back, options);
+				}
 			}
 			event.preventDefault();
 		} else if (/^javascript/.test(href)) {
@@ -1478,7 +1531,9 @@
 		var hash = location.hash.replace("#&", "#").replace(/^#/, "");
 		// add on v2.7.4
 		var key = hash.split('?')[0];
-		var pageIn = null
+		var pageIn = null;
+		// add on v2.7.5
+		var pageOut = document.querySelector(".in." + Mobilebone.classPage);
 		// add on v2.6.1
 		var container = null;
 
@@ -1495,9 +1550,10 @@
 				container = document.getElementById(hash.split("container=")[1].split("&")[0]);
 			}
 
+			// url address and with cache
 			if (pageIn && isSimple.test(key) == false) {
 				// just transition
-				Mobilebone.transition(pageIn, document.querySelector(".in." + Mobilebone.classPage), true, {
+				Mobilebone.transition(pageIn, pageOut, Mobilebone.isBack(pageIn, pageOut), {
 					id: hash,  // fix issue #83
 					history: false,
 					container: container,
@@ -1513,6 +1569,7 @@
 				Mobilebone.ajax({
 					url: hash,
 					dataType: "unknown",
+					// no cache url, usually reload ajax
 					back: Mobilebone.isBack(),
 					container: container
 				});
@@ -1520,8 +1577,6 @@
 			}
 			pageIn = document.querySelector("#" + key) || document.querySelector("#" + hash);
 		}
-
-		var pageOut = document.querySelector(".in." + Mobilebone.classPage);
 
 		if ((pageIn && pageIn == pageOut) || Mobilebone.pushStateEnabled == false) return;
 

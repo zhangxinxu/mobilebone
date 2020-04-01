@@ -12,7 +12,7 @@
 <div id="container"></div>
 <div id="pageHome" class="page out" style="overflow:auto;">
     <ul>
-        <li><a href="ajax-page.html" data-container="container">点击加载(缓存，data-container测试)</a></li>
+        <li><a href="ajax-page.html" data-params="id=1" data-container="container">点击加载(缓存，data-container测试)</a></li>
         <li><a href="ajax-page.html#a=1#b=1&amp;c=1#" data-reload>点击加载(每次都请求，data-reload测试)</a></li>
         <li><a href="ajax-page.html?&amp;&amp;" data-formdata="?a=1" data-history="false">点击加载(缓存, url过滤测试,历史无变化)</a></li>
         <li><a href="ajax-page.html?debug=zhangrui.songyi#&amp;/index.php/Home/Mall/index/sid/251 " data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
@@ -63,6 +63,7 @@ var optionsTest = function(elein, eleout, options) {
 	// ajax过场回调options参数测试
 	// console.log("点击的元素是：" + (options.target && options.target.outerHTML));
 	// console.log("请求内容是：" + options.response);
+    console.log("查询参数是：", options.query);
 };
 var init = function(ele) {
 	var button = document.querySelector(".ajaxButton");
