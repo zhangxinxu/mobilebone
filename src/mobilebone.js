@@ -754,10 +754,8 @@
 
 				setTimeout(function() {
 					head.insertBefore(script, head.firstChild);
-					if (scriptContent) {
-						head.removeChild(script);
-						script = null;
-					}
+					head.removeChild(script);
+					script = null;
 				}, 17);
 				originScript = null;
 			});
