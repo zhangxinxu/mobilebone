@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = "2.7.5";
+	Mobilebone.VERSION = "2.7.6";
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -501,7 +501,13 @@
 			}, 17);
 
 			// add on v2.7.5 improve back user experence
-			store.lastShip = [pageInto, pageOut];
+			// add on v2.7.6
+			// only not back transiton store last ship
+			if (back == false) {
+				store.lastShip = [pageInto, pageOut];
+			} else {
+				store.lastShip = null;
+			}
 		}
 	};
 
