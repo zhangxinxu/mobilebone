@@ -503,7 +503,7 @@
 			// add on v2.7.5 improve back user experence
 			// add on v2.7.6
 			// only not back transiton store last ship
-			if (back == false) {
+			if (back == false && history.popstate == false) {
 				store.lastShip = [pageInto, pageOut];
 			} else {
 				store.lastShip = null;
