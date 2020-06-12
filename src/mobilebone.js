@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = "2.7.6";
+	Mobilebone.VERSION = "2.7.7";
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -1561,6 +1561,7 @@
 					id: hash,  // fix issue #83
 					history: false,
 					container: container,
+					target: document.activeElement,  // add on v2.7.7
 					query: _queryToObject(hash.split('?')[1])
 				});
 				return;
@@ -1589,6 +1590,7 @@
 			Mobilebone.transition(pageIn, pageOut, Mobilebone.isBack(pageIn, pageOut), {
 				id: hash,  // fix issue #83
 				history: false,
+				target: document.activeElement,  // add on v2.7.7
 				query: _queryToObject(hash.split('?')[1])
 			});
 		}
