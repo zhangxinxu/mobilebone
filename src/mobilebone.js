@@ -46,7 +46,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = "2.7.7";
+	Mobilebone.VERSION = "2.7.8";
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -456,10 +456,10 @@
 			// add on 2.4.2
 			var urlPush = hashid, urlPushReplace = "";
 
-			if (urlPush && /^#/.test(urlPush) == false) {
+			if (urlPush && /#/.test(urlPush) == false) {
 				urlPush = "#" + urlPush;
 			}
-			urlPushReplace = urlPush.replace(/^#/, "#&");
+			urlPushReplace = urlPush.replace(/#/, "#&");
 
 			if (supportHistory && this.pushStateEnabled && options.history !== false && urlPush
 				// hash should be different
@@ -469,7 +469,7 @@
 				// don't trigger 'popstate' events
 				history.popstate = false;
 				// if only pageIn, use 'replaceState'
-				history[pageOut? "pushState": "replaceState"](null, document.title, urlPush.replace(/^#/, "#&"));
+				history[pageOut ? "pushState" : "replaceState"](null, document.title, urlPush.replace(/#/, "#&"));
 			}
 
 			// store page-id, just once
