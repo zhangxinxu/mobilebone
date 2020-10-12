@@ -24,6 +24,15 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 
 <img src="https://qidian.qpic.cn/qidian_common/349573/f8b6198e5e35b53604be9de6f6a083f4/0" alt="">
 
+**真实线上项目案例**
+
+C端视频制作：https://activity.hongxiu.com/be-video/
+
+也可以手机扫描访问：
+<p>>img src="https://imgservices-1252317822.image.myqcloud.com/image/20201012/rrsqqyiu1w.png" width="150" height="150" /></p>
+
+采用Vue + Mobilebone实现。
+
 **其他案例**
 
 <ul>
