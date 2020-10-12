@@ -28,6 +28,8 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 
 C端视频制作：https://activity.hongxiu.com/be-video/
 
+<p><img src="https://imgservices-1252317822.image.myqcloud.com/image/20201012/f5e3bbcezz.png"></p>
+
 也可以手机扫描访问：
 <p><img src="https://imgservices-1252317822.image.myqcloud.com/image/20201012/rrsqqyiu1w.png" width="150" height="150" /></p>
 
