@@ -12,11 +12,15 @@
 		define("mobilebone", function(exports) {
 			return factory(root, exports);
 		});
-	// Finally, as a browser global.
+	} else if ( typeof module === "object" && typeof module.exports === "object" ) {
+		module.exports = factory(root, {});
 	} else {
+		// Finally, as a browser global.
 		root.Mobilebone = factory(root, {});
 	}
-})(this, function(root, Mobilebone) {
+})((typeof global !== "undefined") ? global
+: ((typeof window !== "undefined") ? window
+	: ((typeof self !== "undefined") ? self : this)), function(root, Mobilebone) {
 	if (document.MBLOADED) {
 		return "Don\'t repeat load Mobilebone!";
 	}

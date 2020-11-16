@@ -1,7 +1,7 @@
 {
   "name": "mobilebone",
-  "version": "2.7.4",
-  "description": "Bone main for mobile web APP with a sigle page mode.",
+  "version": "2.7.8",
+  "description": "Bone main for mobile web APP with a sigle page mode by using HTML5 history API router.",
   "main": "src/mobilebone.js",
   "directories": {
     "test": "test"
@@ -16,13 +16,11 @@
   "keywords": [
     "Mobilebone",
     "mobilebone.js",
-	  "javascript"
+    "javascript",
+    "router"
   ],
   "author": "zhangxinxu",
-  "license": [{
-	  "type": "MIT",
-    "url": "https://github.com/zhangxinxu/mobilebone/blob/master/LICENSE-MIT"
-  }],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/zhangxinxu/mobilebone/issues",
 	  "email" : "zhangxinxu@zhangxinxu.com"
