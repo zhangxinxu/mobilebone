@@ -1,11 +1,11 @@
 mobilebone.js
 =============
-单页切换骨架。适用于移动web APP, Hybrid混合APP, Phonegap开发, 单页PC应用等。官方网站：<a href="http://www.mobilebone.org/">http://www.mobilebone.org/</a>
+单页切换骨架。适用于移动Web APP, Hybrid混合APP, 单页H5或PC应用。官方网站：<a href="http://www.mobilebone.org/">http://www.mobilebone.org/</a>
 
 
 设计理念
 ------------------
-mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebone.js，我们的项目依然是可以运作的，只是形式上是传统的页面跳转。明白这一点，就应该可以理解为何请求页面中的src地址的script不执行了。
+mobilebone本质上是一个纯UI表现层的JS插件，如果没有mobilebone.js，我们的项目依然是可以运作的，只是形式上是传统的页面跳转。明白这一点，就应该可以理解为何请求页面中的src地址的script不执行了。
 
 这种无侵入的设计理念使得mobilebone更像是一个外挂，一个精美的外衣，日后不喜欢了，直接拿掉就可以，完全不要担心前端变化太快项目跟不上怎么办。同时，保留了传统页面SEO友好等优点。
 
@@ -20,9 +20,7 @@ mobilebone设计理念是一个纯UI表现层的JS应用，如果没有mobilebon
 
 **近期项目GIF录屏**
 
-<img src="https://qidian.qpic.cn/qidian_common/349573/60b54a019ccce3709b04af2401caf4a4/0" alt="">
-
-<img src="https://qidian.qpic.cn/qidian_common/349573/f8b6198e5e35b53604be9de6f6a083f4/0" alt="">
+<img src="https://qidian.qpic.cn/qidian_common/349573/60b54a019ccce3709b04af2401caf4a4/0" alt=""> <img src="https://qidian.qpic.cn/qidian_common/349573/f8b6198e5e35b53604be9de6f6a083f4/0" alt="">
 
 **真实线上项目案例**
 
@@ -60,9 +58,18 @@ C端视频制作：https://activity.hongxiu.com/be-video/
 
 如何使用？
 ---------------
+
+```js
+npm install mobilebone
+```
+
 引入相关的CSS以及JS, 如下：
-<pre>&lt;link rel="stylesheet" href="mobilebone.css"></pre>
-<pre>&lt;script src="mobilebone.js">&lt;/script></pre>
+```html
+<link rel="stylesheet" href="./src/mobilebone.css">
+```
+```html
+<script src="./src/mobilebone.js"></script>
+```
 
 HTML结构需要有一定的要求：
 <pre>body
@@ -73,12 +80,16 @@ HTML结构需要有一定的要求：
 每个page是个满屏元素, 相当于一个独立的页面。
 
 Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，就会触发切换行为。例如：
-<pre>&lt;a href="#targetPage">目标页面&lt;/a></pre>
+```html
+<a href="#targetPage">目标页面</a>
+```
 
 当click/tap此元素时候，页面会自动无刷新切换到<code>id</code>为<code>targetPage</code>的页面。
 
 也可以使用ajax请求。例如：
-<pre>&lt;a href="detail.php?id=112">请求详情页&lt;/a></pre>
+```html
+<a href="detail.php?id=112">请求详情页</a>
+```
 
 所有ajax请求默认是缓存的，如果你想根据url地址不缓存，可以设置<code>data-reload</code>或者<code>data-reload="true"</code>；如果你想根据url根地址不缓存，需要设置<code>data-reload="root"</code>。
 
