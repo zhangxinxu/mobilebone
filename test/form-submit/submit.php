@@ -3,8 +3,8 @@
 		header('Location: index.html', true);
 	}
 
-	$username = $_POST['username'];
-	$tel = $_POST['tel'];
+	$username = htmlspecialchars($_POST['username']);
+	$tel = htmlspecialchars($_POST['tel']); 
 
 	echo '<div class="p10">
 		<p>提交的用户名是：'. $username .'</p>

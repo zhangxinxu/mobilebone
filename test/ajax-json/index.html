@@ -11,7 +11,8 @@
 <body>
 <div id="pageHome" class="page out" data-title="ajax请求JSON">
     <ul>
-        <li><a href="json-success.html" data-dataType="json" data-ajax="true" data-error="requestError">点击加载JSON数据</a></li>
+		<li><a href="json-success.html" data-dataType="json" data-ajax="true" data-error="requestError">点击加载JSON数据 - Mobilebone.jsonHandle</a></li>
+		<li><a href="json-data.json" data-dataType="json" data-ajax="true" data-template="myTemplate">加载JSON数据模板解析渲染示意</a></li>
     </ul>
     <ul>
         <li><a href="json-error.txt" data-datatype="json" data-error="requestError">加载JSON失败，404, 可回调</a></li>
@@ -22,14 +23,41 @@
     </ul>
 </div>
 
+<template id="myTemplate">
+<ul>
+${data.map((obj, index) => {
+	return `<li>
+		<a href="#pageHome" data-rel="back">${obj.content} - 返回</a>
+	</li>`;
+}).join('')}
+</ul>
+</template>
+
 <script src="../../src/mobilebone.js"></script>
 <script>
-Mobilebone.jsonHandle = function(json) {
-	var page = document.createElement("div");
-	page.className = "page out";
-	page.setAttribute("data-title", json.title);
-	page.innerHTML = json.html;
-	return page;
+Mobilebone.jsonHandle = function(json, params) {
+	if (/json-success/.test(params.url)) {
+		var page = document.createElement("div");
+		page.className = "page out";
+		page.setAttribute("data-title", json.title);
+		page.innerHTML = json.html;
+		return page;
+	} else {
+		return myTemplate.innerHTML.interpolate(json);
+	}	
+};
+
+// HTML字符反转义   &lt;  =>  < 
+function escape2Html(str) {
+    var arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
+    return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) {
+        return arrEntities[t];
+    });
+}
+String.prototype.interpolate = function (params) {
+    const names = Object.keys(params);
+    const vals = Object.values(params);
+    return new Function(...names, `return \`${escape2Html(this)}\`;`)(...vals);
 };
 
 var requestError = function(xhr, status) {

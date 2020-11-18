@@ -12,12 +12,12 @@
 <div id="container"></div>
 <div id="pageHome" class="page out" style="overflow:auto;">
     <ul>
-        <li><a href="ajax-page.html" data-params="id=1" data-container="container">点击加载(缓存，data-container测试)</a></li>
-        <li><a href="ajax-page.html#a=1#b=1&amp;c=1#" data-reload>点击加载(每次都请求，data-reload测试)</a></li>
-        <li><a href="ajax-page.html?&amp;&amp;" data-formdata="?a=1" data-history="false">点击加载(缓存, url过滤测试,历史无变化)</a></li>
-        <li><a href="ajax-page.html?debug=zhangrui.songyi#&amp;/index.php/Home/Mall/index/sid/251 " data-reload data-formdata="?a=1">点击加载(data-formdata测试)-全覆盖loading</a></li>
-        <li><a href="ajax-page.html?a=1&amp;#tt_fo#nt=m&amp;tt_#daymode=1" data-reload data-formdata="&amp;c=1" data-mask="true">点击加载(data-formdata测试)-内覆盖loading</a></li>
-        <li><a href="ajax-page.html?a=1&amp;b=" class="follow" data-reload data-formdata="c=1&amp;d=1" data-mask="true">点击加载(data-formdata测试)-跟随loading</a></li>
+        <li><a href="ajax-page.html" data-params="id=1" data-container="container">请求缓存，data-container测试</a></li>
+        <li><a href="ajax-page.html#a=1#b=1&amp;c=1#" data-reload>每次都请求，data-reload测试，自动删除上一次</a></li>
+        <li><a href="ajax-page.html?&amp;&amp;" data-formdata="?a=1" data-history="false">请求缓存，url过滤测试，data-history历史无变化</a></li>
+        <li><a href="ajax-page.html?debug=zhangrui.songyi#&amp;/index.php/Home/Mall/index/sid/251 " data-reload data-formdata="?a=1">data-formdata传参测试-全覆盖loading</a></li>
+        <li><a href="ajax-page.html?a=1&amp;#tt_fo#nt=m&amp;tt_#daymode=1" data-reload data-formdata="&amp;c=1" data-mask="true">data-formdata传参测试-data-mask内覆盖loading</a></li>
+        <li><a href="ajax-page.html?a=1&amp;b=" class="follow" data-reload data-params="c=1&amp;d=1" data-mask="true">data-params传参测试-跟随loading by CSS重置</a></li>
     </ul>
     <ul>
         <li><a href="ajax-without-page.html" data-title="纯a标签元素返回页面" data-reload>点击加载-返回不含page, 自动创建page</a></li>
@@ -27,7 +27,7 @@
     	<li><a href="root-reload.php?id=1">root-reload.php?id=1加载，缓存</a></li>
         <li><a href="root-reload.php?id=2">root-reload.php?id=2加载，缓存</a></li>
         <li><a href="root-reload.php?id=3">root-reload.php?id=3加载，缓存</a></li>
-        <li><button id="removePage">手动清除上面3个页面存储</button> <small>需打开控制台观察</small></li>
+        <li style="padding: 5px;"><button id="removePage">手动清除上面3个页面存储</button> <small>需打开控制台观察</small> <code>Mobilebone.remove(trigger)</code></li>
     </ul>
     <ul>
         <li><a href="nosuffix">地址就是个简单名词</a></li>
@@ -41,6 +41,7 @@
         <li><a href="ajax-page.html?v=2" data-reload="anyUniqueId">唯一详情页加载测试</a></li>
         <li><a href="ajax-page.html?v=3" data-reload="anyUniqueId">唯一详情页加载测试</a></li>
         <li><a href="ajax-page.html?v=4" data-reload="anyUniqueId">唯一详情页加载测试</a></li>
+        <li style="padding: 5px;"><button id="ajaxLoad">Mobilebone.ajax()方法唯一详情页加载</button></li>
     </ul>
     <ul>
         <li><a href="http://www.zhangxinxu.com/sp/char.html" target="_blank">外部地址测试，应该直接跳转</a></li>
@@ -65,18 +66,21 @@ var optionsTest = function(elein, eleout, options) {
 	// console.log("请求内容是：" + options.response);
     console.log("查询参数是：", options.query);
 };
-var init = function(ele) {
+var init = function(ele, eleOut, params) {
 	var button = document.querySelector(".ajaxButton");
 	button.addEventListener("click", function() {
 		console.log("clicked!");
 	});
-	ele.querySelector(".result").innerHTML += 'inited! ';
+	ele.querySelector(".result").innerHTML += 'inited! ' + '参数是：' + JSON.stringify(params.query);
 
 	ele.querySelector("#createPage").addEventListener("click", function() {
 		Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为不停创建。</p>');
 	});
     ele.querySelector("#createPage2").addEventListener("click", function() {
-        Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为之前创建会删除，因为指定了id以及remove: true。</p>', {
+        Mobilebone.createPage('<p>点击浏览器的后退再点击按钮创建，目标效果为之前创建会删除，因为指定了id以及remove: true。</p><pre style="white-space:pre-wrap;">Mobilebone.createPage("...", {\
+    remove: true,\
+    id: "idJustUnique"\
+});</pre>', {
             remove: true,
             id: 'idJustUnique'
         });
@@ -114,6 +118,18 @@ if (btnRemovePage) {
         });
     });
 }
+
+var version = 5;
+document.querySelector('#ajaxLoad').addEventListener('click', function () {
+    Mobilebone.ajax({
+        url: 'ajax-page.html',
+        data: {
+            v: version++
+        },
+        remove: true,
+        id: 'anyUniqueId'
+    });
+});
 
 // 此为captureLink测试
 // Mobilebone.captureLink = false;

@@ -39,20 +39,13 @@ html, body, .page {
 	position: absolute; left: 0; top: 0;
 	z-index: 9;
 }
-.loading { /* more info: http://www.zhangxinxu.com/wordpress/?p=3357 */
-    width: 3px; height:3px;
+.loading {
+    width: 16px; height: 16px;
     border-radius: 100%;
-    box-shadow: 0 -10px 0 1px currentColor,           /* top, 1px expand */
-                10px 0px currentColor,                /* right */
-                0 10px currentColor,                  /* bottom */
-                -10px 0 currentColor,                 /* left */
-
-                -7px -7px 0 .5px currentColor,        /* left-top, 0.5px expand */
-                7px -7px 0 1.5px currentColor,        /* right-top, 1.5px expand */
-                7px 7px currentColor,                 /* right-bottom */
-                -7px 7px currentColor;                /* left-bottom */
-	-webkit-animation: spin 1s steps(8) infinite;
-	animation: spin 1s steps(8) infinite;
+    border: 2px solid;
+    border-bottom-color: transparent;
+	-webkit-animation: spin 1s linear infinite;
+	animation: spin 1s linear infinite;
 	/*center*/
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;

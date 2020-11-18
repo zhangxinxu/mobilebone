@@ -16,8 +16,9 @@
 	document.getElementById("scriptTest<?php echo $_GET['id']; ?>").style.backgroundColor = "#" + (Math.random() + "").slice(-6);
 	setTimeout(function() {		
 		document.getElementById("idShow").parentNode.addEventListener("touchstart", function() {
-			console.log("inline script should once!");
-			document.getElementById("scriptTest").style.backgroundColor = "#" + (Math.random() + "").slice(-6);	
+			var color = "#" + (Math.random() + "").slice(-6);
+			console.log("inline script should once! - " + color);
+			document.getElementById("scriptTest").style.backgroundColor = color;	
 		});	
 	}, 350);
 	console.log("<?php echo $_GET['id']; ?>: script excuted!");
@@ -25,7 +26,7 @@
     <script type="text/template">
 	console.log("should not excute!");
 	</script>
-    <script src="../modular-load/1.js">console.log("should not excute when src script!");</script>
+    <script src="../modular-load/1.js">console.log("src='../modular-load/1.js' script should not excute!");</script>
 </div>
 </body>
 </html>

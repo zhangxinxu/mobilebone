@@ -6,6 +6,10 @@
 **/
 
 (function(root, factory) {
+	if (document.MBLOADED) {
+		root.console && console.warn("Don\'t repeat load Mobilebone!");
+		return;
+	}
 	// Set up Mobilebone appropriately for the environment.
 	if (typeof define === "function" && (define.amd || define.cmd)) {
 		define("mobilebone", function(exports) {
@@ -20,11 +24,6 @@
 })((typeof global !== "undefined") ? global
 : ((typeof window !== "undefined") ? window
 	: ((typeof self !== "undefined") ? self : this)), function(root, Mobilebone) {
-	if (document.MBLOADED) {
-		root.console && console.warn("Don\'t repeat load Mobilebone!");
-		return {};
-	}
-
 	// Avoid repeated callbacks
 	var store = {};
 
@@ -50,7 +49,7 @@
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = "2.7.9";
+	Mobilebone.VERSION = "2.8.0";
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -530,7 +529,7 @@
 		var elePage = domOrId;
 		var pageid = domOrId;
 		if (typeof pageid == "string") {
-			elePage = store[pageid];
+			elePage = store[pageid];			
 		} else if (elePage.tagName && elePage.tagName.toLowerCase() == "a") {
 			pageid = this.getCleanUrl(elePage);
 			elePage = store[pageid];
@@ -749,8 +748,8 @@
 				var scriptContent = originScript.innerHTML.trim();
 				var type = originScript.type || originScript.getAttribute("type");
 
-				var head = document.getElementsByTagName("head")[0] || document.documentElement,
-				script = document.createElement("script");
+				var head = document.getElementsByTagName("head")[0] || document.documentElement;
+				var script = document.createElement("script");
 				if (type) {
 					script.type = type;
 				}
@@ -788,7 +787,7 @@
 
 		// do transition
 		optionsTransition.response = response || domHtml;
-		optionsTransition.id = this.getCleanUrl(eleOrObj) || eleCreatePage.id || options.id || options.url || ("unique" + Date.now());
+		optionsTransition.id = options.id || this.getCleanUrl(eleOrObj) || eleCreatePage.id || options.url || ("unique" + Date.now());
 
 		// 'if' statement below added on v2.0.0
 		if (typeof options == "object") {
@@ -820,6 +819,12 @@
 		// remove page if have same id when optionsTransition.remove == true
 		if (optionsTransition.remove == true && optionsTransition.id) {
 			this.remove(optionsTransition.id);
+			// v2.8.0 dom remove and ajax remove share same id
+			if (options.id) {
+				slice.call(document.querySelectorAll('a[data-reload="'+ options.id +'"]')).forEach(function (ele) {
+					Mobilebone.remove(ele);
+				});
+			}
 		}
 		// 1. if new page, that insert create page as a last-child
 		// 2. if replace a page, that insert before replaced page
@@ -872,7 +877,7 @@
 	/**
 	 * For ajax request to get HTML or JSON.
 
-	 * @params  aOrFormOrObj        - Necessary
+	 * @params  eleOrObj        - Necessary
 	            1. dom-object:<a>|<form>.
 				2. object.
 	 * @returns undefined
@@ -883,8 +888,12 @@
 		    	});
 	 *
 	**/
-	Mobilebone.ajax = function(aOrFormOrObj) {
-		if (!aOrFormOrObj) return;
+	Mobilebone.ajax = function(eleOrObj) {
+		if (!eleOrObj) {
+			return;
+		}
+
+		var trigger = eleOrObj;
 
 		// default params
 		var defaults = {
@@ -893,9 +902,6 @@
 			dataType: "",
 			data: {},
 			timeout: 10000,
-			async: true,
-			username: "",
-			password: "",
 			success: function() {},
 			error: function() {},
 			complete: function() {}
@@ -906,14 +912,14 @@
 		// classname of mask
 		var classMask = this.classMask;
 
-		// if 'aOrFormOrObj' is a element, we should turn it to options-object
+		// if 'eleOrObj' is a element, we should turn it to options-object
 		var paramsFromTrigger = {}, attrMask;
-		if (aOrFormOrObj.nodeType == 1) {
-			paramsFromTrigger = _queryToObject(aOrFormOrObj.getAttribute("data-params") || "");
+		if (eleOrObj.nodeType == 1) {
+			paramsFromTrigger = _queryToObject(trigger.getAttribute("data-params") || "");
 			// get params
 			for (key in defaults) {
 				// data-* > data-params > defaults
-				params[key] = aOrFormOrObj.getAttribute("data-" + key) || paramsFromTrigger[key] || defaults[key];
+				params[key] = trigger.getAttribute("data-" + key) || paramsFromTrigger[key] || defaults[key];
 				if (typeof defaults[key] == "function" && typeof params[key] == "string") {
 					// eg. globalObject.functionName
 					params[key] = this.getFunction(params[key]);
@@ -924,9 +930,10 @@
 			}
 
 			// address of ajax url
-			params.url = this.getCleanUrl(aOrFormOrObj, params.url);
+			var cleanUrl = this.getCleanUrl(trigger, params.url);
+			params.url = cleanUrl;
 
-			var queryFromUrl = _queryToObject(params.url.split("?")[1]);
+			var queryFromUrl = _queryToObject(cleanUrl.split("?")[1]);
 
 			// v2.7.4 fix params may ingore problem
 			for (var key in queryFromUrl) {
@@ -937,20 +944,20 @@
 			// v2.7.4
 			params.query = paramsFromTrigger;
 			// store target
-			params.target = aOrFormOrObj;
+			params.target = trigger;
 			// v2.5.2
 			// is back? for issues #128
-			params.back = aOrFormOrObj.getAttribute("data-rel") == "back";
+			params.back = trigger.getAttribute("data-rel") == "back";
 
-			var tagName = aOrFormOrObj.tagName.toLowerCase();
+			var tagName = trigger.tagName.toLowerCase();
 			if (tagName == "form") {
-				params.type = aOrFormOrObj.method;
+				params.type = trigger.method;
 
-				formData = new FormData(aOrFormOrObj);
+				formData = new FormData(trigger);
 			} else if (tagName == "a") {
 				// v2.5.8 for issues #157
-				var idContainer = aOrFormOrObj.getAttribute("data-container"),
-					classPageInside = aOrFormOrObj.getAttribute("data-classpage"),
+				var idContainer = trigger.getAttribute("data-container"),
+					classPageInside = trigger.getAttribute("data-classpage"),
 					container = idContainer && document.getElementById(idContainer);
 				if (container && classPageInside && classPageInside != Mobilebone.classPage) {
 					// inner ajax no history change
@@ -958,32 +965,50 @@
 					// title do not change
 					params.title = false;
 				}
+
+				// v2.8.0 move to here
+				var attrReload = trigger.getAttribute("data-reload");
+				if (typeof attrReload == "string" && attrReload != "false") {
+					if (attrReload != "" && attrReload != "true") {
+						// v2.7.2 a new method to remove pafe
+						// think 'attrReload' as special ID
+						// remove all page using this ID
+						slice.call(document.querySelectorAll('a[data-reload="'+ attrReload +'"]')).forEach(function (ele) {
+							Mobilebone.remove(ele);
+						});
+						Mobilebone.remove(store[attrReload]);
+					} else {
+						// remove page
+						Mobilebone.remove(store[cleanUrl]);
+					}
+				}
 			}
 
 			// get mask element
-			attrMask = aOrFormOrObj.getAttribute("data-mask");
+			attrMask = eleOrObj.getAttribute("data-mask");
 			if (attrMask == "true" || attrMask == "") {
-				eleMask = aOrFormOrObj.querySelector("." + classMask);
+				eleMask = eleOrObj.querySelector("." + classMask);
 			}
 		}
-		// if 'aOrFormOrObj' is a object
-		else if (aOrFormOrObj.url) {
+		// if 'eleOrObj' is a object
+		else if (eleOrObj.url) {
+			params = eleOrObj;
 			// get params
 			for (key2 in defaults) {
-				params[key2] = aOrFormOrObj[key2] || defaults[key2];
+				params[key2] = eleOrObj[key2] || defaults[key2];
 			}
 			// get url
 			params.url = this.getCleanUrl(null, params.url, params.data);
 			// here params.title will become page title;
-			params.title = aOrFormOrObj.title;
+			params.title = eleOrObj.title;
 			// v2.5.2
 			// is back? for issues #128
 			// when history.back()
-			params.back = aOrFormOrObj.back;
+			params.back = eleOrObj.back;
 			// v2.6.1
-			params.container = aOrFormOrObj.container;
+			params.container = eleOrObj.container;
 			// v2.7.4
-			params.query = _queryToObject(aOrFormOrObj.url.split('?')[1]);
+			params.query = _queryToObject(eleOrObj.url.split('?')[1]);
 		} else {
 			return;
 		}
@@ -1002,7 +1027,7 @@
 			eleMask.className = classMask;
 			eleMask.innerHTML = '<i class="loading"></i>';
 			if (typeof attrMask == "string") {
-				aOrFormOrObj.appendChild(eleMask);
+				eleOrObj.appendChild(eleMask);
 			} else {
 				body.appendChild(eleMask);
 			}
@@ -1015,51 +1040,46 @@
 
 		// ajax request
 		var xhr = new XMLHttpRequest();
-		xhr.open(params.type || "GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now(), params.async, params.username, params.password);
+		xhr.open(params.type || "GET", params.url + (/\?/.test(params.url)? "&" : "?") + "r=" + Date.now());
 		xhr.timeout = params.timeout;
 
 		xhr.onload = function() {
 			// so far, many browser hasn't supported responseType = 'json', so, use JSON.parse instead
 			var response = null;
 
-			if (xhr.status == 200) {
-				if (params.dataType == "json" || params.dataType == "JSON") {
-					try {
-						response = JSON.parse(xhr.response);
-						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response, params), aOrFormOrObj, params);
-					} catch (e) {
-						params.message = "JSON parse error：" + e.message;
-						params.error.call(params, xhr, xhr.status);
-					}
-				} else if (params.dataType == "unknown") {
-					// ajax send by url
-					// no history hush
-					params.history = false;
-					// I don't remember why add 'params.remove = false' here,
-					// but it seems that this will cause issues #147
-					// no element remove
-					// del → v2.5.8 // params.remove = false;
-					try {
-						// as json
-						response = JSON.parse(xhr.response);
-						params.response = response;
-						Mobilebone.createPage(Mobilebone.jsonHandle(response, params), aOrFormOrObj, params);
-					} catch (e) {
-						// as html
-						response = xhr.response;
-						Mobilebone.createPage(response, aOrFormOrObj, params);
-					}
-				} else {
-					response = xhr.response;
-					// 'response' is string
-					Mobilebone.createPage(response, aOrFormOrObj, params);
+			if (params.dataType == "json" || params.dataType == "JSON") {
+				try {
+					response = JSON.parse(xhr.response);
+					params.response = response;
+					Mobilebone.createPage(Mobilebone.jsonHandle(response, params), eleOrObj, params);
+				} catch (e) {
+					params.message = "JSON parse error：" + e.message;
+					params.error.call(params, xhr, xhr.status);
 				}
-				params.success.call(params, response, xhr.status);
+			} else if (params.dataType == "unknown") {
+				// ajax send by url
+				// no history hush
+				params.history = false;
+				// I don't remember why add 'params.remove = false' here,
+				// but it seems that this will cause issues #147
+				// no element remove
+				// del → v2.5.8 // params.remove = false;
+				try {
+					// as json
+					response = JSON.parse(xhr.response);
+					params.response = response;
+					Mobilebone.createPage(Mobilebone.jsonHandle(response, params), eleOrObj, params);
+				} catch (e) {
+					// as html
+					response = xhr.response;
+					Mobilebone.createPage(response, eleOrObj, params);
+				}
 			} else {
-				params.message = "The status code exception!";
-				params.error.call(params, xhr, xhr.status);
+				response = xhr.response;
+				// 'response' is string
+				Mobilebone.createPage(response, eleOrObj, params);
 			}
+			params.success.call(params, response, xhr.status);
 
 			params.complete.call(params, xhr, xhr.status);
 
@@ -1078,6 +1098,7 @@
 			if (this.hideLoading) {
 				this.hideLoading();
 			}
+			params.complete.call(params, xhr, xhr.status);
 		}
 
 		xhr.ontimeout = function() {
@@ -1241,34 +1262,7 @@
 		}
 
 		// Initialization link-catch events.
-		var $ = root.$ || root.jQuery || root.Zepto;
-		if ($ && $.fn && $.fn.tap && ('ontouchstart' in window == true)) {
-			// for some unknown 'tap' plugin
-			$(document).tap(this.handleTapEvent);
-
-			// zepto tap event.preventDefault can't prevent default click-events
-			document.addEventListener("click", function(event) {
-				var target = event.target;
-				if (!target) return;
-				if (target.tagName.toLowerCase() != "a" && !(target = target.getParentElementByTag("a"))) {
-					return;
-				}
-				var ajax = target.getAttribute("data-ajax"), href = target.href;
-				// if not ajax request
-				if (target.getAttribute("data-rel") == "external"
-					|| ajax == "false"
-					|| (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0] && ajax != "true")
-					|| (Mobilebone.captureLink == false && ajax != "true")
-				) {
-					// issues #123 #137 #142
-					if (/^http/i.test(href)) location.href = href;
-					return;
-				}
-				event.preventDefault();
-			});
-		} else {
-			document.addEventListener("click", this.handleTapEvent);
-		}
+		document.addEventListener("click", this.handleTapEvent);
 
 		// Important:
 		// In ios7+, swipe the edge of page will navigate Safari
@@ -1313,15 +1307,19 @@
 			target.preventDefault = function() {};
 		}
 		// get target and href
-		target = target || event.target || event.touches[0];
-		var href = target.href;
-		if ((!href || /a/i.test(target.tagName) == false) && (target = target.getParentElementByTag("a"))) {
-			href = target.href;
+		target = (target || event.target) && (target || event.target).closest('a');
+
+		if (!target) {
+			return;
 		}
-		// the page that current touched or actived
+
+		// 此时的链接地址
+		var href = target.href;
+
+		// the page that current actived
 		var selfPage = document.querySelector(".in." + Mobilebone.classPage);
 
-		if (selfPage == null || !target) {
+		if (selfPage == null) {
 			return;
 		}
 
@@ -1331,8 +1329,7 @@
 		};
 
 		// prevent detect
-		var attrPrevent = target.getAttribute("data-preventdefault")
-			|| _queryToObject(target.getAttribute("data-params") || "").preventdefault;
+		var attrPrevent = target.getAttribute("data-preventdefault") || _queryToObject(target.getAttribute("data-params") || "").preventdefault;
 		// get 'preventDefault' function
 		var funPrevent = Mobilebone.getFunction(attrPrevent);
 		if (typeof funPrevent == "function" && funPrevent(target) == true) {
@@ -1348,8 +1345,9 @@
 			return false;
 		}
 
-		var idContainer = target.getAttribute("data-container"),
-			classPageInside = target.getAttribute("data-classpage");
+		var idContainer = target.getAttribute("data-container");
+		var classPageInside = target.getAttribute("data-classpage");
+
 		var container = idContainer && document.getElementById(idContainer);
 		if (container && classPageInside && classPageInside != Mobilebone.classPage) {
 			selfPage = container.querySelector(".in." + classPageInside) || container.querySelector(classPageInside);
@@ -1382,25 +1380,33 @@
 		// 1. undefined
 		// 2. javascript: (except data-rel="back")
 		// 3. cros, or not capture (except data-ajax="true")
-		if (!href) return;
+		if (!href) {
+			return;
+		}
+
+		// 直接获取属性设置的值
+		var attrHref = target.getAttribute("href");
 
 		href = href.replace("#&", "#");
 
-		if (target.getAttribute("href").replace(/#/g, "") === "") {
+		if (attrHref.replace(/#/g, "") === "") {
 			event.preventDefault();
 			return;
 		}
 		if (/^javascript/.test(href)) {
-			if (back == false) return;
+			if (back == false) {
+				return;
+			}
 		} else {
 			external = external || (href.replace("://", "").split("/")[0] !== location.href.replace("://", "").split("/")[0]);
-			if ((external == true || capture == false) && target.getAttribute("data-ajax") != "true") return;
+			if ((external == true || capture == false) && target.getAttribute("data-ajax") != "true") {
+				return;
+			}
 		}
-
-		var attrHref = target.getAttribute("href");
 
 		// judge that if it's a ajax request
 		if (/^#/.test(attrHref) == true) {
+			event.preventDefault();
 			// hash slide
 			var hashTargetPage = href.split("#")[1];
 			var idTargetPage = hashTargetPage.split("?")[0];
@@ -1425,12 +1431,12 @@
 					Mobilebone.transition(eleTargetPage, selfPage, back, options);
 				}
 			}
-			event.preventDefault();
 		} else if (/^javascript/.test(href)) {
 			// back
 			history.tempBack = true;
 			history.back();
 		} else if (target.getAttribute("data-ajax") != "false") {
+			event.preventDefault();
 			// get a clean ajax url as page id
 			var cleanUrl = Mobilebone.getCleanUrl(target);
 			// add on v2.7.4
@@ -1438,7 +1444,7 @@
 			// if has loaded and the value of 'data-reload' is not 'true'
 			var attrReload = target.getAttribute("data-reload");
 
-
+			// 之前已经请求过，内存中已经有，则直接使用
 			if ((attrReload == null || attrReload == "false") && store[cleanUrl]) {
 				if (back == false && rel == "auto") {
 					back = Mobilebone.isBack(store[cleanUrl], selfPage);
@@ -1451,51 +1457,34 @@
 					body.appendChild(store[cleanUrl]);
 				}
 				Mobilebone.transition(store[cleanUrl], selfPage, back, options);
-			} else {
-				// v2.7.0 move to here
-				if (typeof attrReload == "string" && attrReload != "false") {
-					if (attrReload != "" && attrReload != "true") {
-						// v2.7.2 a new method to remove pafe
-						// think 'attrReload' as special ID
-						// remove all page using this ID
-						slice.call(document.querySelectorAll('a[data-reload="'+ attrReload +'"]')).forEach(function (ele) {
-							Mobilebone.remove(ele);
-						});
-					} else {
-						// remove page
-						Mobilebone.remove(store[cleanUrl]);
-					}
-				}
-
+			} else {	
 				// as ajax
 				Mobilebone.ajax(target);
 			}
-			event.preventDefault();
+			
 		}
 	};
 
-
 	/**
-	 * prototype extend method: get parent element by tagName
-	**/
-	Element.prototype.getParentElementByTag = function(tag) {
-		if (!tag) return null;
-		var element = null, parent = this;
-		var popup = function() {
-			parent = parent.parentElement;
-			if (!parent) return null;
-			var tagParent = parent.tagName.toLowerCase();
-			if (tagParent === tag) {
-				element = parent;
-			} else if (tagParent == "body") {
-				element = null;
-			} else {
-				popup();
-			}
+	 * closest polyfill
+	 */
+	if (!Element.prototype.matches) {
+		Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+	}
+
+	if (!Element.prototype.closest) {
+		Element.prototype.closest = function (s) {
+			var el = this;
+
+			do {
+				if (el.matches(s)) return el;
+				el = el.parentElement || el.parentNode;
+			} while (el !== null && el.nodeType === 1);
+
+			return null;
 		};
-		popup();
-		return element;
-	};
+	}
+
 
 	/**
 	 * private method: convert query string to key-value object

@@ -14,6 +14,9 @@
 [type=radio], [type=checkbox] {
 	width: auto; height: auto;
 }
+p {
+    word-break: break-all;
+}
 </style>
 </head>
 
@@ -51,6 +54,10 @@
 </div>
 
 <script src="../../src/mobilebone.js"></script>
-<!--<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>-->
+<script>
+showParams = function (eleIn, eleOut, params) {
+    document.querySelector('#result').innerHTML = '参数是：' + JSON.stringify(params.query);
+};
+</script>
 </body>
 </html>
