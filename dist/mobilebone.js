@@ -5,21 +5,7 @@
  * bone of switch for mobile web app
 **/
 
-(function(root, factory) {
-	// Set up Mobilebone appropriately for the environment.
-	if (typeof define === "function" && (define.amd || define.cmd)) {
-		define("mobilebone", function(exports) {
-			return factory(root, exports);
-		});
-	} else if ( typeof module === "object" && typeof module.exports === "object" ) {
-		module.exports = factory(root, {});
-	} else {
-		// Finally, as a browser global.
-		root.Mobilebone = factory(root, {});
-	}
-})((typeof global !== "undefined") ? global
-: ((typeof window !== "undefined") ? window
-	: ((typeof self !== "undefined") ? self : this)), function(root, Mobilebone) {
+const Mobilebone = (function(root, Mobilebone) {
 	if (document.MBLOADED) {
 		root.console && console.warn("Don\'t repeat load Mobilebone!");
 		return {};
@@ -1603,4 +1589,7 @@
 	document.MBLOADED = true;
 
 	return Mobilebone;
-});
+})(self, {});
+
+export default Mobilebone;
+        

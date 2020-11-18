@@ -59,11 +59,23 @@ C端视频制作：https://activity.hongxiu.com/be-video/
 如何使用？
 ---------------
 
+包引入：
+
 ```js
 npm install mobilebone
 ```
+```html
+<!-- 支持import引入 -->
+<script>
+import Mobilebone from 'mobilebone'
+// 初始化
+Mobilebone.init();
+</script>
+<!-- 例如在Vue中 -->
+<style src="mobilebone/dist/mobilebone.css">
+```
 
-引入相关的CSS以及JS, 如下：
+也支持直接链接相关的CSS以及JS, 如下：
 ```html
 <link rel="stylesheet" href="./src/mobilebone.css">
 ```
@@ -84,7 +96,7 @@ Mobilebone会自动捕获页面上的a元素，如果其href值存在猫腻，�
 <a href="#targetPage">目标页面</a>
 ```
 
-当click/tap此元素时候，页面会自动无刷新切换到<code>id</code>为<code>targetPage</code>的页面。
+当click此元素时候，页面会自动无刷新切换到<code>id</code>为<code>targetPage</code>的页面。
 
 也可以使用ajax请求。例如：
 ```html

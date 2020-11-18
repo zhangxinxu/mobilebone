@@ -1,10 +1,13 @@
 {
   "name": "mobilebone",
-  "version": "2.7.8",
+  "version": "2.7.9",
   "description": "Bone main for mobile web APP with a sigle page mode by using HTML5 history API router.",
-  "main": "src/mobilebone.js",
+  "main": "dist/mobilebone.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "example": "examples",
+    "doc": "docs",
+    "lib": "dist"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
