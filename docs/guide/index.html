@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<meta name="description" content="Mobilebone.js API文档-中文版-首页" />
-<meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, API文档" />
+<meta name="description" content="Mobilebone.js 使用教程-中文版-首页" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, 使用教程" />
 <meta name="author" content="张鑫旭, zhangxinxu" />
 <link rel="icon" href="../assets/favicon.ico">
-<title>Mobilebone.js API文档-中文版-首页</title>
+<link rel="prefetch" href="_aside.html">
+<title>Mobilebone.js使用教程-中文版-首页</title>
 <link rel="stylesheet" href="../../src/mobilebone.css">
 <link rel="stylesheet" href="../../src/mobilebone.animate.css">
 <link rel="stylesheet" href="../assets/docs.css">
@@ -16,7 +17,7 @@
 
 <body>
 <header id="header"></header>
-<aside id="aside"></aside>
+<aside id="aside" href="_aside.html"></aside>
 <div id="indexPage" class="page out">
 	<div class="content">
     	<h2>mobilebone.js下载</h2>
@@ -29,15 +30,8 @@
 <script src="../assets/docs.js"></script>
 <script>
 Mobilebone.classAnimation = "slideup";
-Mobilebone.callback = function() {
-	var navA = document.querySelectorAll("aside a");
-	[].slice.call(navA).forEach(function(nav) {
-		nav.classList.remove("active");
-		if (nav.getAttribute("href") == location.hash.replace("#&", "")) {
-			nav.classList.add("active");
-		}
-	});
-};
+Mobilebone.callback = funSubNav;
+
 if (Mobilebone.support == false) {
 	document.getElementById("indexPage").className = "page";
 }

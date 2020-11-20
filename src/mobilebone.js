@@ -52,6 +52,12 @@
 	Mobilebone.VERSION = "2.8.0";
 
 	/**
+	 * Whether auto init Mobilebone
+	 * If this value is false, you shou excute Mobilebone.init() in the right place
+	 */
+	Mobilebone.autoInit = true;
+
+	/**
 	 * Whether catch attribute of href from element with tag 'a'
 	 * If the value set to false, jump links in a refresh form(not slide)
 	 * In most cases, you do not need to care about this parameter.
@@ -128,10 +134,9 @@
 	 * @type boolean
 	**/
 	Mobilebone.evalScript = false;
-
-	if (// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false'
-		(window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window)
-	) {
+	
+	// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false'
+	if (navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window) {
 		Mobilebone.pushStateEnabled = false;
 	}
 
@@ -1506,7 +1511,7 @@
 	 * auto init
 	**/
 	window.addEventListener("DOMContentLoaded", function() {
-		if (hasInited == false) {
+		if (hasInited == false && Mobilebone.autoInit == true) {
 			Mobilebone.init();
 		}
 	});
