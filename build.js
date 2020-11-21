@@ -21,28 +21,45 @@ async function createFolder (path) {
     return result;
 }
 
-// 文件创建
+// create ./dist folder
 async function buildFiles () {
     await createFolder('./dist');
 
-    // JS文件的处理
+    // make mobilebone.js can be used by ES6 module
     fsPromises.readFile('./src/mobilebone.js', 'utf-8').then((data) => {
-        // data就是文件字符内容，进行替换
+        // replace data
         let newData = data.replace(/\(function\(root, factory\)[\w\W]+\)\), /, `const Mobilebone = (`).replace(/;\s*$/, `(self, {});
 
 export default Mobilebone;
         `);
-        // 重新写入文件
-        fs.writeFile('./dist/mobilebone.js', newData, () => {
-            console.log('./dist/mobilebone.js生成成功');
+        // write mobilebone.esm.js
+        fs.writeFile('./dist/mobilebone.esm.js', newData, () => {
+            console.log('./dist/mobilebone.esm.js生成成功');
         });
     })
 
-    // css文件的处理
+    // copy mobilebone.js
+    fsPromises.copyFile('./src/mobilebone.js', './dist/mobilebone.js')
+        .then(() => console.log('./dist/mobilebone.js复制成功'))
+        .catch((err) => console.log('./src/mobilebone.js无法复制，原因是：' + err));
+
+    // copy mobilebone.css
     fsPromises.copyFile('./src/mobilebone.css', './dist/mobilebone.css')
-        .then(() => console.log('./dist/mobilebone.css生成成功'))
+        .then(() => console.log('./dist/mobilebone.css复制成功'))
         .catch((err) => console.log('./src/mobilebone.css无法复制，原因是：' + err));
 };
 
 buildFiles();
+
+// 文件压缩，需要先安装uglifyjs： npm install uglify-js -g
+const { exec } = require('child_process');
+exec('uglifyjs ./src/mobilebone.js -m -o ./dist/mobilebone.min.js', (err, stdout, stderr) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  console.log('success min js file to ./dist/mobilebone.min.js');
+});
+
 
