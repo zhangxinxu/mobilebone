@@ -1,8 +1,8 @@
-/*
- * mobilebone.js
- * by zhangxinxu(.com) 2014-09-26
- * https://github.com/zhangxinxu/mobilebone
- * bone of switch for mobile web app
+/**! 
+ * @author @copyright zhangxinxu(.com) 
+ * @since 2014-09-26
+ * @description mobilebone.js(v2.8.0) - bone of switch for mobile web app - https://github.com/zhangxinxu/mobilebone
+ * @license MIT
 **/
 
 (function(root, factory) {

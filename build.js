@@ -34,28 +34,28 @@ export default Mobilebone;
         `);
         // write mobilebone.esm.js
         fs.writeFile('./dist/mobilebone.esm.js', newData, () => {
-            console.log('./dist/mobilebone.esm.js生成成功');
+            console.log('./dist/mobilebone.esm.js build success!');
         });
     })
 
     // copy mobilebone.js
     fsPromises.copyFile('./src/mobilebone.js', './dist/mobilebone.js')
-        .then(() => console.log('./dist/mobilebone.js复制成功'))
-        .catch((err) => console.log('./src/mobilebone.js无法复制，原因是：' + err));
+        .then(() => console.log('./dist/mobilebone.js copy success!'))
+        .catch((err) => console.log('./src/mobilebone.js copy fail: ' + err));
 
     // copy mobilebone.css
     fsPromises.copyFile('./src/mobilebone.css', './dist/mobilebone.css')
-        .then(() => console.log('./dist/mobilebone.css复制成功'))
-        .catch((err) => console.log('./src/mobilebone.css无法复制，原因是：' + err));
+        .then(() => console.log('./dist/mobilebone.css copy success!'))
+        .catch((err) => console.log('./src/mobilebone.css copy fail: ' + err));
 };
 
 buildFiles();
 
-// 文件压缩，需要先安装uglifyjs： npm install uglify-js -g
+// min file，you should install uglifyjs first： npm install uglify-js -g
 const { exec } = require('child_process');
-exec('uglifyjs ./src/mobilebone.js -m -o ./dist/mobilebone.min.js', (err, stdout, stderr) => {
+exec('uglifyjs ./src/mobilebone.js --comments -m -o ./dist/mobilebone.min.js', (err, stdout, stderr) => {
   if (err) {
-    console.error(err);
+    console.log(err);
     return;
   }
 
