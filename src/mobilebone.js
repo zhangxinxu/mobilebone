@@ -644,7 +644,7 @@
 		}
 
 		// get url of root
-		cleanUrl = href.split("#")[0].replace(/&+$/, "");
+		cleanUrl = href.split("#")[0].replace(/&+$/, "").replace(/^\.\/+/, "");
 
 		if (cleanUrl.slice(-1) == "?") {
 			cleanUrl = cleanUrl.split("?")[0];
@@ -1030,7 +1030,7 @@
 		if (eleMask == null) {
 			eleMask = document.createElement("div");
 			eleMask.className = classMask;
-			eleMask.innerHTML = '<i class="loading"></i>';
+			eleMask.innerHTML = '<s class="loading"></s>';
 			if (typeof attrMask == "string") {
 				eleOrObj.appendChild(eleMask);
 			} else {

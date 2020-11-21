@@ -44,7 +44,7 @@ var funSubNav = function (elePageIn) {
 	if (eleNav && !eleNav.isSubNav) {
 		[].slice.call(eleH3s).forEach(function (eleH, index) {
 			var id = urlKey.replace(/\W/g, '') + index;
-			htmlList += '<label for="'+ id +'" class="nav-a" href>'+ eleH.textContent +'</label>';
+			htmlList += '<label for="'+ id +'" class="nav-a" href>'+ eleH.textContent.replace('？', '') +'</label>';
 			eleH.insertAdjacentHTML('beforeend', '<input type="radio" name="'+ id.replace(/\d/g, '') +'" id="'+ id +'">');
 		});
 
@@ -52,7 +52,11 @@ var funSubNav = function (elePageIn) {
         eleNav.insertAdjacentHTML('afterend', htmlSubNav.replace('${list}', htmlList));
         
         eleNav.isSubNav = true;
-	}
+    }
+    
+    [].slice.call(elePageIn.querySelectorAll('.version:empty')).forEach(function (ele) {
+        ele.innerHTML = Mobilebone.VERSION;
+    });
 };
 
 document.addEventListener('click', function (event) {

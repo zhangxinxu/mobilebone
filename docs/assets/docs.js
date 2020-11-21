@@ -34,4 +34,26 @@
 	}
 })();
 
+Object.defineProperty(HTMLInputElement.prototype, 'checked', {
+	set: function (value) {
+		if (!this.id) {
+			return;
+		}
+		if (value) {
+			this.setAttribute('checked', '');
+		} else {
+			this.removeAttribute('checked');
+		}
+		let eleLabels = document.querySelectorAll('label[for="'+ this.id +'"]');
+		[].slice.call(eleLabels).forEach(function (eleLabel) {
+			if (value) {
+				eleLabel.classList.add('active');
+			} else {
+				eleLabel.classList.remove('active');
+			}
+		}.bind(this));
+	}
+})
+
+
 

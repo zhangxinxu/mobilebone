@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<meta name="description" content="Mobilebone.js 使用教程-中文版-首页" />
+<meta name="description" content="Mobilebone.js 使用教程 - 中文版 - 首页" />
 <meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, 使用教程" />
+<meta name="referrer" content="never">
 <meta name="author" content="张鑫旭, zhangxinxu" />
 <link rel="icon" href="../assets/favicon.ico">
 <link rel="prefetch" href="_aside.html">
-<title>Mobilebone.js使用教程-中文版-首页</title>
+<title>Mobilebone.js 使用教程 - 中文版 - 首页 </title>
 <link rel="stylesheet" href="../../src/mobilebone.css">
 <link rel="stylesheet" href="../../src/mobilebone.animate.css">
 <link rel="stylesheet" href="../assets/docs.css">
@@ -20,9 +21,27 @@
 <aside id="aside" href="_aside.html"></aside>
 <div id="indexPage" class="page out">
 	<div class="content">
-    	<h2>mobilebone.js下载</h2>
-		<p><a href="../src/mobilebone.js" class="download" data-ajax="false">Development Version<span class="version"></span></a></p>
-        <p><a href="https://raw.github.com/zhangxinxu/mobilebone/master/src/mobilebone.js" class="download" data-ajax="false">Edge Version(master)</a></p>
+		<h2> 开始 </h2>
+		<h3>Mobilebone.js 是什么？</h3>
+		<p>Mobilebone 是一个可以让传统 Web 网页有类似于 Native APP 交互体验的 UI 框架。</p>
+		<p> 例如下面这个视频（点击播放）所示的单页应用，虽然是个 H5 页面，但是体验效果如同原生 APP。</p>
+		<p><video src='https://image.zhangxinxu.com/video/blog/202011/mobilebone-example.mp4' type="video/mp4" width="120" height="210" preload="auto" autobuffer loop x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portraint" webkit-playsinline="true" playsinline="true" onclick="this.play();this.width=372;this.height=664;"></video></p>
+		<p> 是的，Mobilebone.js 虽然体积很小（min &lt; 18K, Gzip ≈ 6K），但是本质上还是一个框架，正如其名称所示，移动端开发的骨架。</p>
+		<p> 通过对比流行的 Vue.js 可以让大家更好地了解 Mobilebone.js。</p>
+		<p>Vue 框架的核心是负责视图层的构建，支持多页应用，也支持单页应用，其中单页应用的路由功能需要借助第三方的插件，例如 Vue Router 插件。此时，Vue 框架是核心，Vue Router 属于插件，Vue Router 的使用需要遵循 Vue 框架的规则。</p>
+
+		<p>Mobilebone 框架的核心则是路由与转场，可以让多页应用无缝转变为单页应用。Mobilebone 不参与视图层的构建，如果希望当前应用拥有数据驱动的视图渲染能力，需要引用其他插件，例如 Vue.js。此时，Mobilebone 框架是核心，Vue.js 属于插件，Vue.js 的使用需要遵循 Mobilebone 框架的规则。</p>
+
+		<h3> 设计原则 </h3>
+		<p>Mobilebone 的作者是一个道家思想主义者，讲求追本溯源、无为而治，无论是生活、做人或者是程序开发，都遵循这样的哲学思想。比方说早些年的 <a href="https://github.com/zhangxinxu/ieBetter.js" target="_blank" class="link" rel="noopener">ieBetter.js</a>，或者是不少人熟知的 <a href="https://github.com/yued-fe/lulu" target="_blank" class="link" rel="noopener">LuLu UI</a> 等，有则锦上添花，无则江山依旧。</p>
+		<p> 这里的 Mobilebone.js 也是如此，保留传统 web 开发所有特性，不侵入业务代码，也就是如果没有 Mobilebone.js，我们的项目依然是可以运作的，只是形式上是传统的页面跳转。</p>
+		<p> 比方说您现在看到的这个文档页面左侧的任意的导航链接，您使用鼠标右键→新窗口打开，会发现是一个体验和功能完全正常的文档页面（对 SEO 非常友好），但是如果您鼠标单击，会发现整个文档页是个单页（对用户非常友好），这就是 Mobilebone，可以让正常的传统网页在不需要修改任何代码的情况下，聚合成一个单页应用。</p>
+		<p> 请注意，上面这句话虽然是实话，但是夸大了 Mobilebone 的作用。事实是这样的，Mobilebone 有能力让多页面再不动一兵一卒的情况下变成单页，但是，并不是说随便写几个页面都可以合成一个单页应用，需要开发者理解 Mobilebone 作用原理的前提下，调整对应页面的某些细节，才能让当前页面既能直接浏览，也能作为一个模块在显示在单页中。</p>
+		<p> 以及，虽然 Mobilebone 有能力让传统 Web 网页变成单页应用，但是，在 Mobilebone 的 <a href="./style/" class="link"> 推荐指南 </a> 中，如果您的项目并不是那种偏展示型，对 SEO 要求非常高的项目，<strong> 更推荐采用 JSON 数据 + 视图渲染 </strong> 的这种实现方式，开发策略上类似于 Vue/React 等框架的单页应用，因为用户体验上会更好。</p>
+		<h3> 起步 </h3>
+		<p>Mobilebone.js 的上手成本极低，您只需要了解 HTML 和 CSS 的基础知识就可以创建 Mobilebone 单页应用。</p>
+		<p><a href="./install.html" class="button"> 安装 </a></p>
+		<p></p>
     </div>
 </div>
 <script src="nav.js"></script>
@@ -36,7 +55,7 @@ if (Mobilebone.support == false) {
 	document.getElementById("indexPage").className = "page";
 }
 </script>
-<!-- ga统计 -->
+<!-- ga 统计 -->
 <script>
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-11205167-1']);
