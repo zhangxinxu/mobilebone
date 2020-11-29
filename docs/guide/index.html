@@ -37,11 +37,36 @@
 		<p> 这里的 Mobilebone.js 也是如此，保留传统 web 开发所有特性，不侵入业务代码，也就是如果没有 Mobilebone.js，我们的项目依然是可以运作的，只是形式上是传统的页面跳转。</p>
 		<p> 比方说您现在看到的这个文档页面左侧的任意的导航链接，您使用鼠标右键→新窗口打开，会发现是一个体验和功能完全正常的文档页面（对 SEO 非常友好），但是如果您鼠标单击，会发现整个文档页是个单页（对用户非常友好），这就是 Mobilebone，可以让正常的传统网页在不需要修改任何代码的情况下，聚合成一个单页应用。</p>
 		<p> 请注意，上面这句话虽然是实话，但是夸大了 Mobilebone 的作用。事实是这样的，Mobilebone 有能力让多页面再不动一兵一卒的情况下变成单页，但是，并不是说随便写几个页面都可以合成一个单页应用，需要开发者理解 Mobilebone 作用原理的前提下，调整对应页面的某些细节，才能让当前页面既能直接浏览，也能作为一个模块在显示在单页中。</p>
-		<p> 以及，虽然 Mobilebone 有能力让传统 Web 网页变成单页应用，但是，在 Mobilebone 的 <a href="./style/" class="link"> 推荐指南 </a> 中，如果您的项目并不是那种偏展示型，对 SEO 要求非常高的项目，<strong> 更推荐采用 JSON 数据 + 视图渲染 </strong> 的这种实现方式，开发策略上类似于 Vue/React 等框架的单页应用，因为用户体验上会更好。</p>
+		<p> 以及，虽然 Mobilebone 有能力让传统 Web 网页变成单页应用，但是，在 Mobilebone 的 <a href="./style/" class="link"> 推荐指南 </a> 中，如果您的项目并不是那种偏展示型，对 SEO 要求非常高的项目，<strong> 更推荐采用 JSON 数据 + 视图渲染 </strong> 的这种实现方式，开发策略上类似于 Vue/React 等框架的单页应用，因为用户体验会更好。</p>
 		<h3> 起步 </h3>
 		<p>Mobilebone.js 的上手成本极低，您只需要了解 HTML 和 CSS 的基础知识就可以创建 Mobilebone 单页应用。</p>
 		<p><a href="./install.html" class="button"> 安装 </a></p>
-		<p></p>
+		<br>
+		<p>先从最基本的静态效果说起。</p>
+		<p>如果是静态页面，只需要把每一页的内容放在一个一个的“page”中，在 Mobilebone 中，这个“page”是包含类名 <code>'page'</code> 的 <code>&lt;div&gt;</code >元素，例如（点击“运行按钮”可以查看效果）：</p>
+		<pre is-runable>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta charset="utf-8"&gt;
+	&lt;meta name="viewport" content="width=device-width"&gt;
+	&lt;link rel="stylesheet" href="./dist/mobilebone.css"&gt;
+	&lt;title&gt;示例&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="page1" class="page out"&gt;
+	&lt;p&gt;　页面1，&lt;a href="#page2"&gt;下一页&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="page2" class="page out"&gt;
+	&lt;p&gt;　页面2，&lt;a href="#page1"&gt;上一页&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;script src="./dist/mobilebone.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+		<p>转场效果的实现很简单，只需要把链接元素的 <code>href</code> 属性值指向对应的 <code>'page'</code> 元素的 <code>id</code> 属性值即可。</p>
+		<p>例如：</p>
+		<pre>&lt;a href="#page2"&gt;下一页&lt;/a&gt;</pre>
+		<p>此时，点击“下一页”，页面就会平滑过渡到 <code>id</code> 值为 <code>'page2'</code> 的页面上。</p>
     </div>
 </div>
 <script src="nav.js"></script>

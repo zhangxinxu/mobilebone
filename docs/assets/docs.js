@@ -5,8 +5,8 @@
 	if (Mobilebone.support == false) {
 		document.querySelector('.page.out').className = 'page';
 	}
-	var ele_version = document.getElementsByClassName('version');
-	[].slice.call(ele_version).forEach(function(version, index) {
+	var eleVersions = document.getElementsByClassName('version');
+	[].slice.call(eleVersions).forEach(function(version) {
 		version.innerHTML = '(v' + Mobilebone.VERSION + ')';
 	});
 	
@@ -34,26 +34,11 @@
 	}
 })();
 
-Object.defineProperty(HTMLInputElement.prototype, 'checked', {
-	set: function (value) {
-		if (!this.id) {
-			return;
-		}
-		if (value) {
-			this.setAttribute('checked', '');
-		} else {
-			this.removeAttribute('checked');
-		}
-		let eleLabels = document.querySelectorAll('label[for="'+ this.id +'"]');
-		[].slice.call(eleLabels).forEach(function (eleLabel) {
-			if (value) {
-				eleLabel.classList.add('active');
-			} else {
-				eleLabel.classList.remove('active');
-			}
-		}.bind(this));
-	}
-})
+// 导航与菜单栏的高亮处理
+let eleScriptSmartFor = document.createElement('script');
+eleScriptSmartFor.src = 'https://www.zhangxinxu.com/study/202011/smart-for.js';
+eleScriptSmartFor.onload = function () {};
+document.head.appendChild(eleScriptSmartFor);
 
 
 
