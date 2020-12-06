@@ -51,29 +51,36 @@ if (!window.IntersectionObserver) {
     IntersectionObserver.prototype.observe = function () {};
 }
 
+var lastScrollTop = document.scrollingElement.scrollTop;
+
 var hIntersectionObserver = new IntersectionObserver(function (entries) {
     var radio = null;
 
-    var eleScrollX = document.querySelector('.page.in .content');
-    if (eleScrollX && eleScrollX.scrollTop == 0) {
-        radio = eleScrollX.querySelector('h3 [type="radio"]');
-        if (radio) {
-            radio.checked = true;
-        }
-        return;
-    }
-
-    entries.forEach(function (entry) {
+    entries.reverse().forEach(function (entry) {
         if (entry.isIntersecting) {
             radio = entry.target.querySelector('[type="radio"]');
             // 导航从进来到不进来 
             if (radio) {
                 radio.checked = true;
             }
+        } else {
+            var eleAllRadios = [].slice.call(document.querySelectorAll('.in h3 [type="radio"]'));
+            var index = eleAllRadios.findIndex(function (ele) {
+                return ele == entry.target;
+            });
+            if (index == -1) {
+                return;
+            }
+            // 对应的导航元素高亮
+            if (document.scrollingElement.scrollTop > lastScrollTop) {
+                eleAllRadios[index + 1] && (eleAllRadios[index + 1].checked = true);
+            } else if (eleAllRadios[index - 1]) {
+                eleAllRadios[index - 1].checked = true;
+            }
         }
     });
-}, {
-    rootMargin: '-33% 0% -33% 0%'
+
+    lastScrollTop = document.scrollingElement.scrollTop;
 });
 
 /**
