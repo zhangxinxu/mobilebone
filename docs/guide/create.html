@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-页面的创建" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 传参" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-页面的创建</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside" href="_aside.html"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>页面的创建</h2>
+        <p>这里带大家了解下 Mobilebone 中各个页面转场过程中参数是如何传递的。</p>
+
+        <h3>请求传参</h3>
+        
+        <h3>内置传参</h3>
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/create.html" class="link" target="_blank" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

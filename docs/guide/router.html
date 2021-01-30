@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-路由" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, 使用教程" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-路由</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside" href="_aside.html"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>路由</h2>
+        <p>Mobilebone 是基于 HTML5 history API 实现的路由控制。</p>
+
+        <h3>原理</h3>
+
+        <p>Mobilebone 的路由遵循和浏览器原生的 URL 历史记录一样的原理，只是传统的 URL 历史记录变化往往伴随着页面的刷新或跳转，而 Mobilebone 框架下的 URL 历史变化页面是无刷新的。</p>
+        <p>例如，页面中有一个链接元素：</p>
+        <pre>&lt;a href="router.html" class="nav-a" data-mask&gt;路由&lt;/a&gt;</pre>
+        <p>在原生状态下，点击上面的链接，页面会跳转到 <code>router.html</code> 这个页面，同时 URL 会增加 <code>router.html</code> 的历史记录；而在 Mobilebone 框架下，点击上面的链接，页面也会跳转到 <code>router.html</code> 这个页面，但是跳转过程是无刷新的，同时 URL 也会增加一条标示 <code>router.html</code> 的历史记录。</p>
+        
+        <p>其底层实现原理如下：</p>
+        <ol>
+            <li>阻止 <code>&lt;a&gt;</code> 元素的默认行为（不会跳转）；</li>
+            <li>请求 <code>&lt;a&gt;</code> 元素 <code>href</code> 属性指向的页面的内容并显示；</li>
+            <li>增加一条历史记录，通过执行下面的代码：<pre>history.pushState(null, document.title, '#&router.html');</pre></li>
+        </ol>    
+
+        <p>由于采用浏览器一致的 URL 历史记录，因此，用户点击浏览器原生的后退按钮，或者执行 <code>history.go(-1)</code>，会自动回到上一个页面的 URL 地址，此时 Mobilebone 可以检测到这种变化（会触发 <code>popstate</code> 事件），然后显示对应的页面内容。</p>
+
+        <p>Mobilebone 中的路由跳转基本上就围绕上面两种场景展开，新场景新增历史记录，回到过去则回到之前的历史记录。</p>
+        
+        <h3>语法</h3>
+        <p>Mobilebone 采用 hash 识别路由信息。其语法格式为：</p>
+        <pre>#&amp;[&lt;custom-ident&gt; | &lt;url&gt;]</pre>
+
+        <p>例如，当前页面的 URL 地址为：</p>
+        <pre>/docs/guide/#&router.html</pre>
+
+        <p>其中，<code>#&router.html</code> 就是 Mobilebone 路由信息，表示当前页面显示的是 <code>router.html</code> 页面的内容，当用户刷新页面的时候，Mobilebone 会基于 <code>#&router.html</code> 重新请求 <code>router.html</code> 页面的内容。</p>
+
+        <p>路由信息还可以是 <code>div.page</code> 元素上的 <code>id</code> 属性值，例如：</p>
+        <pre>&lt;a href="#nextPage"&gt;下一个页面&lt;/a&gt;</pre>
+        <p>如果页面中有 <code>id</code> 为 <code>nextPage</code> 的元素，则点击上面链接，URL 地址的 hash 信息就会变成 <code>#&nextPage</code>。</p>
+
+        <p><strong>其他：</strong><code>#&amp;</code>后面的 <code>&amp;</code> 符号的作用是防止 URL 锚定，因为类似包含 <code>#nextPage</code> 的 URL 地址会触发 <code>id</code> 为<code>nextPage</code> 的元素的滚动定位（如果 <code>display</code> 不是 <code>none</code> ），会影响过场效果的执行。</p>
+
+        <h3>设置</h3>
+
+        <ul>
+            <li><p>在 Mobilebone 中，页面之间的路由跳转不是通过 JavaScript 进行配置的，而是在 HTML 中基于原生属性进行设置的，主要通过 <code>&lt;a&gt;</code> 元素的 <code>href</code> 属性设置。例如：</p>
+                <pre>&lt;a href="#nextPage"&gt;下一个页面&lt;/a&gt;
+&lt;a href="./router.html"&gt;路由页面&lt;/a&gt;</pre>
+                
+                <p>如果希望点击上面的链接 URL 地址不会发生变化，也就是不发生任何 URL 记录，可以设置 <code>data-history="false"</code>，例如：</p>
+                <pre>&lt;a href="./router.html" <span class="mark">data-history="false"</span>&gt;路由页面&lt;/a&gt;</pre></li>
+            <li><p><code>&lt;form&gt;</code> 元素的 <code>action</code> 属性值也可以作为路由地址，不过目前业界的前端开发都不太感冒基于 <code>&lt;form&gt;</code> 元素数据交互，因此，Mobilebone 的这个能力很少被用到。</p></li>
+            <li><p>Mobilebone 底层的 <code>Mobilebone.transition(pageInto[, pageOut][[, back], options])</code> 方法也可以用来进行路由设置，<code>options</code> 支持一个名为 <code>id</code> 的可选参数，当 <code>pageInto</code> 元素没有 <code>id</code> 的时候，会使用 <code>options.id</code> 作为路由地址。</p></li>
+        </ul>
+
+        <p>以上就是 Mobilebone 框架中所有的路由设置的方法。</p>
+        
+        <h3>方向</h3>
+
+        <p>Mobilebone 中的过场是有方向性的，默认是左右过场，右进左退。</p>
+        <p>当从 A 页面过渡到 B 页面的时候，B页面是从右侧进入，还是从左侧回退，Mobilebone 有一套自己的计算规则。</p>
+
+        <ol>
+            <li>各个过场DOM元素在文档流中的前后位置，B 页面在 A 页面的前面，则过场方法是反方向；</li>
+            <li>来源页面是否和当前目标页面一致，如果一致，Mobilebone 会执行 <code>history.back()</code> 进行返回；</li>
+            <li>临时记录中是否有目标页面元素，如果存在，则过场方法是反方向；</li>
+        </ol>
+
+        <p>以上这套规则能够保证大多数场景下，页面间的过场方向是自然的，是符合预期的，用户是无需关心细节的。</p>
+        <p>但是实际应用场景千变万化，以上这套规则并不是万能的，例如，Mobilebone 自己内部的历史记录是临时的，页面刷新之后（此操作通常不会发生，但无法避免），记录就会丢弃，此时方向的判断可能就和用户的预期发生冲突。</p>
+        <p>所以，如果点击某个链接或者按钮一定是反方向的，则建议使用 <code>data-rel="back"</code> 进行明确的方向设置。例如：</p>
+        <pre>&lt;a href="#pageBack" <span class="mark">data-rel="back"</span>&gt;返回到pageBack页面&lt;/a&gt;</pre>
+        <p>或者是纯粹的返回上一条历史记录：</p>
+        <pre>&lt;a href="javascript:" <span class="mark">data-rel="back"</span>&gt;返回到上一页&lt;/a&gt;</pre>
+        
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/router.html" class="link" target="_blank" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

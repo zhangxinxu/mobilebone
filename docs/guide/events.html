@@ -50,7 +50,7 @@
     &lt;p&gt;页面内容&lt;/p&gt;
 &lt;/div&gt;</pre>
         <p>表示该页面进入的时候会执行函数名为<code>someFuncName</code>的方法。在默认状态下，Mobilebone 会在 <code>window</code> 对象中寻找 <code>someFuncName</code> 函数并执行。</p>
-        <p>但显然，函数挂载到 <code>window</code> 对象中并不适合复杂的项目，Mobilebone 是支持指定局部函数挂载的对象的，通过 <a href="../api/#&Mobilebone.rootTransition.html" class="link" target="_blank" data-ajax="false">Mobilebone.rootTransition</a> 属性进行设置。</p>
+        <p>但显然，函数挂载到 <code>window</code> 对象中并不适合复杂的项目，Mobilebone 是支持指定事件函数挂载的对象的，通过 <a href="../api/#&Mobilebone.rootTransition.html" class="link" target="_blank" data-ajax="false">Mobilebone.rootTransition</a> 属性进行设置。</p>
 
         <p>例如有个 Vue 实例对象 <code>myVue</code>：</p>
         <pre>var myVue = new Vue({
@@ -66,8 +66,44 @@
         <p>开发者就可以知道当前移入移出的页面是哪个，以及页面间传递的参数是什么（通过 <code>options.query</code> 获取）。</p>
         <p>更多信息可以参见 API 文档中的：<a href="../api/#&data-callbackKeys.html" class="link" target="_blank" data-ajax="false">Mobilebone.rootTransition</a></p>
 
-        <h3>页面事件</h3>
-        <p></p>
+        <h3>内置的事件</h3>
+        <p>Mobilebone 对页面中所有的 <code>&lt;a&gt;</code> 元素默认的 <code>'click'</code>事件行为 和 <code>&lt;form&gt;</code> 元素的默认的 <code>'submit'</code> 事件行为进行了劫持。</p>
+        <p>例如：</p>
+        <ul>
+            <li>点击 <code>&lt;a href="#targetPage"&gt;</code> 不再是锚点跳转，而是显示页面中 <code>id</code> 属性值是 <code>'targetPage'</code> 的页面元素。</li>
+            <li>点击 <code>&lt;a href="target.html"&gt;</code> 不再是跳转到 <code>target.html</code> 页面，而是自动拉取 <code>target.html</code> 页面内容并作为一个内嵌的页面显示。</li>
+            <li>提交 <code>&lt;form action="/someUrl"&gt;</code> 不再是传统的带刷新的表单提交，而是会把当前表单请求返回的内容作为一个内嵌的页面显示。</li>
+        </ul>
+
+        <p>如果希望 <code>&lt;a&gt;</code> 元素和 <code>&lt;form&gt;</code> 元素保留默认的行为，可以在这些元素上设置 <code>data-ajax="false"</code>，例如：</p>
+        <pre>&lt;a href="target.html" data-ajax="false"&gt;传统的页面跳转&lt;/a&gt;</pre>
+
+        <p>如果希望<code>&lt;a&gt;</code> 元素或者 <code>&lt;form&gt;</code> 元素在执行无刷新过场之前进行其他的逻辑判断处理，则可以使用 <code>data-preventdefault</code> 进行处理，代码示意：</p>
+        <pre>&lt;a href="login.html" data-preventdefault="isDialogLogin"&gt;登录&lt;/a&gt;</pre>
+        <pre>let isDialogLogin = function () {
+    <span class="comment">// 大屏下使用弹框执行登录</span>
+    if (screen.width > 800) {
+        <span class="comment">// 登录弹框显示</span>
+        loginDialog.show();
+        <span class="comment">// 返回 true 表示阻止 Mobilebone 的事件处理行为</span>
+        return true;   
+    }
+};</pre>
+
+        <p>相关API详见这里：<a href="../api/#&data-ajax.html" class="link" target="_blank" data-ajax="false">data-ajax</a>、<a href="../api/#&data-preventDefault.html" class="link" target="_blank" data-ajax="false">data-preventdefault</a>。</p>
+
+        <h3>页面代码的执行</h3>
+        <p>在 Mobilebone 项目中，入口页面的事件就和普通的网页一样执行的，无论是内联 JavaScript 代码，还是 <code>src</code> 地址外链的 JavaScript 代码。</p>
+        <p>但是，如果是通过 Ajax 请求拉取的请求页，则这些页面中的 JavaScript 代码默认是不执行的，原因在于避免冗余执行。</p>
+        <p>例如，列表页有20个详情页链接，如果每次请求一个详情页，里面的 JavaScript 代码都全部执行一遍，则会产生大量的重复的 JavaScript 代码执行，这是没有必要的。</p>
+        <p>在Mobilebone 项目中，更推荐所有页面共用一个主 JavaScript 文件代码，也就是在这个 JavaScript 文件中处理所有的逻辑关系。如果项目比较复杂，可以分页面或模块开发，然后发布的时候合并成一个独立的 JavaScript 文件作为主文件即可。</p>
+
+        <p>当然，Mobilebone 提供了执行请求的页面中的 JavaScript 代码的能力，设置 <a href="../api/#&Mobilebone.evalScript.html" class="link" target="_blank" data-ajax="false">Mobilebone.evalScript</a> 的值为 <code>true</code>就可以了。</p>
+        <pre>Mobilebone.evalScript = true;</pre>
+        <p>但是需要注意的是，设置 <code>Mobilebone.evalScript</code> 为 <code>true</code> 只会执行内联的 <code>&lt;script&gt;</code> 脚本，例如下面的代码会执行：</p>
+        <pre>&lt;script&gt;console.log('script excuted!');&lt;/script&gt;</pre>
+        <p>但是下面的 <code>1.js</code> 就不会执行：</p>
+        <pre>&lt;script src="1.js"&gt;&lt;/script&gt;</pre>
 
         <hr>
         <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/install.html" class="link" target="_blank" rel="nooppener">GitHub 上编辑此页</a>！</p>
