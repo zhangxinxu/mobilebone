@@ -9,16 +9,24 @@
 <meta name="referrer" content="never">
 <meta name="author" content="张鑫旭, zhangxinxu" />
 <link rel="icon" href="../assets/favicon.ico">
-<link rel="prefetch" href="_aside.html">
 <title>Mobilebone.js 使用教程 - 中文版 - 首页 </title>
-<link rel="stylesheet" href="../../src/mobilebone.css">
-<link rel="stylesheet" href="../../src/mobilebone.animate.css">
+<link rel="stylesheet" id="link1">
+<link rel="stylesheet" id="link2">
 <link rel="stylesheet" href="../assets/docs.css">
+<script id="script1">
+var linkRoot = '../../';
+if (location.host != 'localhost') {
+	linkRoot = 'https://www.zhangxinxu.com/Github/mobilebone/';
+}
+link1.href = linkRoot + 'src/mobilebone.css';
+link2.href = linkRoot + 'src/mobilebone.animate.css';
+document.head.removeChild(script1);
+</script>
 </head>
 
 <body>
 <header id="header"></header>
-<aside id="aside" href="_aside.html"></aside>
+<aside id="aside"></aside>
 <div id="indexPage" class="page out">
 	<div class="content">
 		<h2> 开始 </h2>
@@ -96,16 +104,24 @@
     </div>
 </div>
 <script src="nav.js"></script>
-<script src="../../src/mobilebone.js"></script>
-<script src="../assets/docs.js"></script>
+<script id="script2"></script>
+<script id="script3"></script>
 <script>
-Mobilebone.classAnimation = "slideup";
-Mobilebone.callback = funSubNav;
+script2.src = linkRoot + 'src/mobilebone.js';
+script2.onload = function () {
+	Mobilebone.classAnimation = "slideup";;
+	Mobilebone.callback = funSubNav;
 
-if (Mobilebone.support == false) {
-	document.getElementById("indexPage").className = "page";
-}
+	if (Mobilebone.support == false) {
+		document.getElementById("indexPage").className = "page";
+	}
+
+	Mobilebone.init();
+
+	script3.src = '../assets/docs.js';
+};
 </script>
+
 <!-- ga 统计 -->
 <script>
 var _gaq = _gaq || [];

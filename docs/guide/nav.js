@@ -4,37 +4,53 @@ if (!NodeList.prototype.forEach) {
 
 var eleAside = document.querySelector('#aside');
 // 加载此内容
-fetch(eleAside.getAttribute('href')).then(function (res) {
-    return res.text()
-}).then(function (html) {
-    eleAside.innerHTML = html;
+// fetch(eleAside.getAttribute('href')).then(function (res) {
+//     return res.text()
+// }).then(function (html) {
+    
+// });
 
-    funSubNav();
+eleAside.innerHTML = '<h4 class="nav-h"><span class="nav-a">基础介绍</span></h4>\
+<nav>\
+    <a href="install.html" class="nav-a" data-mask>安装</a>\
+    <a href="#indexPage" id="navIndexA" class="nav-a" data-mask>开始</a>\
+    <a href="events.html" class="nav-a" data-mask>事件</a>\
+    <a href="router.html" class="nav-a" data-mask>路由</a>\
+</nav>\
+<h4 class="nav-h"><span class="nav-a">开始深入</span></h4>\
+<nav>\
+    <a href="param.html" class="nav-a" data-mask>传参</a>\
+    <a href="cache.html" class="nav-a" data-mask>页面管理</a>\
+    <a href="animate.html" class="nav-a" data-mask>过场动画</a>\
+    <a href="loading.html" class="nav-a" data-mask>加载动画</a>\
+    <a href="inner.html" class="nav-a" data-mask>内部切换</a>\
+    <a href="ajax.html" class="nav-a" data-mask>请求</a>\
+    <a href="init.html" class="nav-a" data-mask>初始化</a>\
+</nav>';
 
-    if (window.navKey) {
-        var eleNav = eleAside.querySelector('[href*="'+ window.navKey +'"]');
-        if (eleNav) {
-            eleNav.classList.add('active');
-        }
-        var eleNavIndex = document.querySelector('#navIndexA');
-        if (eleNavIndex) {
-            eleNavIndex.href = 'index.html';
-        }
+if (window.navKey) {
+    var eleNav = eleAside.querySelector('[href*="'+ window.navKey +'"]');
+    if (eleNav) {
+        eleNav.classList.add('active');
     }
-
-    // 首次载入时候滚动位置
-    var eleContent = document.querySelector('.page.in .content');
-    if (eleContent) {
-        var storeKey = 'scrollTop' + (location.hash.replace(/\W/g, '') || eleContent.parentElement.id);
-        if (localStorage[storeKey]) {
-            eleContent.style.scrollBehavior = 'auto';
-            eleContent.scrollTop = localStorage[storeKey];
-            localStorage.removeItem(storeKey);
-            eleContent.offsetWidth;
-            eleContent.style.scrollBehavior = '';
-        }
+    var eleNavIndex = document.querySelector('#navIndexA');
+    if (eleNavIndex) {
+        eleNavIndex.href = 'index.html';
     }
-});
+}
+
+// 首次载入时候滚动位置
+var eleContent = document.querySelector('.page.in .content');
+if (eleContent) {
+    var storeKey = 'scrollTop' + (location.hash.replace(/\W/g, '') || eleContent.parentElement.id);
+    if (localStorage[storeKey]) {
+        eleContent.style.scrollBehavior = 'auto';
+        eleContent.scrollTop = localStorage[storeKey];
+        localStorage.removeItem(storeKey);
+        eleContent.offsetWidth;
+        eleContent.style.scrollBehavior = '';
+    }
+}
 
 // 记住滚动位置，如果是F5刷新
 window.addEventListener('keydown', function (event) {
@@ -192,6 +208,8 @@ var funSubNav = function (elePageIn) {
         pre.insertAdjacentElement('afterbegin', button);
     });
 };
+
+funSubNav();
 
 // 处于预览状态的iframe点击隐藏
 document.addEventListener('click', function (event) {

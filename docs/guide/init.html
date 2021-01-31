@@ -15,7 +15,7 @@
 
 <body>
 <header id="header"></header>
-<aside id="aside" href="_aside.html"></aside>
+<aside id="aside"></aside>
 <div class="page out">
 	<div class="content">
         <h2>初始化</h2>
@@ -53,6 +53,8 @@
         Mobilebone.init();
     }
 });</pre>
+
+        <p>以及，如果 Mobilebone 是在页面完全加载之后被载入的，则 DOMContentLoaded 事件是不会执行的，此时也需要手动初始化。</p>
 
         <hr>
         <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/init.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
