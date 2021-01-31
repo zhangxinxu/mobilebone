@@ -1,6 +1,6 @@
 {
   "name": "mobilebone",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "Bone main for mobile web APP with a sigle page mode by using HTML5 history API router.",
   "main": "dist/mobilebone.esm.js",
   "directories": {

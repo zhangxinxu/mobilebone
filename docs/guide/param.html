@@ -20,13 +20,46 @@
 	<div class="content">
         <h2>传参</h2>
         <p>这里带大家了解下 Mobilebone 中各个页面转场过程中参数是如何传递的。</p>
+        <p>Mobilebone 支持两种类型的页面显示，一种是请求外部数据并创建页面，一种是内置的页面元素的显示，每一种类型的页面显示方法都可以进行参数的传递。</p>
 
         <h3>请求传参</h3>
+        <p>Mobilebone 中的页面数据请求均是GET请求，请求的参数可以直接写在 URL 地址上面，例如：</p>
+        <pre>&lt;a href="detail.html<span class="mark">?id=1&amp;type=0</span>"&gt;加载&lt;/a&gt;</pre>
+        <p>其中的 <code>id=1&amp;type=0</code> 就是请求的参数，也可以使用 <code>data-formdata</code> 属性进行参数设置，例如：</p>
+        <pre>&lt;a href="detail.html" <span class="mark">data-formdata="id=1&amp;type=0"</span>&gt;加载&lt;/a&gt;</pre>
+
+        <p>补充：这里使用 <code>data-params</code> 可以有一样的效果，不过并不推荐使用，因为 <code>data-params</code> 主要用来传递请求相关的参数的，例如数据类型、超时时间、成功的回调等。</p>
+        <pre>&lt;a href="detail.html" <span class="mark">data-params="id=1&amp;type=0"</span>&gt;加载&lt;/a&gt;</pre>
         
-        <h3>内置传参</h3>
+        <h3>页面内传参</h3>
+
+        <p>页面内传参也是类似的，例如：</p>
+        <pre>&lt;a href="#myPage<span class="mark">?id=1&amp;type=0</span>"&gt;前往&lt;/a&gt;</pre>
+
+        <p>也可以使用 <code>data-formdata</code> 属性进行参数设置，例如：</p>
+        <pre>&lt;a href="#myPage" <span class="mark">data-formdata="id=1&amp;type=0"</span>&gt;加载&lt;/a&gt;</pre>
+
+        <p>补充：这里使用 <code>data-params</code> 可以有一样的效果。</p>
+
+        <h3>获取</h3>
+
+        <p>参数可以在 Mobilebone 的声明周期函数中获取，拿 <code>callback</code> 函数举例，例如：</p>
+        <pre>Mobilebone.callback = function (pageInto, pageOut, options) {
+    console.log(options.query);
+};</pre>
+
+        <p>其中，<code>options</code> 参数中的 <code>query</code> 属性就包含了所有的传参数据。例如：</p>
+        <pre>&lt;a href="#myPage?id=1&amp;type=0"&gt;前往&lt;/a&gt;
+&amp;lt;div id="myPage" class="page out"&amp;gt;&amp;lt;/div&amp;gt;</pre>
+        <p>则当 <code>#myPage</code> 这个页面元素进入的时候，就会在控制台输出这样的数据：</p>
+        <pre>{
+    id: "1",
+    type: "0"
+}</pre>
+        <p>此时，开发者就可以基于 <code>options.query</code> 返回的参数内容进行对应的业务处理了。</p>
 
         <hr>
-        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/param.html" class="link" target="_blank" rel="nooppener">GitHub 上编辑此页</a>！</p>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/param.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
     </div>
 </div>
 

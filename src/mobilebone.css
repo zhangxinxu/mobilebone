@@ -28,13 +28,16 @@ html, body, .page {
 }
 
 /* mask layer when ajax sending... */
+[data-mask] {
+	position: relative;
+}
 .mask {
 	height: 100%; width: 100%;
 	background-color: rgba(255,255,255,.35);
 	position: absolute; left: 0; top: 0;
 	z-index: 9;
 }
-.loading {
+s.loading {
     width: 16px; height: 16px;
     border-radius: 100%;
     border: 2px solid;

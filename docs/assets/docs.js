@@ -14,9 +14,9 @@
 		pagein.querySelector('.version').innerHTML = 'v' + Mobilebone.VERSION;
 	};
 	
-	tabButtonActive = function (pagein) {
-		var target = document.querySelectorAll('.tabview a')[pagein.id.replace(/\D/g, '') - 1];
-		var eleAcive = document.querySelector('.tabview .active');
+	tabButtonActive = function (pagein, pageout, options) {
+		var target = options.target;
+		var eleAcive = target && target.parentElement.querySelector('.active');
 		if (eleAcive) eleAcive.classList.remove('active');
 		if (target) target.classList.add('active');
 	};
@@ -24,7 +24,7 @@
 	// 创建头部
 	var eleHeader= document.querySelector('header');
 
-	eleHeader.innerHTML = '<h2 class="logo-h"><a href="index.html" data-rel="auto" class="logo">mobilebone.js<span class="version">'+ Mobilebone.VERSION +'</span></a></h2><nav class="header-nav"><a href="../guide/" class="header-nav-a" data-ajax="false">教程</a><a href="../api/" class="header-nav-a" data-ajax="false">API文档</a><a href="../style/" class="header-nav-a" data-ajax="false">推荐指南</a><a href="../examples/" class="header-nav-a" data-ajax="false">示例</a><a href="https://github.com/zhangxinxu/mobilebone" class="header-nav-a header-nav-r" target="_blank">共同建设</a></nav>';
+	eleHeader.innerHTML = '<h2 class="logo-h"><a href="index.html" data-rel="auto" class="logo">mobilebone.js<span class="version">'+ Mobilebone.VERSION +'</span></a></h2><nav class="header-nav"><a href="../guide/" class="header-nav-a" data-ajax="false">教程</a><a href="../api/" class="header-nav-a" data-ajax="false">API文档</a><a href="../style/" class="header-nav-a" data-ajax="false" hidden>推荐指南</a><a href="../examples/" class="header-nav-a" data-ajax="false" hidden>示例</a><a href="https://github.com/zhangxinxu/mobilebone" class="header-nav-a header-nav-r" target="_blank">共同建设</a></nav>';
 
 	var pathname = location.pathname;
 	if (/\/api\//.test(pathname)) {

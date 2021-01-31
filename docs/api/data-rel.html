@@ -14,12 +14,19 @@
 <div class="page out">
 	<div class="content">
     	<h2>data-rel</h2>
-        <p>主要使用为下面2个值<code>"back"</code>和<code>"auto"</code>。主要作用是决定过场的方向，默认都是正向过场，例如<code>slideup</code>效果，是从下面出来。如果是<code>"back"</code>，就会从上面出现。有时候，我们无法确定过场的方向，例如，本文档页面左侧的各个链接，因为点击顺序任意的，此时就可以使用<code>"auto"</code>，也就是：</p>
-        <pre>&lt;a href="Mobilebone.support.html" class="nav-a" data-mask <span style="color:#cd0000;">data-rel="auto"</span>>Mobilebone.support&lt;/a></pre>
-        <p>此时，Mobilebone会根据对应<code>page</code>页面的前后顺序确定其正向过场还是反向。</p>
+        <p>主要使用为下面2个值<code>"back"</code>和<code>"go"</code>（v2.8.1新增）。主要作用是决定过场的方向。</p>
+        
+        <p>默认的过场方向由Mobilebone根据页面DOM前后顺序以及临时存储的历史记录决定，例如，本文档页面左侧的各个链接，点击顺序任意的，会根据点击的先后顺序决定过场的方向。</p>
+        <pre>&lt;a href="Mobilebone.support.html" class="nav-a" data-mask&gt;Mobilebone.support&lt;/a&gt;</pre>
+        
+        <ul>
+            <li>如果是<code>"back"</code>，则过场方向是反方向；</li>
+            <li>如果是<code>"go"</code>，则过场方向是正方向；</li>
+        </ul>
+
         <h3>其他说明</h3>
         <ol>
-        	<li><code>data-rel="back"</code>在以前两种场景都是有返回效果的。
+        	<li><code>data-rel="back"</code>在以下两种场景都是有返回效果的。
             	<pre>&lt;a href="#pageBack" <span style="color:#cd0000;">data-rel="back"</span>>返回&lt;/a></pre>
                 <pre>&lt;a href="javascript:" <span style="color:#cd0000;">data-rel="back"</span>>返回&lt;/a></pre>
                 <p>那它们的差别在什么地方呢？</p>
@@ -28,7 +35,7 @@
                 <p>真正意义上的浏览器返回，<code>history</code>回退至上一个记录，而不是再塞一条。所以，大家需要根据不同的返回场景做不同的处理。</p>
             </li>
         	<li>
-            	<code>data-rel</code>其实还支持一个值，<code>"external"</code>. 作用和<code>data-ajax="false"</code>一致，感觉有些鸡肋，正犹豫要不要删掉，故没有放在上面讲。
+            	<code>data-rel</code>其实还支持<code>"external"</code>这个值，作用和<code>data-ajax="false"</code>一致，不推荐使用，为了兼容最初的版本，因此一直没删除。
             </li>
         </ol>
     </div>

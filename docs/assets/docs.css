@@ -15,6 +15,7 @@ header {position: fixed;left: 0; right: 0; background-color: #0C121A; z-index: 2
 .header-nav-a:hover,.logo:hover{background-color:  hsla(0,0%,100%,.1);}
 .header-nav-a.active{box-shadow:inset 1px 0 #000, inset -1px 0 #000;background-color: rgba(0,0,0,.2);color: #fff7c7;}
 .header-nav-r {position: absolute; right: 20px;border-left: 1px solid rgba(255,255,255,.1);}
+.header-nav-a[hidden]{display: none;}
 
 .nav-a { display: block; padding: 5px 10px; color: #fff; position: relative; }
 .nav-a[href]{cursor: pointer;}
@@ -45,7 +46,7 @@ aside, .content { -webkit-overflow-scrolling: touch; }
 .content h3 { margin: 20px 0 10px; padding: 8px 10px; background-color: #cad5eb; font-size: 14px; color: #565656; }
 .content h3.active { filter: hue-rotate(180deg);}
 .content h4{margin: 1em 0 .5em; padding: 0 10px; font-size: 14px; color: #565656;}
-.content p { margin: 10px; color: #565656; }
+.content p, .content dl { margin: 10px; color: #565656; }
 .content p:hover { color: #333; }
 .content code { border: 1px solid #ddddef; background-color: #f0f0f0; border-radius: 3px; padding: 1px 4px; margin-left: 2px; margin-right: 2px; font-family: Consolas, monospace; color: #333;}
 .content ol, .content ul { padding-left: 25px; }
@@ -129,18 +130,21 @@ del { display: inline-block; opacity: .6; }
 
 /* slide up */
 .slideup.out {
-	animation-name: slideouttotop;
+    animation-name: slideouttotop;
+    animation-duration: 150ms;
 }
 .slideup.in {
 	transform: translateY(0);
 	animation-name: slideinfrombottom;
 }
 .slideup.in.reverse {
-	animation-name: slideinfromtop;
+    animation-name: slideinfromtop;
+    animation-duration: 250ms;
 }
 .slideup.out.reverse {
 	transform: translateY(100%);
-	animation-name: slideouttobottom;
+    animation-name: slideouttobottom;
+    animation-duration: 150ms;
 }
 
 @keyframes slideinfromtop {

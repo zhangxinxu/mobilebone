@@ -34,7 +34,7 @@
             <li><code>data-fallback</code> 页面每次离开都会执行，过场刚开始即执行。<p>语法：</p><pre>fallback(pageInto, pageOut, options)</pre></li>
             <li><code>data-animationstart</code> 页面动画即将开始执行的回调，离开页面，进入页面均会触发。<p>语法：</p><pre>animationstart(page, intoOrOut, options)</pre></li>
             <li><code>data-animationend</code> 页面动画结束之后执行的回调，离开页面，进入页面均会触发。<p>语法：</p><pre>animationend(page, intoOrOut, options)</pre></li>
-            <li><code>data-preventdefault</code> 介入回调，可以用来中断Mobilebone的一些默认行为，可以过场等行为触发之前实现一些自定义行为。<p>语法：</p><pre>preventdefault(aOrForm)</pre><p>当返回值为<code>true</code>的时候会阻断Mobilebone的一些默认行为。</p></li>
+            <li><code>data-preventdefault</code> 介入回调，可以用来中断Mobilebone的一些默认行为，可以过场等行为触发之前实现一些自定义行为。<p>当使用在页面元素上时候的语法：</p><pre>preventdefault(pageInto, pageOut, options)</pre><p>当返回值为<code>true</code>的时候会阻断Mobilebone的一些默认行为。</p></li>
         </ul>
         <p>每个回调的作用于使用场景可参见博文说明：<a href="http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/" class="link">点击这里</a>。</p>
         <p>其中，<code>data-preventdefault</code>并非<code>page</code>元素专有，<code>a</code>元素，<code>form</code>元素也支持此回调，具体可<a href="data-preventDefault.html" class="link">点击这里</a>。</p>

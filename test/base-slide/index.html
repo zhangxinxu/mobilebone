@@ -15,9 +15,9 @@ body { background-color: #cd0000; }
 <div id="pageHome" class="page out" style="background-color: #f0f3f9;">
     <ul>
         <li><a href="#&amp;page1" data-reload>页面1-#&amp;page1</a></li>
-        <li><a href="#page2" data-reload>页面2-#page2</a></li>
-        <li><a href="#page3?id=1">页面3</a></li>
-        <li><a>测试菊花：<div class="mask"><i class="loading"></i></div></a></li>
+        <li><a href="#page2" data-reload data-formdata="type=0">页面2-#page2-传参</a></li>
+        <li><a href="#page3?id=1">页面3-传参</a></li>
+        <li><a>测试菊花：<div class="mask"><s class="loading"></s></div></a></li>
     </ul>
     <ul>
         <li><a href="../index.html" id="back" data-ajax="false">&laquo; 返回测试引导首页</a></li>
@@ -39,9 +39,9 @@ body { background-color: #cd0000; }
 <script src="frozen.js"></script>
 
 <script>
-/*console.log = function(content) {
-	document.getElementById("result").innerHTML += '<p>'+ content +'</p>';
-};*/
+Mobilebone.callback = function (pageInto, pageOut, options) {
+    console.log(options.query);
+};
 $("#back").on("tap", function() {
 	location.href = this.href;
 });
