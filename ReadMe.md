@@ -1,5 +1,8 @@
 mobilebone.js
 =============
+
+<img src="https://www.zhangxinxu.com/GitHub/mobilebone/docs/assets/logo-128.png">
+
 单页切换骨架。适用于移动Web APP, Hybrid混合APP, 单页H5或PC应用。官方网站：<a href="http://www.mobilebone.org/">http://www.mobilebone.org/</a>
 
 
