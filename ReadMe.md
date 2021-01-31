@@ -1,5 +1,8 @@
 mobilebone.js
 =============
+
+<img src="https://www.zhangxinxu.com/GitHub/mobilebone/docs/assets/logo-128.png">
+
 单页切换骨架。适用于移动Web APP, Hybrid混合APP, 单页H5或PC应用。官方网站：<a href="http://www.mobilebone.org/">http://www.mobilebone.org/</a>
 
 
@@ -9,10 +12,13 @@ mobilebone本质上是一个纯UI表现层的JS插件，如果没有mobilebone.j
 
 这种无侵入的设计理念使得mobilebone更像是一个外挂，一个精美的外衣，日后不喜欢了，直接拿掉就可以，完全不要担心前端变化太快项目跟不上怎么办。同时，保留了传统页面SEO友好等优点。
 
-文档
+教程和文档
 ------------------
 
-狠狠地点击这里：<a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/" style="color: #cd0000;"><strong>中文文档</strong></a>
+狠狠地点击这里：
+
+* <a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/guide/" style="color: #cd0000;"><strong>详细使用教程</strong></a>
+* <a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/api/" style="color: #cd0000;"><strong>中文API文档</strong></a>
 
 
 实例、测试和文档
@@ -136,7 +142,8 @@ Documents
 ------------------
 
 <ul>
-    <li>Documents: <a href="https://www.zhangxinxu.com/GitHub/mobilebone/plugins/ppt/index.html">docs/index.html</a></li>
+	<li>Guide documents: <a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/guide/">docs/guide/</a></li>
+    <li>API documents: <a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/api/">docs/api/</a></li>
 </ul>
 
 Examples and Tests

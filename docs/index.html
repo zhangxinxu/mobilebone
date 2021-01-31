@@ -2,39 +2,146 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<title>Mobilebone.js API文档-中文版</title>
-<link rel="stylesheet" href="../src/mobilebone.css">
-<link rel="stylesheet" href="../src/mobilebone.animate.css">
-<link rel="stylesheet" href="docs.css">
+<meta http-equiv="description" content="移动端，桌面端页面无刷新过场切换骨架-mobilebone.js官网" />
+<meta name="description" content="移动端，桌面端页面无刷新过场切换骨架-mobilebone.js官网" />
+<meta name="keywords" content="mobilebone, mobilebone.js, 官网" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="./assets/favicon.ico">
+<title>mobilebone.js官网</title>
+<style>
+html, body, .page {
+	height: 100%; width: 100%;
+	overflow: hidden;
+}
+body {
+	font: 14px/1.42857 'microsoft yahei';
+}
+h1,h2,h3,h4,h5,h6,p,body {
+	margin: 0;
+}
+.constr {
+	width: 1240px;
+	max-width: 100%;
+	min-width: 1024px;
+	margin: 0 auto;
+}
+.content {
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 0 5px rgba(0,0,0,.2), 0 0 10px rgba(0,0,0,.3);
+}
+
+.home-page {
+	background: #181831 url(./assets/bone.jpg) no-repeat center top fixed;
+	background-size: cover;
+}
+
+.home-page > div {
+	position: absolute; left: 0; right: 0;
+}
+
+.home-body {
+	top: 0; bottom: 64px;
+}
+.home-body-const {
+	height: 100%;
+	position: relative;
+}
+.home-header {
+	top: 0; z-index: 1;
+	border-top: 1px solid rgba(255,255,255,.1);
+	background: inherit;
+	box-shadow: 0 2px 5px rgba(0,0,0,.3);
+	filter: grayscale(0.3);
+}
+.home-footer {
+	bottom: 0;
+}
+.home-nav {
+	height: 64px;
+	border-left: 1px solid rgba(255,255,255,.1);
+	overflow: hidden;
+}
+.home-nav-list {
+	width: 140px; height: 100%; float: left;
+	font-weight: normal;
+}
+.home-nav-a {
+	display: block; line-height: 64px;
+	border-right: 1px solid rgba(255,255,255,.1);
+	text-align: center; color: #fff; font-size: 20px;
+	-webkit-transition: all .25s;
+	transition: all .25s;
+}
+.home-nav-a:hover, .active .home-nav-a {
+	background-color: rgba(255,255,255,.1);
+	text-decoration: none;
+}
+.home-nav-github {
+	float: right;
+	border-left: 1px solid rgba(255,255,255,.1);
+}
+
+.home-slam {
+	width: inherit; margin: auto;
+	position: absolute; left: 0; right: 0; top: 50%;
+	text-align: center; color: #fff;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	text-shadow: 1px 1px 1px rgba(0,0,0,.35);
+}
+.home-slam > h1 {
+	font-size: 140px;
+}
+.home-slam > h2 {
+	font-size: 40px; font-weight: 400;
+}
+.home-slam .btn {
+	font-size: 220%; width: 200px;
+}
+</style>
+<link rel="stylesheet" href="https://www.zhangxinxu.com/github/quickLayout/quick-layout-min.css">
 </head>
 
 <body>
-<aside></aside>
-<div id="indexPage" class="page out">
-	<div class="content">
-    	<h2>mobilebone.js下载</h2>
-		<p><a href="../src/mobilebone.js" class="download" data-ajax="false">Development Version<span class="version"></span></a></p>
-        <p><a href="https://raw.github.com/zhangxinxu/mobilebone/master/src/mobilebone.js" class="download" data-ajax="false">Edge Version(master)</a></p>
+<div id="homePage" class="page home-page" data-title="Mobilebone">
+	<div class="home-header">
+    	<div class="constr">
+        	<div class="home-nav">
+				<h3 class="home-nav-list active"><a href="/" class="home-nav-a">首页</a></h3>
+				<h3 class="home-nav-list"><a href="/guide/#&indexPage" class="home-nav-a" target="_blank">教程</a></h3>
+                <h3 class="home-nav-list"><a href="/api/#&indexPage" class="home-nav-a" target="_blank">API文档</a></h3>
+                <h3 class="home-nav-list"><a href="https://github.com/zhangxinxu/mobilebone/releases" class="home-nav-a" target="_blank">下载</a></h3>
+                <h3 class="home-nav-list home-nav-github"><a href="https://github.com/zhangxinxu/mobilebone" class="home-nav-a" target="_blank">共同建设</a></h3>
+            </div>
+        </div>
+    </div>
+	<div class="home-body">
+    	<div class="constr home-body-constr">
+            <div class="home-slam">
+                <h1>Mobilebone</h1>
+                <h2>mobile移动端，PC桌面端页面无刷新过场JS骨架，简单、专注！</h2>
+                <div class="mt30 pt30 pb30">
+                    <a href="https://www.zhangxinxu.com/GitHub/mobilebone/docs/#&indexPage" target="_blank" class="btn btn-blue">API中文文档</a> <a href="https://github.com/zhangxinxu/mobilebone/archive/master.zip" target="_blank" class="btn btn-blue ml20">下载(.zip)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="home-footer">
+    	<p class="tr p10 white f12">by <a href="https://www.zhangxinxu.com/" class="white" target="_blank">zhangxinxu(.com)</a></p>
     </div>
 </div>
-<script src="nav.js"></script>
-<script src="../src/mobilebone.js"></script>
-<script src="docs.js"></script>
 <script>
-Mobilebone.classAnimation = "slideup";
-Mobilebone.callback = function() {
-	var navA = document.querySelectorAll("aside a");
-	[].slice.call(navA).forEach(function(nav) {
-		nav.classList.remove("active");
-		if (nav.getAttribute("href") == location.hash.replace("#&", "")) {
-			nav.classList.add("active");
-		}
-	});
-};
-if (Mobilebone.support == false) {
-	document.getElementById("indexPage").className = "page";
-}
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+	if (location.host == 'www.zhangxinxu.com') {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	}
+})();
 </script>
 </body>
 </html>

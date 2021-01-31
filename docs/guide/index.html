@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程 - 中文版 - 首页" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, 使用教程" />
+<meta name="referrer" content="never">
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js 使用教程 - 中文版 - 首页 </title>
+<link rel="stylesheet" id="link1">
+<link rel="stylesheet" id="link2">
+<link rel="stylesheet" href="../assets/docs.css">
+<script id="script1">
+var linkRoot = '../../';
+if (location.host != 'localhost') {
+	linkRoot = 'https://www.zhangxinxu.com/github/mobilebone/';
+}
+link1.href = linkRoot + 'src/mobilebone.css';
+link2.href = linkRoot + 'src/mobilebone.animate.css';
+document.head.removeChild(script1);
+</script>
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div id="indexPage" class="page out">
+	<div class="content">
+		<h2> 开始 </h2>
+		<h3>Mobilebone.js 是什么？</h3>
+		<p>Mobilebone 是一个可以让传统 Web 网页有类似于 Native APP 交互体验的 UI 框架。</p>
+		<p> 例如下面这个视频（点击播放）所示的单页应用，虽然是个 H5 页面，但是体验效果如同原生 APP。</p>
+		<p><video src='https://image.zhangxinxu.com/video/blog/202011/mobilebone-example.mp4' type="video/mp4" width="120" height="210" preload="auto" autobuffer loop x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portraint" webkit-playsinline="true" playsinline="true" onclick="this.play();this.width=372;this.height=664;"></video></p>
+		<p> 是的，Mobilebone.js 虽然体积很小（min &lt; 18K, Gzip ≈ 6K），但是本质上还是一个框架，正如其名称所示，移动端开发的骨架。</p>
+		<p> 通过对比流行的 Vue.js 可以让大家更好地了解 Mobilebone.js。</p>
+		<p>Vue 框架的核心是负责视图层的构建，支持多页应用，也支持单页应用，其中单页应用的路由功能需要借助第三方的插件，例如 Vue Router 插件。此时，Vue 框架是核心，Vue Router 属于插件，Vue Router 的使用需要遵循 Vue 框架的规则。</p>
+
+		<p>Mobilebone 框架的核心则是路由与转场，可以让多页应用无缝转变为单页应用。Mobilebone 不参与视图层的构建，如果希望当前应用拥有数据驱动的视图渲染能力，需要引用其他插件，例如 Vue.js。此时，Mobilebone 框架是核心，Vue.js 属于插件，Vue.js 的使用需要遵循 Mobilebone 框架的规则。</p>
+
+		<h3> 设计原则 </h3>
+		<p>Mobilebone 的作者是一个道家思想主义者，讲求追本溯源、无为而治，无论是生活、做人或者是程序开发，都遵循这样的哲学思想。比方说早些年的 <a href="https://github.com/zhangxinxu/ieBetter.js" target="_blank" class="link" rel="noopener">ieBetter.js</a>，或者是不少人熟知的 <a href="https://github.com/yued-fe/lulu" target="_blank" class="link" rel="noopener">LuLu UI</a> 等，有则锦上添花，无则江山依旧。</p>
+		<p> 这里的 Mobilebone.js 也是如此，保留传统 web 开发所有特性，不侵入业务代码，也就是如果没有 Mobilebone.js，我们的项目依然是可以运作的，只是形式上是传统的页面跳转。</p>
+		<p> 比方说您现在看到的这个文档页面左侧的任意的导航链接，您使用鼠标右键→新窗口打开，会发现是一个体验和功能完全正常的文档页面（对 SEO 非常友好），但是如果您鼠标单击，会发现整个文档页是个单页（对用户非常友好），这就是 Mobilebone，可以让正常的传统网页在不需要修改任何代码的情况下，聚合成一个单页应用。</p>
+		<p> 请注意，上面这句话虽然是实话，但是夸大了 Mobilebone 的作用。事实是这样的，Mobilebone 有能力让多页面再不动一兵一卒的情况下变成单页，但是，并不是说随便写几个页面都可以合成一个单页应用，需要开发者理解 Mobilebone 作用原理的前提下，调整对应页面的某些细节，才能让当前页面既能直接浏览，也能作为一个模块在显示在单页中。</p>
+		<p> 以及，虽然 Mobilebone 有能力让传统 Web 网页变成单页应用，但是，在 Mobilebone 的 <a href="./style/" class="link"> 推荐指南 </a> 中，如果您的项目并不是那种偏展示型，对 SEO 要求非常高的项目，<strong> 更推荐采用 JSON 数据 + 视图渲染 </strong> 的这种实现方式，开发策略上类似于 Vue/React 等框架的单页应用，因为用户体验会更好。</p>
+		<h3> 起步 </h3>
+		<p>Mobilebone.js 的上手成本极低，您只需要了解 HTML 和 CSS 的基础知识就可以创建 Mobilebone 单页应用。</p>
+		<p><a href="./install.html" class="button"> 安装 </a></p>
+		<br>
+		<p>先从最基本的静态效果说起。</p>
+		<p>如果是静态页面，只需要把每一页的内容放在一个一个的“page”中，在 Mobilebone 中，这个“page”是包含类名 <code>'page'</code> 的 <code>&lt;div&gt;</code >元素，例如（点击“运行按钮”可以查看效果）：</p>
+		<pre is-runable>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta charset="utf-8"&gt;
+	&lt;meta name="viewport" content="width=device-width"&gt;
+	&lt;link rel="stylesheet" href="./dist/mobilebone.css"&gt;
+	&lt;title&gt;示例&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="page1" class="page out"&gt;
+	&lt;p&gt;　页面1，&lt;a href="#page2"&gt;下一页&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="page2" class="page out"&gt;
+	&lt;p&gt;　页面2，&lt;a href="#page1"&gt;上一页&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;script src="./dist/mobilebone.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+		<p>转场效果的实现很简单，只需要把链接元素的 <code>href</code> 属性值指向对应的 <code>'page'</code> 元素的 <code>id</code> 属性值即可。</p>
+		<p>例如：</p>
+		<pre>&lt;a href="#page2"&gt;下一页&lt;/a&gt;</pre>
+		<p>此时，点击“下一页”，页面就会平滑过渡到 <code>id</code> 值为 <code>'page2'</code> 的页面上。</p>
+		<p>同时，URL地址栏中的Hash值会变成<code>#&amp;page2</code>，这是 Mobilebone 做的路由处理，此时用户刷新页面依旧显示 <code>'page2'</code> 页面。</p>
+
+		<p>Mobilebone 框架的所有能力都是以上面最简单的静态应用为核心进行扩展的。</p>
+
+		<p>例如，<code>href</code> 值使用正常的URL地址，则会请求该 URL 地址对应的页面并呈现出来。</p>
+		<pre>&lt;a href="/detail?id=112"&gt;请求详情页&lt;/a&gt;</pre>
+
+		<h3>插件</h3>
+		<p>Mobilebone 支持引入插件帮助我们更高效地开发，或者实现特殊的场景需求。</p>
+		<p>目前官方提供了以下一些插件内容：</p>
+
+		<h4>mobilebone.ppt.js</h4>
+		<p>可以让web页面表现如幻灯片演示，尺寸自适应。</p>
+		<p>此插件目前还欠缺配套的可视化制作工具，日后会完善。</p>
+		<h4>mobilebone.render.js</h4>
+		<p>模板渲染，正在开发中……</p>
+		<h4>mobilebone.storage.js</h4>
+		<p>本地存储能力，正在开发中……</p>
+
+		<h3>优势</h3>
+		<p>Mobilebone.js 只专注于一件事情，转场。所以JS文件很小，gzip后仅4~5K。</p>
+		<p>原生HTML构造，侵入少，上手快，本身几乎没有UI的限制，适用于各个项目各个场景。</p>
+		<p>原生JavaScript无依赖，可以和Vue，jQuery等知名JS项目无缝使用。</p>
+		<p>好，现在对 Mobilebone 应该有了初步的认识了，接下来了解下 Mobilebone 更多的特性。</p>
+		<hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/index.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+<script src="nav.js"></script>
+<script id="script2"></script>
+<script id="script3"></script>
+<script>
+script2.src = linkRoot + 'src/mobilebone.js';
+script2.onload = function () {
+	Mobilebone.classAnimation = "slideup";;
+	Mobilebone.callback = funSubNav;
+
+	if (Mobilebone.support == false) {
+		document.getElementById("indexPage").className = "page";
+	}
+
+	Mobilebone.init();
+
+	script3.src = '../assets/docs.js';
+};
+</script>
+
+<!-- ga 统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+	if (location.host == 'www.zhangxinxu.com') {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	}
+})();
+</script>
+</body>
+</html>

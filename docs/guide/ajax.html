@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-请求" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 请求" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-请求</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>请求</h2>
+        <p>介绍下 Mobilebone 的请求处理逻辑。</p>
+
+        <h3>方法</h3>
+
+        <p>在 Mobilebone 中，触发页面的请求与加载有两种方式：</p>
+        <ul>
+            <li>基于 <code>&lt;a&gt;</code> 元素或者 <code>&lt;form&gt;</code> 元素；</li>
+            <li>调用 <code>Mobilebone.ajax()</code> 方法。</li>
+        </ul>
+
+        <p>其中，<code>Mobilebone.ajax()</code> 方法通过传递 Object 类型参数触发请求的执行，示意：</p>
+        <pre>Mobilebone.ajax({
+    url: "",
+    type: "",
+    dataType: "",
+    data: {},
+    timeout: 10000,
+    success: function() {},
+    error: function() {},
+    complete: function() {}
+})</pre>
+        <p>参数的命名均源自 jQuery 的 <code>$.ajax()</code> 方法。</p>
+            
+        <p>如果是通过点击 <code>&lt;a&gt;</code> 元素触发请求的执行，则所有的参数需要使用 HTML 属性进行传递。</p>
+
+        <p>其中的 <code>data</code> 参数本身就是个 Object 纯对象，因此，这个参数的传递稍微特别了一点，通常使用下面两种方法：</p>
+
+        <ul>
+            <li><p>支持通过 <code>href</code> 原地址进行简单的请求参数传递，例如：</p>
+                <pre>&lt;a href="detail.html<span class="mark">?id=1&amp;type=0</span>"&gt;加载&lt;/a&gt;</pre></li>
+            <li>
+                <p>通过 <code>data-formdata</code> 进行请求参数设置，例如：</p>
+                <pre>&lt;a href="detail.html" <span class="mark">data-formdata="id=1&amp;type=0"</span>&gt;加载&lt;/a&gt;</pre>
+            </li>
+        </ul>
+
+        <p>而其他的参数，则可以通过下面两种方法进行设置：</p>
+
+        <ul>
+            <li>分别设置，包括：<code>data-url</code>、<code>data-datatype</code>、<code>data-success</code>等，详见对应的 API 文档：<a href="../api/#&data-ajaxKeys.html" class="link" data-ajax="false" target="_api">data-ajaxKeys.html</a></li>
+            <li>批量设置，使用 <code>data-params</code> 属性进行参数设置，例如：
+                <pre>&lt;a href="ajax.html" data-params="datatype=json&amp;amp;success=succ_callback&gt;点击我&lt;/a&gt;</pre>
+            </li>
+        </ul>
+        
+        <h3>参数</h3>
+
+        <p>各个参数函数和对应的 HTML 属性如下：</p>
+
+        <dl>
+            <dt>url</dt>
+            <dd>请求地址。对应 <code>&lt;a&gt;</code> 元素的 <code>href</code>属性或者 <code>&lt;form&gt;</code> 元素的 <code>action</code> 属性，如果这些属性值都缺失，则尝试使用  <code>data-url</code> 的属性值作为请求地址，如果还是缺失，则尝试从 <code>data-params</code> 属性中匹配 <code>url</code> 字段值。</dd>
+            <dt>type</dt>
+            <dd>请求的类型。默认是 <code>'get'</code>。可以使用 <code>&lt;form&gt;</code> 元素的 <code>method</code> 属性进行设置。如果缺失，则尝试使用 <code>data-type</code> 属性。如果还是缺失，则尝试从 <code>data-params</code> 属性中匹配 <code>type</code> 字段值。</dd>
+            <dt>dataType</dt>
+            <dd>请求数据类型。默认类型是文本类型，支持 <code>'json'</code> 数据类型，Mobilebone 会对返回的数据进行 JSON 解析并处理。可以通过 <code>data-datatype</code> 或匹配 <code>data-params</code> 属性值获取。</dd>
+            <dt>data</dt>
+            <dd>请求参数。默认为空。可以设置在 <code>url</code> 参数中，也可以使用 <code>data-formdata</code> 或匹配 <code>data-params</code> 属性值获取。</dd>
+            <dt>timeout</dt>
+            <dd>超时时间。可以使用 <code>data-timeout</code> 或匹配 <code>data-params</code> 属性值获取。</dd>
+            <dt>success</dt>
+            <dd>请求成功回调方法。可以使用 <code>data-success</code> 或匹配 <code>data-params</code> 属性值获取。</dd>
+            <dt>error</dt>
+            <dd>请求失败回调方法。可以使用 <code>data-error</code> 或匹配 <code>data-params</code> 属性值获取。</dd>
+            <dt>complete</dt>
+            <dd>请求完成回调方法。可以使用 <code>data-complete</code> 或匹配 <code>data-params</code> 属性值获取。</dd>
+        </dl>
+
+        <p>其中几个回调方法需要专门说下。</p>
+
+        <p>首先，各个回调方法使用和生命周期事件函数同样的装载器，默认是 <code>window</code> 对象，当通过 Mobilebone.rootTransition 改变函数的装载器的时候，这里的请求方法的装载器也会同步变化。</p>
+        <p>如果不希望这种变化发生，则可以使用 <code>data-root</code> 指定几个函数的调用上级，例如：</p>
+
+        <pre>&lt;a href="ajax.html" data-params="datatype=json&amp;amp;success=succ_callback <span class="mark">data-root="myVue"</span>&gt;点击我&lt;/a&gt;</pre>
+
+        <p>则请求成功后就会执行 <code>myVue.succ_callback()</code> 这个方法。</p>
+
+        <p>然后，讲下各个回调方法的语法：</p>
+        <pre>success(response, status);
+error(xhr, status);
+complete(xhr, status);</pre>
+        <p>其中 <code>response</code> 指返回的数据，<code>xhr</code> 指  XMLHttpRequest 请求对象，<code>status</code> 是请求返回的原始状态码。</p>
+        
+        <h3>JSON处理</h3>
+
+        <p>如果请求的数据类型是 <code>'json'</code>，则请求成功后，Mobilebone 会调用名为 <code>Mobilebone.jsonHandle()</code> 的方法，如果有安装有 Mobilebone 官方的模板渲染插件，则会自动执行 JSON 数据的渲染，否则，需要开发者自己设置 Mobilebone.jsonHandle 的处理逻辑：</p>
+
+        <pre>Mobilebone.jsonHandle = function (json) {
+    // 根据 json 数据渲染页面
+    // 可以使用 Mobilebone.createPage() 方法创建页面
+};</pre>
+
+        <p>上面提到的 <code>Mobilebone.createPage()</code> 方法是 Mobilebone 底层的创建页面方法，详见对应的 API 文档：<a href="../api/#Mobilebone.createPage.html" class="link" data-ajax="false" target="_api">Mobilebone.createPage.html</a>。</p>
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/ajax.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

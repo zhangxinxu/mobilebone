@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-事件" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, 使用教程, 事件" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-事件</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>事件</h2>
+        <p>先了解 Mobilebone 中与页面生命周期相关的事件。</p>
+
+        <h3>生命周期</h3>
+
+        <p>Mobilebone 中，页面从进入到离开为一个完整的生命周期。</p>
+        <p>整个生命周期过程如下图所示，Mobilebone 在生命周期的各个阶段都暴露了接口可以让开发者自定义事件。</p>
+        <p style="background-color: #fff; padding:20px; text-align:center;">
+            <img src="../assets/mobilebone-lifecircle.svg" width="641" height="1160" alt="Mobilebone生命周期中的事件">
+        </p>
+
+        <p>其中：</p>
+        <ul>
+            <li><code>preventdefault</code> 事件在进入和离开之前都会执行；</li>
+            <li><code>onpagefirstinto</code> 事件只会在第1次进入的时候执行；</li>
+            <li><code>callback</code> 事件每次页面进入的时候执行；</li>
+            <li><code>fallback</code> 事件每次页面离开的时候执行；</li>
+            <li><code>animationstart</code> 事件在进入和离开动画执行前都会执行；</li>
+            <li><code>onpagefirstinto</code> 事件在进入和离开动画执行后都会执行。</li>
+        </ul>
+        
+        <h3>设置</h3>
+        <p>Mobilebone 中生命周期事件分全局事件和局部事件。</p>
+        <ul>
+            <li><p>全局事件使用 Mobilebone 对象直接指定，例如希望所有页面进入的时候都执行，可以这样设置：</p>
+        <pre>Mobilebone.callback = function () {
+    console.log('每次页面进入都执行');            
+};</pre></li>
+            <li><p>局部事件则通过 <code>data-*</code> 的语法在页面容器元素上设置，例如：</p>
+        <pre>&lt;div class="page out" data-callback="someFuncName"&gt;
+    &lt;p&gt;页面内容&lt;/p&gt;
+&lt;/div&gt;</pre>
+        <p>表示该页面进入的时候会执行函数名为<code>someFuncName</code>的方法。</p></li>
+        </ul>
+        
+        <p>默认状态下，对于局部事件，Mobilebone 会在 <code>window</code> 对象中寻找对应名称的函数并执行。例如，<code>data-callback="someFuncName"</code> 设置后 Mobilebone 会执行 <code>window.someFuncName()</code>。</p>
+        <p>然而，在 JavaScript 中，全局对象是容易产生冲突的，因此显然，函数挂载到 <code>window</code> 对象中并不适合复杂的项目，Mobilebone 是支持指定事件函数挂载的对象的，同样也分全局设置和局部设置。</p>
+
+        <ul>
+            <li>
+                <p>全局设置通过 <a href="../api/#&Mobilebone.rootTransition.html" class="link" target="_blank" data-ajax="false">Mobilebone.rootTransition</a> 属性进行设置。</p>
+                <p>例如有个 Vue 实例对象 <code>myVue</code>：</p>
+                <pre>var myVue = new Vue({
+    methods: {
+        someFuncName () {}
+    }        
+});</pre>
+                <p>则下面的设置就可以让 Mobilebone 调用 Vue 实例对象中的方法：</p>
+                <pre>Mobilebone.rootTransition = myVue;</pre>
+            </li>
+            <li>
+                <p>局部设置通过 <code>data-root</code> 属性进行设置，例如：</p>
+                <pre>&lt;div class="page out" data-root="$" data-callback="callback"&gt;&lt;/div&gt;</pre>
+                <p>则当前页面的 <code>callback</code> 方法会在 <code>window.$</code> 中寻找并执行，此设置不会影响其他页面。</p>
+            </li>
+        </ul>
+
+        <h3>事件中的参数</h3>
+
+        <p>每个生命周期事件都暴露了若干参数，例如：</p>
+        <ul>
+            <li>onpagefirstinto(pageInto, pageOut, options)</li>
+            <li>callback(pageInto, pageOut, options)</li>
+            <li>fallback(pageInto, pageOut, options)</li>
+            <li>animationstart(page, intoOrOut, options)</li>
+            <li>animationend(page, intoOrOut, options)</li>
+            <li>preventdefault(pageInto, pageOut, options)</li>
+        </ul>
+
+        <p>这些参数的作用是让开发者知道当前移入移出的页面是哪个，以及页面间传递的参数是什么（通过 <code>options.query</code> 获取）。</p>
+
+        <p>至于各个参数的含义和作用可以参考对应的 API 文档：<a href="../api/#&data-callbackKeys.html" class="link" target="_blank" data-ajax="false">data-callbackKeys.html</a></p>
+        
+
+        <h3>内置的事件</h3>
+        <p>Mobilebone 对页面中所有的 <code>&lt;a&gt;</code> 元素默认的 <code>'click'</code>事件行为 和 <code>&lt;form&gt;</code> 元素的默认的 <code>'submit'</code> 事件行为进行了劫持。</p>
+        <p>例如：</p>
+        <ul>
+            <li>点击 <code>&lt;a href="#targetPage"&gt;</code> 不再是锚点跳转，而是显示页面中 <code>id</code> 属性值是 <code>'targetPage'</code> 的页面元素。</li>
+            <li>点击 <code>&lt;a href="target.html"&gt;</code> 不再是跳转到 <code>target.html</code> 页面，而是自动拉取 <code>target.html</code> 页面内容并作为一个内嵌的页面显示。</li>
+            <li>提交 <code>&lt;form action="/someUrl"&gt;</code> 不再是传统的带刷新的表单提交，而是会把当前表单请求返回的内容作为一个内嵌的页面显示。</li>
+        </ul>
+
+        <p>如果希望 <code>&lt;a&gt;</code> 元素和 <code>&lt;form&gt;</code> 元素保留默认的行为，可以在这些元素上设置 <code>data-ajax="false"</code>，例如：</p>
+        <pre>&lt;a href="target.html" data-ajax="false"&gt;传统的页面跳转&lt;/a&gt;</pre>
+
+        <p>如果希望<code>&lt;a&gt;</code> 元素或者 <code>&lt;form&gt;</code> 元素在执行无刷新过场之前进行其他的逻辑判断处理，则可以使用 <code>data-preventdefault</code> 进行处理，代码示意：</p>
+        <pre>&lt;a href="login.html" data-preventdefault="isDialogLogin"&gt;登录&lt;/a&gt;</pre>
+        <pre>let isDialogLogin = function () {
+    <span class="comment">// 大屏下使用弹框执行登录</span>
+    if (screen.width > 800) {
+        <span class="comment">// 登录弹框显示</span>
+        loginDialog.show();
+        <span class="comment">// 返回 true 表示阻止 Mobilebone 的事件处理行为</span>
+        return true;   
+    }
+};</pre>
+
+        <p>相关API详见这里：<a href="../api/#&data-ajax.html" class="link" target="_api" data-ajax="false">data-ajax</a>、<a href="../api/#&data-preventDefault.html" class="link" target="_blank" data-ajax="false">data-preventdefault</a>。</p>
+
+        <h3>页面代码的执行</h3>
+        <p>在 Mobilebone 项目中，入口页面的事件就和普通的网页一样执行的，无论是内联 JavaScript 代码，还是 <code>src</code> 地址外链的 JavaScript 代码。</p>
+        <p>但是，如果是通过 Ajax 请求拉取的请求页，则这些页面中的 JavaScript 代码默认是不执行的，原因在于避免冗余执行。</p>
+        <p>例如，列表页有20个详情页链接，如果每次请求一个详情页，里面的 JavaScript 代码都全部执行一遍，则会产生大量的重复的 JavaScript 代码执行，这是没有必要的。</p>
+        <p>在Mobilebone 项目中，更推荐所有页面共用一个主 JavaScript 文件代码，也就是在这个 JavaScript 文件中处理所有的逻辑关系。如果项目比较复杂，可以分页面或模块开发，然后发布的时候合并成一个独立的 JavaScript 文件作为主文件即可。</p>
+
+        <p>当然，Mobilebone 提供了执行请求的页面中的 JavaScript 代码的能力，设置 <a href="../api/#&Mobilebone.evalScript.html" class="link" target="_api" data-ajax="false">Mobilebone.evalScript</a> 的值为 <code>true</code>就可以了。</p>
+        <pre>Mobilebone.evalScript = true;</pre>
+        <p>但是需要注意的是，设置 <code>Mobilebone.evalScript</code> 为 <code>true</code> 只会执行内联的 <code>&lt;script&gt;</code> 脚本，例如下面的代码会执行：</p>
+        <pre>&lt;script&gt;console.log('script excuted!');&lt;/script&gt;</pre>
+        <p>但是下面的 <code>1.js</code> 就不会执行：</p>
+        <pre>&lt;script src="1.js"&gt;&lt;/script&gt;</pre>
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/install.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

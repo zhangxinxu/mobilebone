@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-内部切换" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 内部切换" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-内部切换</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>内部切换</h2>
+        <p>在 Mobilebone 框架体系下，页面间的过场切换效果可以复用在局部区域以便实现内部切换效果。</p>
+
+        <h3>语法</h3>
+        <p>需要用到两个 HTML 属性进行设置：</p>
+        <ul>
+            <li><code>data-container</code>设置局部过场切换的容器元素；</li>
+            <li><code>data-classpage</code>设置局部过场内容公用的类名；</li>
+        </ul>
+
+        <h3>案例</h3>
+
+        <p>例如，下面这个选项卡效果：</p>
+        <style>
+			.tab-x { width: 256px; height: 256px; background-color: #fff; position: relative; overflow: hidden; }
+			.tabview { position: absolute; left: 0; top: 0; right: 0; text-align: center; z-index: 1; }
+			.tabview a { display: inline-block; padding: 6px 10px; font-size: 14px; text-decoration: none; border-radius: 4px; background-color: #fff; border: 1px solid #bbb; color: #333; font-family: system-ui; }
+			.tabview .active { background-color: #34538b; border-color: #34538b; color: #fff; }
+			.tab { position: absolute; width: 100%; height: 100%; white-space: nowrap; text-align: center; background-color: #fff; }
+			.tab:after { content: ''; display: inline-block; height: 100%; vertical-align: middle; }
+			.tab img { vertical-align: middle; }
+            .tab.out{display: none;}
+		</style>
+        <div id="tabX" class="tab-x">
+        	<div class="tabview">
+            	<a href="#tab1" data-container="tabX" data-classpage="tab" class="active">妹子1</a>
+                <a href="#tab2" data-container="tabX" data-classpage="tab">妹子2</a>
+                <a href="#tab3" data-container="tabX" data-classpage="tab">妹子3</a>
+            </div>
+        	<div id="tab1" class="tab in" data-callback="tabButtonActive">
+            	<img src="https://image.zhangxinxu.com/image/study/s/s256/mm1.jpg">
+            </div>
+            <div id="tab2" class="tab out" data-callback="tabButtonActive">
+            	<img src="https://image.zhangxinxu.com/image/study/s/s256/mm2.jpg">
+            </div>
+            <div id="tab3" class="tab out" data-callback="tabButtonActive">
+            	<img src="https://image.zhangxinxu.com/image/study/s/s256/mm3.jpg">
+            </div>
+        </div>
+        <p>其HTML代码结构如下：</p>
+        <pre>&lt;div id="tabX" class="tab-x">
+    &lt;div class="tabview">
+        &lt;a href="#tab1" data-container="tabX" <span style="color: #cd0000;">data-classpage="tab"</span> class="active"&gt;妹子1&lt;/a>
+        &lt;a href="#tab2" data-container="tabX" <span style="color: #cd0000;">data-classpage="tab"</span>&gt;妹子2&lt;/a>
+        &lt;a href="#tab3" data-container="tabX" <span style="color: #cd0000;">data-classpage="tab"</span>&gt;妹子3&lt;/a>
+    &lt;/div>
+    &lt;div id="tab1" class="tab in" data-callback="tabButtonActive">
+        &lt;img src="mm1.jpg">
+    &lt;/div>
+    &lt;div id="tab2" class="tab out" data-callback="tabButtonActive">
+        &lt;img src="mm2.jpg">
+    &lt;/div>
+    &lt;div id="tab3" class="tab out" data-callback="tabButtonActive">
+        &lt;img src="mm3.jpg">
+    &lt;/div>
+&lt;/div></pre>
+        <p>必要的CSS代码：</p>
+        <pre>.tab.out { display: none; }</pre>
+        <p>下面的 JavaScript 代码与切换效果本身无关，主要是同步按钮选中态效果：</p>
+        <pre>tabButtonActive = function(pagein, pageout, options) {
+    var target = options.target;
+    var eleAcive = target.parentElement.querySelector('.active');
+    if (eleAcive) eleAcive.classList.remove('active');
+    target.classList.add('active');
+};</pre>
+		<p>局部过场切换效果是不会触发 <code>history</code> 变化的，也不会改变页面的<code>title</code>标题，其他规则跟主页面元素的过场切换一致，例如各种生命周期事件函数的使用等。</p> 
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/inner.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

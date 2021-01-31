@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-页面管理" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 页面管理" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-页面管理</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>页面管理</h2>
+        <p>带大家深入了解下 Mobilebone 的页面管理机制。</p>
+
+        <h3>初衷与现实</h3>
+        <p>Mobilebone 设计的初衷，或者说推荐指南从一开始都是建议写预埋项目的各个骨架页，例如，首页、列表页、详情页就是3个独立的骨架：</p>
+        <pre>&lt;div id="pageHome" class="page out"&gt;&lt;/div&gt;
+&lt;div id="pageList" class="page out"&gt;&lt;/div&gt;
+&lt;div id="pageDetail" class="page out"&gt;&lt;/div&gt;</pre>
+
+        <p>然后通过 Mobilebone 提供的事件生命周期函数进行数据的请求、渲染与处理，就和目前常见的基于数据驱动的页面开发类似。</p>
+
+        <p>如果是基于上面这种策略开发，页面管理本身是不存在的，因为就算有1000个详情页，由于骨架页面就一个，里面内容总是在不断更新替换，因此，整个页面的容量可以一直保持很小，而再顶天的项目也不会超过100个骨架页，对于目前的Web性能而言，可以忽略不计。</p>
+
+        <p>但是实际上，根据 issues 反馈来看，绝大多数的开发者使用 Mobilebone 都是直接请求完整 HTML 代码作为页面的模式，类似于您正在看到的这个文档的使用模式，点击导航会去加载一个完整的 HTML 页面并显示出来。</p>
+
+        <p>由于一开始 Mobilebone 并没有设计专门的页面管理逻辑，因此，收到很多反馈，例如访问列表页中的 100 个详情页链接，页面中居然有 100 个 <code>div.page</code> 元素，希望最多只出现一个。倒不是性能带来了多大的影响，而是这 100 个详细页会有大量类似的结构和元素，甚至包含大量 <code>id</code> 一致的元素，这会导致很多基于 <code>id</code> 处理的 JavaScript 代码出现问题。</p>
+
+        <p>现实与预想的出入让我不得不开始让 Mobilebone 支持页面管理的能力。</p>
+
+        <h3>默认的行为</h3>
+
+        <p>Mobilebone 目前默认的管理行为是这样的。</p>
+
+        <p>通过 <code>#somePageId</code> 访问的页面元素永远存在文档树中，Mobilebone 不会进行任何删除。</p>
+        <p>通过 <code>./someUrl</code> 访问的页面元素则表现为：</p>
+        <ul>
+            <li>页面默认缓存，也就是第2次访问同 URL 地址的页面，浏览器是不会发送请求的，直接显示之前的页面内容；</li>
+            <li>参数不同的类似页面默认全部加载，也就是 <code>./someUrl?id=1</code> 和 <code>./someUrl?id=2</code> Mobilebone 默认会全部加载到页面中；</li>
+        </ul>
+
+        <p>所以，不妨就以 Mobilebone 的<a href="/api/" class="link" data-ajax="false"> API 文档</a>举例，按照 Mobilebone 的默认页面管理行为，整个文档中最多会出现 40 个几乎完整的文档页。</p>
+        <p>这种情况其实没有任何问题的，因为虽然页面中同时存在大量的 DOM 元素，但是，实际上，占据的体积不过 80K-90K，还没有一张图片的内存开销大，最多同时只有 1 个页面文档内容显示，对于渲染的开销也是可以忽略不计，因此，是没有任何问题的。</p>
+
+        <p>所以，Mobilebone 支持页面管理的原因不在于性能，而是需求、维护成本，以及满足开发者的洁癖心理。</p>
+
+        <h3>设置</h3>
+        
+        <ul>
+            <li>如果希望 Ajax 请求的页面不缓存，每次请求都删除之前的页面拉取最新的数据，则可以设置 <code>data-reload="true"</code>，例如：<pre>&lt;a href="./someUrl" <span class="mark">data-reload="true"</span>&gt;每次都请求&lt;/a&gt;</pre></li>
+            <li>如果希望一组 URL 对应的页面最多只同时存在一个页面，则可以设置 <code>data-reload</code> 属性值为一个唯一指定的自定义 <code>id</code>，例如：<pre>&lt;ul&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=1" <span class="mark">data-reload="uniqueId"</span>&gt;唯一加载&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=2" <span class="mark">data-reload="uniqueId"</span>&gt;唯一加载&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=3" <span class="mark">data-reload="uniqueId"</span>&gt;唯一加载&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="detail.html?v=4" <span class="mark">data-reload="uniqueId"</span>&gt;唯一加载&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre></li>
+        </ul>
+
+        <p>对应的效果可以访问相关的<a href="../../test/ajax-html/" class="link" target="_blank" data-ajax="false">测试页面</a>。</p>
+        
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/cache.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-初始化" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 初始化" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-初始化</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>初始化</h2>
+        <p>在默认情况下，Mobilebone 是自动初始化的，初始化的时机在 DOMContentLoaded 之后。</p>
+
+        <p>初始化做了这么几件事情：</p>
+
+        <ul>
+            <li>根据当前 URL 地址中的路由信息，显示或者加载对应的页面；如果没有任何路由信息，则让第一个匹配 <code>Mobilebone.classPage</code> 的元素显示。</li>
+            <li>给页面文档全局委托 <code>'click'</code> 事件，对所有的 <code>&lt;a&gt;</code> 元素进行劫持处理。</li>
+            <li>一些兼容性处理；</li>
+        </ul>
+
+        <p>在某些场景下，DOMContentLoaded 之后自动初始化是有问题的。</p>
+
+        <h3>手动设置</h3>
+
+        <p>Mobilebone 初始化的时候，在对应页面显示的同时，会有完整的页面显示逻辑的执行，这个显示逻辑的执行会动用大量的 Mobilebone 参数，以及触发部分的生命周期函数的执行。</p>
+
+        <p>如果 Mobilbebone 的参数设置必须依赖于异步返回的数据，或者生命周期函数中的某些代码有其他依赖，自动执行 <code>Mobilebone.init()</code> 的时机就不对，导致参数传入滞后、或者函数无法顺利执行。这些场景就需要开发者自己手动进行 Mobilebone 的初始化，方法如下：</p>
+        
+        <ol>
+            <li>设置 <code>Mobilebone.autoInit</code> 的值为 <code>false</code>；</li>
+            <li>在合适的位置执行 <code>Mobilebone.init()</code>。</li>
+        </ol>
+        
+        <p>例如，indexDB 存储是异步过程，在 Mobilebone 初始化之前需要先从本地数据库中读取一些数据，则就需要在 indexDB 存储的数据获取之后再进行 Mobilebone 的初始化。</p>
+        <p>以 <a href="https://github.com/localForage/localForage" data-ajax="false">localforage</a> 这个本地存储工具示意：</p>
+        <p>在页面外设置：</p>
+        <pre>Mobilebone.autoInit = false;</pre>
+        <p>业务代码中：</p>
+        <pre>localforage.getItem('someId', function (err, value) {
+    if (err == null &amp;&amp; value) {
+        <span class="comment">// 使用value干嘛干嘛，然后初始化</span>
+        Mobilebone.init();
+    }
+});</pre>
+
+        <p>以及，如果 Mobilebone 是在页面完全加载之后被载入的，则 DOMContentLoaded 事件是不会执行的，此时也需要手动初始化。</p>
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/init.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

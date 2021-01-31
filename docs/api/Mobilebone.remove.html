@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-Mobilebone.remove</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>Mobilebone.remove(domOrId)</h2>
+        <p>（v2.7.0+）清除页面级别的DOM元素，并连带id标识和缓存一起清除。</p>
+        <h3>参数</h3>
+        <ul>
+            <li><code>domOrId</code> 必须参数。页面对应DOM元素（默认指类名是<code>.page</code>的元素）或需要删除页面id。
+            <p>（v2.7.2+）如果是Ajax请求的页面删除，在可以是触发加载<code>&lt;a&gt;</code>的元素，或者是<code>Mobilebone.getCleanUrl()</code>处理Ajax请求地址后的返回值。</p></li>
+        </ul>
+        <h3>其它说明</h3>
+        <p>对于Ajax请求的页面，如果没有专门指定，这些页面的id是使用<code><a href="Mobilebone.getCleanUrl.html">Mobilebone.getCleanUrl(null, 'xxx.php')</a></code>方法的返回值（假设请求地址是<code>'xxx.php'</code>）。</p>
+        <p>（v2.7.2+）<code><a href="data-reload.html">data-reload</a></code>新增基于指定id自动删除同一类别页面功能，是一种设计更友好的自动删除实现。</p>
+        <h3>返回值</h3>
+        <p>-</p>
+        <h3>使用示例</h3>
+        <pre><span class="comment">// 移除id为idJustUnique的页面</span>
+Mobilebone.remove("idJustUnique");
+
+<span class="comment">// 移除类名为.pageRootReload的所有页面</span>
+[].slice.call(document.querySelectorAll('.pageRootReload')).forEach(function (page) {
+    Mobilebone.remove(page);
+});
+
+<span class="comment">// 移除#rootReload下所有&lt;a&gt;元素加载的页面</span>
+[].slice.call(document.querySelectorAll('#rootReload a')).forEach(function (ele) {
+    Mobilebone.remove(ele);
+});
+
+<span class="comment">// 移除请求//detail.php?id=1234这个地址生成的页面</span>
+Mobilebone.remove("//detail.php?id=1234");</pre>
+    </div>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "createPage";
+</script>
+<script src="nav.js"></script>
+<script src="../assets/docs.js"></script>
+</body>
+</html>

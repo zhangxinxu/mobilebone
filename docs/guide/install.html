@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-安装" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, 路由, javascript, 使用教程, 安装" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-安装</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>安装</h2>
+        <p>Mobilebone 主要支持直接引用和NPM安装两种模式。</p>
+        <h3>直接HTML引入</h3>
+        <p>引入必须的CSS文件：</p>
+        <pre>&lt;link rel="stylesheet" href="./dist/mobilebone.css"&gt;</pre>
+        <p><code>mobilebone.css</code> 包含的CSS内容非常的少（&lt; 3K），且非常稳定，因此如果条件允许，可以和其他业务CSS代码整合在一起。</p>
+        <p>如果页面的过场动画不是左滑右滑，而是淡入淡出、飞翔、缩放之类，还需要引入 <code>mobilebone.animate.css</code>。</p>
+        <pre><span class="comment">&lt;!-- 此文件只在src目录中, dist目录中没有 --&gt;</span>
+&lt;link rel="stylesheet" href="./src/mobilebone.animate.css"&gt;</pre>
+        <p>引入必须的JS文件：</p>
+        <pre>&lt;script src="./dist/mobilebone.js"&gt;&lt;/script&gt;</pre>
+        <p>此时<code>Mobilebone</code> 会被注册为一个全局变量。</p>
+        <h4>CDN</h4>
+        <p>您还可以直接链接在线的CDN地址，例如：</p>
+        <pre>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobilebone/dist/mobilebone.css"&gt;</pre>
+        <pre>&lt;script src="https://cdn.jsdelivr.net/npm/mobilebone/dist/mobilebone.js"&gt;&lt;/script&gt;</pre>
+        <p>引用第3方提供的静态资源总是伴随着巨大的风险（域名变更、站点倒闭或者被墙），因此，上面的地址不建议在生产环境使用。</p>
+
+        <p>如果你使用原生 ES Modules，这里也有一个兼容 ES Module 的构建文件：</p>
+        <pre>&lt;script type="module"&gt;
+    import Mobilebone from 'https://cdn.jsdelivr.net/npm/mobilebone/dist/mobilebone.esm.js'
+&lt;/script&gt;</pre>
+
+        <p>通常更建议使用带有具体版本号的资源，以避免新版本带来不可预期的破坏：</p>
+        <pre>&lt;script src="https://cdn.jsdelivr.net/npm/mobilebone@2.7.9/dist/mobilebone.js"&gt;&lt;/script&gt;</pre>
+
+        <p>Mobilebone 也可以在 <a href="https://unpkg.com/mobilebone/dist/mobilebone.js" class="link" target="_blank" rel="noopener">unpkg</a> 和 <a href="https://cdnjs.cloudflare.com/ajax/libs/mobilebone/2.7.9/mobilebone.js" class="link" target="_blank" rel="noopener">cdnjs</a> 上获取。</p>
+
+        <h3>NPM安装</h3>
+        <p>在大型项目中，推荐使用 NPM 安装，因为 NPM 能很好地和诸如 webpack 或 Browserify 模块打包器配合使用：</p>
+        <pre>npm install mobilebone</pre>
+        <p>例如在Vue-CLI环境中，可以使用下面的语法进行CSS和JS的引入：</p>
+        <pre><span class="comment">&lt;!-- 支持import引入 --&gt;</span>
+&lt;script&gt;
+import Mobilebone from 'mobilebone'
+&lt;/script&gt;
+<span class="comment">&lt;!-- CSS引用 --&gt;</span>
+&lt;style src="mobilebone/dist/mobilebone.css"&gt;</pre>
+
+        <h3>其他说明</h3>
+        <h4>兼容性</h4>
+        <p>Mobilebone 不支持IE9及其以下版本的浏览器，因为 Mobilebone 使用了 IE10 浏览器才开始支持的 HTML5 history API 作为路由管理。</p>
+        <p></p>
+        <h4>语义化版本控制</h4>
+        <p>Mobilebone 遵循<a href="https://semver.org/lang/zh-CN/" class="link" target="_blank" rel="noopener">语义化版本控制</a>。从 v2.8.0 开始，Mobilebone 的变更细节会描述在<a href="https://github.com/vuejs/vue/releases" class="link" target="_blank" rel="noopener">发布说明</a>中。</p>
+        <h4>最新版本</h4>
+        <p>最新版本是：<span class="version"></span></p>
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/install.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Mobilebone.js API文档-data-rel</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+    	<h2>data-rel</h2>
+        <p>主要使用为下面2个值<code>"back"</code>和<code>"go"</code>（v2.8.1新增）。主要作用是决定过场的方向。</p>
+        
+        <p>默认的过场方向由Mobilebone根据页面DOM前后顺序以及临时存储的历史记录决定，例如，本文档页面左侧的各个链接，点击顺序任意的，会根据点击的先后顺序决定过场的方向。</p>
+        <pre>&lt;a href="Mobilebone.support.html" class="nav-a" data-mask&gt;Mobilebone.support&lt;/a&gt;</pre>
+        
+        <ul>
+            <li>如果是<code>"back"</code>，则过场方向是反方向；</li>
+            <li>如果是<code>"go"</code>，则过场方向是正方向；</li>
+        </ul>
+
+        <h3>其他说明</h3>
+        <ol>
+        	<li><code>data-rel="back"</code>在以下两种场景都是有返回效果的。
+            	<pre>&lt;a href="#pageBack" <span style="color:#cd0000;">data-rel="back"</span>>返回&lt;/a></pre>
+                <pre>&lt;a href="javascript:" <span style="color:#cd0000;">data-rel="back"</span>>返回&lt;/a></pre>
+                <p>那它们的差别在什么地方呢？</p>
+                <p>前者返回具有明确的目的性，知道前往的页面，虽然是返回，但是，<code>history</code>依然会push一条访问记录；而没有<code>href</code>的返回，也就是后者只会返回上一次的页面，其作用跟下面代码一样：</p>
+                <pre>&lt;a href="javascript:history.back();">返回&lt;/a></pre>
+                <p>真正意义上的浏览器返回，<code>history</code>回退至上一个记录，而不是再塞一条。所以，大家需要根据不同的返回场景做不同的处理。</p>
+            </li>
+        	<li>
+            	<code>data-rel</code>其实还支持<code>"external"</code>这个值，作用和<code>data-ajax="false"</code>一致，不推荐使用，为了兼容最初的版本，因此一直没删除。
+            </li>
+        </ol>
+    </div>
+</div>
+
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "data-rel";
+</script>
+<script src="nav.js"></script>
+<script src="../assets/docs.js"></script>
+</body>
+</html>

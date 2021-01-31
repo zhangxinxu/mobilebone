@@ -1,8 +1,8 @@
-/*
- * mobilebone.js
- * by zhangxinxu(.com) 2014-09-26
- * https://github.com/zhangxinxu/mobilebone
- * bone of switch for mobile web app
+/**! 
+ * @author @copyright zhangxinxu(.com) 
+ * @since 2014-09-26
+ * @description mobilebone.js(v2.8.1) - bone of switch for mobile web app - https://github.com/zhangxinxu/mobilebone
+ * @license MIT
 **/
 
 const Mobilebone = (function(root, Mobilebone) {
@@ -31,7 +31,13 @@ const Mobilebone = (function(root, Mobilebone) {
 	 *
 	 * @type string
 	**/
-	Mobilebone.VERSION = "2.8.0";
+	Mobilebone.VERSION = "2.8.1";
+
+	/**
+	 * Whether auto init Mobilebone
+	 * If this value is false, you shou excute Mobilebone.init() in the right place
+	 */
+	Mobilebone.autoInit = true;
 
 	/**
 	 * Whether catch attribute of href from element with tag 'a'
@@ -110,10 +116,9 @@ const Mobilebone = (function(root, Mobilebone) {
 	 * @type boolean
 	**/
 	Mobilebone.evalScript = false;
-
-	if (// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false'
-		(window.navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window)
-	) {
+	
+	// When running inside a FF iframe, calling replaceState causes an error. So set 'pushStateEnabled = false'
+	if (navigator.userAgent.indexOf( "Firefox" ) >= 0 && window.top !== window) {
 		Mobilebone.pushStateEnabled = false;
 	}
 
@@ -547,17 +552,17 @@ const Mobilebone = (function(root, Mobilebone) {
 	Mobilebone.getCleanUrl = function(trigger, url, params) {
 		var href = "", formdata = "", cleanUrl = "";
 		if (trigger) {
-			 if (trigger.nodeType == 1) {
-				 // form element
-				 if (trigger.action) {
-					 href = trigger.getAttribute("action");
-					 // add on v2.4.1
-					 if (trigger.method && trigger.method.toUpperCase() == "POST") {
-						 return href;
-					 } else if (window.$ && $.fn && $.fn.serialize) {
+			if (trigger.nodeType == 1) {
+				// form element
+				if (trigger.action) {
+					href = trigger.getAttribute("action");
+					// add on v2.4.1
+					if (trigger.method && trigger.method.toUpperCase() == "POST") {
+						return href;
+					} else if (window.$ && $.fn && $.fn.serialize) {
 						// use jquery serialize()
 						formdata = $(trigger).serialize();
-					 } else {
+					} else {
 						formdata = {};
 						// simple serialize from Mobilebone
 						slice.call(trigger.querySelectorAll("input,select,textarea")).forEach(function(control) {
@@ -576,10 +581,13 @@ const Mobilebone = (function(root, Mobilebone) {
 								}
 							}
 						});
-					 }
-				 } else {
+					}
+				} else {
 					// a element
 					href = trigger.getAttribute("href");
+					if (/^javascript/.test(href)) {
+						href = '';
+					}
 					formdata = trigger.getAttribute("data-formdata") || trigger.getAttribute("data-params") || "";
 					// v2.6.1 for #107
 					// remember container when refresh
@@ -588,11 +596,11 @@ const Mobilebone = (function(root, Mobilebone) {
 						var queryContainer = strContainer + "=" + attrContainer;
 						formdata = formdata ? formdata + "&" + queryContainer : queryContainer;
 					}
-				 }
-			 } else if (trigger.url) {
-				 href = trigger.url;
-				 formdata = trigger.data;
-			 }
+				}
+			} else if (trigger.url) {
+				href = trigger.url;
+				formdata = trigger.data;
+			}
 		}
 
 		if (!(href = href || url)) {
@@ -621,7 +629,7 @@ const Mobilebone = (function(root, Mobilebone) {
 		}
 
 		// get url of root
-		cleanUrl = href.split("#")[0].replace(/&+$/, "");
+		cleanUrl = href.split("#")[0].replace(/&+$/, "").replace(/^\.\/+/, "");
 
 		if (cleanUrl.slice(-1) == "?") {
 			cleanUrl = cleanUrl.split("?")[0];
@@ -1007,7 +1015,7 @@ const Mobilebone = (function(root, Mobilebone) {
 		if (eleMask == null) {
 			eleMask = document.createElement("div");
 			eleMask.className = classMask;
-			eleMask.innerHTML = '<i class="loading"></i>';
+			eleMask.innerHTML = '<s class="loading"></s>';
 			if (typeof attrMask == "string") {
 				eleOrObj.appendChild(eleMask);
 			} else {
@@ -1062,26 +1070,22 @@ const Mobilebone = (function(root, Mobilebone) {
 				Mobilebone.createPage(response, eleOrObj, params);
 			}
 			params.success.call(params, response, xhr.status);
-
-			params.complete.call(params, xhr, xhr.status);
-
-			// hide loading
-			eleMask.style.display = "none";
-			if (this.hideLoading) {
-				this.hideLoading();
-			}
-		}
+		};
 
 		xhr.onerror = function(e) {
 			params.message = "Illegal request address or an unexpected network error!";
 			params.error.call(params, xhr, xhr.status);
+		};
+
+		xhr.onloadend = function () {
 			// hide loading
 			eleMask.style.display = "none";
 			if (this.hideLoading) {
 				this.hideLoading();
 			}
+
 			params.complete.call(params, xhr, xhr.status);
-		}
+		};
 
 		xhr.ontimeout = function() {
 			params.message = "The request timeout!";
@@ -1142,11 +1146,17 @@ const Mobilebone = (function(root, Mobilebone) {
 	 *
 	**/
 	Mobilebone.isBack = function(pageIn, pageOut) {
-		// back or forword, according to the order of two pages
+		// back or forwards, according to the order of two pages
 		if (history.tempBack == true) {
 			// backwords
 			history.tempBack = null;
 			return true;
+		}
+
+		if (history.tempGo == true) {
+			// forwards
+			history.tempGo = null;
+			return false;
 		}
 		// 2.7.5 return true -> false
 		if (typeof pageIn == "undefined") {
@@ -1264,24 +1274,9 @@ const Mobilebone = (function(root, Mobilebone) {
 	};
 
 	/**
-	 * If 'a' element has href, slide auto when tapping~
+	 * If 'a' element has href, slide auto when clicked
 	**/
 	Mobilebone.handleTapEvent = function(event) {
-		/**
-		// iscroll(set tap: true) may cause twice tap problem
-		// which is none of Mobilebone's business
-		// However, you can let code below go to avoid twice tap in Mobilebone
-		// but the tap event bind out of Mobilebone also has bug
-		// so my advice is that:
-		// 1. use Date.now to judge as Mobilebone did;
-		// or
-		// 2. keep this code in the form of comment and fixed bug outside
-		if (store.timerTap && Date.now() - store.timerTap < 100) {
-			event.preventDefault();
-			return false;
-		}
-		store.timerTap = Date.now();
-		*/
 		var target = null;
 		// you can pass target as params directly
 		if (event && event.nodeType == 1) {
@@ -1295,7 +1290,7 @@ const Mobilebone = (function(root, Mobilebone) {
 			return;
 		}
 
-		// 此时的链接地址
+		// current href
 		var href = target.href;
 
 		// the page that current actived
@@ -1348,10 +1343,18 @@ const Mobilebone = (function(root, Mobilebone) {
 		var capture = (Mobilebone.captureLink == true);
 		// get rel
 		var rel = target.getAttribute("data-rel");
+		if (!rel) {
+			rel = 'auto';
+		}
 		// if back
 		var back = false;
 		if (rel == "back") {
 			back = true;
+		}
+		// if go
+		var go;
+		if (rel == "go") {
+			go = true;
 		}
 
 		// if external link
@@ -1376,7 +1379,7 @@ const Mobilebone = (function(root, Mobilebone) {
 			return;
 		}
 		if (/^javascript/.test(href)) {
-			if (back == false) {
+			if (back == false && !go) {
 				return;
 			}
 		} else {
@@ -1393,6 +1396,11 @@ const Mobilebone = (function(root, Mobilebone) {
 			var hashTargetPage = href.split("#")[1];
 			var idTargetPage = hashTargetPage.split("?")[0];
 			var queryTargetPage = hashTargetPage.split("?")[1];
+			var paramTargetPage = target.getAttribute('data-formdata') || target.getAttribute('data-params');
+			if (paramTargetPage) {
+				queryTargetPage = queryTargetPage + '&' + paramTargetPage;
+			}
+			
 			// add on v2.7.4
 			options.query = _queryToObject(queryTargetPage);
 			options.id = hashTargetPage;
@@ -1405,7 +1413,7 @@ const Mobilebone = (function(root, Mobilebone) {
 			if (eleTargetPage) {
 				var lastShip = store.lastShip;
 
-				if (lastShip && eleTargetPage == lastShip[1] && selfPage == lastShip[0]) {
+				if (lastShip && eleTargetPage == lastShip[1] && selfPage == lastShip[0] && !go) {
 					// back
 					history.tempBack = true;
 					history.back();
@@ -1415,8 +1423,13 @@ const Mobilebone = (function(root, Mobilebone) {
 			}
 		} else if (/^javascript/.test(href)) {
 			// back
-			history.tempBack = true;
-			history.back();
+			if (back) {
+				history.tempBack = true;
+				history.back();
+			} else if (go) {
+				history.tempGo = true;
+				history.go(1);
+			}			
 		} else if (target.getAttribute("data-ajax") != "false") {
 			event.preventDefault();
 			// get a clean ajax url as page id
@@ -1488,7 +1501,7 @@ const Mobilebone = (function(root, Mobilebone) {
 	 * auto init
 	**/
 	window.addEventListener("DOMContentLoaded", function() {
-		if (hasInited == false) {
+		if (hasInited == false && Mobilebone.autoInit == true) {
 			Mobilebone.init();
 		}
 	});

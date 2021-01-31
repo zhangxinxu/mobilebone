@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-动画" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 动画" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-动画</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>动画</h2>
+        <p>这里带大家了解下 Mobilebone 中过场动画的实现与设置。</p>
+
+        <h3>实现</h3>
+
+        <p>Mobilebone 中的过场动画是通过 CSS <code>animation</code> 属性实现的。 </p>
+        <p>通过添加类名 <code>'in'</code> 让页面元素显示，通过添加类名 <code>'out'</code> 让页面元素隐藏，而类名 <code>'reverse'</code> 可以让动画反向执行，会用在返回这种场景中。其中，<code>'in'</code> 和 <code>'out'</code> 不能同时出现。</p>
+
+        <p>过场动画的类型也是通过类名设置的，默认的过程动画效果是左右滑动切换，和手机 APP 原生的过场效果一致，使用的是类名 <code>'slide'</code>。</p>
+
+        <p>例如，现在有一个页面元素的 HTML 代码是这样的：</p>
+        <pre>&lt;div class="page out"&gt;&lt;/div&gt;</pre>
+
+        <p>则执行下面的 JS 语句就可以让这个页面元素从浏览器窗口右侧出现。</p>
+        <pre>page.classList.add('slide');
+page.classList.remove('out');
+page.classList.add('in');</pre>
+
+        <p>当然，实际开发无需关心上面的细节，Mobilebone 已经在内部处理好了。</p>
+
+        <h3>类型</h3>
+
+        <p>Mobilebone 支持扩展过场动画类型，两种方法：</p>
+        <ol>
+            <li>开发者自定义；</li>
+            <li>使用官方扩展；</li>
+        </ol>
+        
+        <h4>开发者自定义</h4>
+        <p>开发者可以自定义任意的动画类名，然后写好和类名 <code>'in'</code>、<code>'out'</code>、<code>'reverse'</code> 组合样式即可，例如下面的CSS代码：</p>
+        <pre>.fade.out {
+	opacity: 0;
+	animation-duration: 125ms;
+	animation-name: fadeout;
+}
+.fade.in {
+	opacity: 1;
+	animation-duration: 225ms;
+	animation-name: fadein;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}</pre>
+        <p>此时，只需要通过 Mobilebone 提供的 API 重置掉默认的 <code>'slide'</code> 为这里的 <code>'fade'</code> 就可以有自定义的淡入淡出过场效果了。</p>
+
+        <p>例如，本文档的上下移入移出效果就是使用的自定义的 <code>'slideup'</code> 过场效果。</p>
+
+        <h4>官方扩展</h4>
+
+        <p>Mobilebone 官方提供了多种过场类型，都合在了专门的过场动画 CSS 文件中，在项目的 src 文件目录下，名为 mobilebone.animate.css，其中包含以下类型的过场动画效果：</p>
+        <ul>
+            <li>fade - 淡入淡出</li>
+            <li>slideup - 上移/淡出</li>
+            <li>slidedown - 下落/淡出</li>
+            <li>pop - 放大缩小</li>
+            <li>turn - 翻转（3D效果需要容器上设置类名 <code>'viewport-turn'</code>）</li>
+            <li>flip = 弹入弹出（3D效果需要容器上设置类名 <code>'viewport-flip'</code>）</li>
+            <li>flow - 流入流出 </li>
+        </ul>
+
+        <p>各个效果可以访问对应的<a href="https://www.zhangxinxu.com/Github/mobilebone/test/transition/index.html#&pageHome" class="link" target="_test" data-ajax="false">测试页面</a>体验。</p>
+        
+        <h3>设置</h3>
+        <p>上面介绍了过场动画类型，这里讲下如何设置这些过场动画。</p>
+        <p>分两种情况：</p>
+        <ol>
+            <li>全局设置；</li>
+            <li>局部设置；</li>
+        </ol>
+
+        <h4>全局设置</h4>
+
+        <p></p>
+
+        <p>全局改变 Mobilebone 过场动画类型需要使用 <a href="../api/#&Mobilebone.classAnimation.html" class="link" data-ajax="false">Mobilebone.classAnimation</a> 这个API接口，例如：</p>
+        <pre>Mobilebone.classAnimation = 'fade';</pre>
+        <p>这个时候，当页面过场发生的时候，会在页面元素上设置类名 <code>'fade'</code>，而不是默认的 <code>'slide'</code>。此时，只要有对应的CSS动画设置，则过场的时候就会有你想要的动画效果出现了。</p>
+        
+        <p>另外，也可以使用老的 <code>Mobilebone.form</code> 接口全局设置过场动画类型。</p>
+
+        <h4>局部设置</h4>
+
+        <p>如果希望仅仅某一个页面的过场效果是特殊的，可以使用 <code>data-form</code> 在对应的页面元素上进行设置即可，例如：</p>
+        <pre>&lt;div class="page out" <span class="mark">data-form="flip"</span>&gt;&lt;/div&gt;</pre>
+
+        <p>此时，上面的 HTML 代码对应的页面元素在显示和隐藏的时候就会使用“弹入弹出”这个过场动画效果。</p>
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/animate.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>

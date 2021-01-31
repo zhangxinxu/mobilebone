@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="Mobilebone.js 使用教程-中文版-加载动画" />
+<meta name="keywords" content="Mobilebone.js, Mobilebone, javascript, 使用教程, 加载动画" />
+<meta name="author" content="张鑫旭, zhangxinxu" />
+<link rel="icon" href="../assets/favicon.ico">
+<title>Mobilebone.js使用教程-加载动画</title>
+<link rel="stylesheet" href="../../src/mobilebone.css">
+<link rel="stylesheet" href="../assets/docs.css">
+</head>
+
+<body>
+<header id="header"></header>
+<aside id="aside"></aside>
+<div class="page out">
+	<div class="content">
+        <h2>加载动画</h2>
+        <p>Mobilebone 自带建议的加载动画效果，如下所示。</p>
+        <p data-mask style="position: relative; height: 20px;"><s class="loading"></s></p>
+
+        <h3>时机</h3>
+        <p>Mobilebone 加载动画只会在请求页面或者请求外部数据的时候触发，例如：</p>
+        <pre>&lt;a href="detail.html?id=1"&gt;加载&lt;/a&gt;</pre>
+
+        <p>点击上面的链接，则 Mobilebone 就会去请求 <code>detail.html?id=1</code> 这个页面的数据，当请求执行的时候，加载动画就会出现，当请求结束的时候，加载动画就会消失。</p>
+
+        <h3>原理</h3>
+
+        <p>Mobilebone 默认的加载动画效果是通过创建如下所示的 HTML 结构实现的：</p>
+        <pre>&lt;div class="mask"&gt;&lt;s class="loading"&gt;&lt;/s&gt;&lt;/div&gt;</pre>
+
+        <p>其中，<code>'.mask'</code> 元素和 <code>'.loading'</code> 元素的样式如下：</p>
+        <pre>.mask {
+	height: 100%; width: 100%;
+	background-color: rgba(255,255,255,.35);
+	position: absolute; left: 0; top: 0;
+	z-index: 9;
+}
+s.loading {
+    width: 16px; height: 16px;
+    border-radius: 100%;
+    border: 2px solid;
+    border-bottom-color: transparent;
+	animation: spin 1s linear infinite;
+	/* center */
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	margin: auto;
+}</pre>
+        <p>可见外部的<code>'.mask'</code> 元素是一个尺寸100%覆盖的带有白色半透明背景的定位层，内部的 <code>'.loading'</code> 元素是一个尺寸 <code>20px * 20px</code> 居中定位的环形物。</p>
+
+        <p>默认状态下，<code>'.mask'</code> 元素是被创建在 <code>&lt;body&gt;</code> 元素中的，因此，当请求发生的时候，会看到一个全屏白色半透明覆盖层，中间有个加载动画效果。</p>
+
+        <p>当然，加载动画的位置和样式都是可以设置的。</p>
+
+        <h3>设置</h3>
+
+        <h4>样式改变</h4>
+
+        <p>如果嫌弃 Mobilebone 默认的加载动画效果很粗糙，则开发者可以自己修改 <code>./src/mobilebone.css</code> 中的相关样式。</p>
+
+        <h4>局部加载</h4>
+
+        <p>如果嫌弃默认的全屏加载样式有些重，希望只在当前点击的按钮、或者列表上显示加载动画，则可以使用 <code>data-mask</code> 进行设置。例如：</p>
+        <pre>&lt;a href="detail.html?id=1" <span class="mark">data-mask</span>&gt;加载&lt;/a&gt;</pre>
+
+        <p>此时，<code>'.mask'</code> 元素就不会创建在 <code>&lt;body&gt;</code> 元素中，而是创建在上面这个 <code>&lt;a&gt;</code> 元素中。于是，加载动画效果就会出现在 <code>&lt;a&gt;</code> 元素的中心位置，会覆盖原本 <code>&lt;a&gt;</code> 中的文字内容。</p>
+
+        <p>如果希望加载动画是在文字的后面，而不是覆盖文字，则可以自己使用 CSS 代码重置下，例如本文档左侧的加载动画就使用了如下所示的 CSS 代码：</p>
+        <pre>.nav-a > .mask {
+    display: inline;
+    width: 26px; height: 31px;
+    top: 0; right: 8px; left: auto;
+    background-color: transparent;
+    transform: scale(.75,.75);
+}</pre>
+        <h4>冲突？</h4>
+
+        <p>如果 <code>.mask</code> 类名和项目中其他样式发生冲突，则可以使用 Mobilebone.classMask 这个 API 进行重置，例如：</p>
+        <pre>Mobilebone.classMask = 'my-mask';</pre>
+
+        <p>则 Mobilebone 就会创建类名是 <code>'.my-mask'</code> 的元素，当然，CSS 样式需要同步变更下，例如：</p>
+        <pre>.my-mask {}
+.my-mask > .loading {}</pre>
+
+        <h3>自定义</h3>
+
+        <p>如果项目原本有一套自己的加载动画方案，Mobilebone 也是支持调用的，Mobilebone有如下两个匿名 API：</p>
+        <ol>
+            <li>Mobilebone.showLoading</li>
+            <li>Mobilebone.hideLoading</li>
+        </ol>
+
+        <p>其中 <code>showLoading</code> 会在请求执行的时候执行，<code>hideLoading</code> 会在请求完毕的时候执行，因此，如果你自己有一套加载显示和隐藏方法，假设方法名是 <code>myShowLoadingFunction</code> 和 <code>myHideLoadingFunction</code>，则执行类似下面的代码就可以将 Mobilebone 自己的加载动画替换成开发者自己的。</p>
+
+        <pre><span class="comment">/* 隐藏 Mobilebone 自己的加载动画 */</span>
+.mask { display: none; }</pre>
+        <pre><span class="comment">/* 替换成外部的加载动画 */</span>
+Mobilebone.showLoading = myShowLoadingFunction;
+Mobilebone.hideLoading = myHideLoadingFunction;</pre>
+
+
+        <hr>
+        <p>发现错误？想参与编辑？在 <a href="https://github.com/zhangxinxu/mobilebone/blob/master/docs/guide/inner.html" class="link" target="_github" rel="nooppener">GitHub 上编辑此页</a>！</p>
+    </div>
+</div>
+
+<script src="nav.js"></script>
+<script src="../../src/mobilebone.js"></script>
+<script>
+Mobilebone.captureLink = false;
+window.navKey = "install";
+</script>
+<script src="../assets/docs.js"></script>
+<!-- ga统计 -->
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-11205167-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    if (location.host == 'www.zhangxinxu.com') {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    }
+})();
+</script>
+</body>
+</html>
