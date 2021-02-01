@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="description" content="移动端，桌面端页面无刷新过场切换骨架-mobilebone.js官网" />
 <meta name="description" content="移动端，桌面端页面无刷新过场切换骨架-mobilebone.js官网" />
 <meta name="keywords" content="mobilebone, mobilebone.js, 官网" />
@@ -14,7 +15,7 @@ html, body, .page {
 	overflow: hidden;
 }
 body {
-	font: 14px/1.42857 'microsoft yahei';
+	font: 14px/1.42857 system-ui;
 }
 h1,h2,h3,h4,h5,h6,p,body {
 	margin: 0;
@@ -22,7 +23,6 @@ h1,h2,h3,h4,h5,h6,p,body {
 .constr {
 	width: 1240px;
 	max-width: 100%;
-	min-width: 1024px;
 	margin: 0 auto;
 }
 .content {
@@ -99,6 +99,18 @@ h1,h2,h3,h4,h5,h6,p,body {
 .home-slam .btn {
 	font-size: 220%; width: 200px;
 }
+@media (max-width: 480px) {
+	.constr{width: auto;}
+	.home-slam{left: 1rem; right: 1rem;}
+	.home-slam > h1 { font-size: 50px;}
+	.home-slam > h2{font-size: 18px; margin-top: 30px;}
+	.home-slam .btn{font-size: 20px; width: auto;}
+	.home-nav-list{width: auto; }
+	.home-nav-a{padding-left: 15px; padding-right: 15px; font-size: 18px;}
+	.home-nav-list:nth-child(4){display: none;}
+	.home-nav-github{border-left: 0;}
+	.home-nav-github a{font-size: 1rem;}
+}
 </style>
 <link rel="stylesheet" href="https://www.zhangxinxu.com/github/quickLayout/quick-layout-min.css">
 </head>
@@ -109,8 +121,8 @@ h1,h2,h3,h4,h5,h6,p,body {
     	<div class="constr">
         	<div class="home-nav">
 				<h3 class="home-nav-list active"><a href="/" class="home-nav-a">首页</a></h3>
-				<h3 class="home-nav-list"><a href="/guide/#&indexPage" class="home-nav-a" target="_blank">教程</a></h3>
-                <h3 class="home-nav-list"><a href="/api/#&indexPage" class="home-nav-a" target="_blank">API文档</a></h3>
+				<h3 class="home-nav-list"><a href="./guide/#&indexPage" class="home-nav-a" target="_blank">教程</a></h3>
+                <h3 class="home-nav-list"><a href="./api/#&indexPage" class="home-nav-a" target="_blank">API文档</a></h3>
                 <h3 class="home-nav-list"><a href="https://github.com/zhangxinxu/mobilebone/releases" class="home-nav-a" target="_blank">下载</a></h3>
                 <h3 class="home-nav-list home-nav-github"><a href="https://github.com/zhangxinxu/mobilebone" class="home-nav-a" target="_blank">共同建设</a></h3>
             </div>

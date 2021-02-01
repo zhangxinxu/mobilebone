@@ -32,6 +32,25 @@
 	} else if (/\/guide\//.test(pathname)) {
 		eleHeader.querySelector('a[href*="/guide"]').classList.add('active');
 	}
+
+	var aside = document.querySelector("#aside");
+	aside.addEventListener('click', function (event) {
+		if (!event.target) {
+			return;
+		}
+		if (!event.target.href) {
+			this.setAttribute('open', '');
+		} else {
+			this.removeAttribute('open');
+		}
+	});
+
+	document.addEventListener('click', function (event) {
+		var elePageIn = document.querySelector('.page.in');
+		if (elePageIn && elePageIn.contains(event.target)) {
+			aside.removeAttribute('open');
+		}
+	});
 })();
 
 // 导航与菜单栏的高亮处理

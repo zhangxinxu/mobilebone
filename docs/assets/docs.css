@@ -123,6 +123,17 @@ pre .mark { color: red; }
         width: calc(100% - 6px);
         outline: none;
     }
+    header{position: absolute;}
+    /* 响应式处理 */
+    .logo { width: auto; font-size: 0; }
+    .header-nav { margin-left: 80px; }
+    .header-nav-a{padding-left: 15px; padding-right: 15px;}
+    .header-nav-r{right: 0; font-size: 16px;}
+    .logo .version {display: none;}
+    aside:not([open]){clip-path: polygon(0 0, 40px 0, 0 40px);}
+    aside:not([open]) > h2, aside:not([open]) > nav{visibility: hidden;}
+    aside:not([open])::before{content: ''; position: fixed; width: 10px; height: 10px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(22.5deg); left: 6px; margin-top: 3px;}
+    .content{left: 0; top:64px; padding-top: 20px;}
 }
 
 
