@@ -959,6 +959,9 @@
 
 			var tagName = trigger.tagName.toLowerCase();
 			if (tagName == "form") {
+				// form支持data-container
+				var idContainer = trigger.getAttribute("data-container"),
+					container = idContainer && document.getElementById(idContainer);
 				params.type = trigger.method;
 
 				formData = new FormData(trigger);
